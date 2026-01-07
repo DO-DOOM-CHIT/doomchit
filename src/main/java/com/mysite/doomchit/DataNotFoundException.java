@@ -1,4 +1,4 @@
-package com.mysite.kjs;
+package com.mysite.doomchit;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

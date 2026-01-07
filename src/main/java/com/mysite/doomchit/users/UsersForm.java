@@ -1,4 +1,4 @@
-package com.mysite.kjs.member;
+package com.mysite.doomchit.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberForm {
+public class UsersForm {
     @NotEmpty(message = "이메일은 필수항목입니다.")
     @Email
     private String email;

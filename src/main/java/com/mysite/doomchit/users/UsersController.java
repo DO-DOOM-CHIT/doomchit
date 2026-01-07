@@ -1,4 +1,4 @@
-package com.mysite.kjs.member;
+package com.mysite.doomchit.users;
 
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -11,13 +11,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/member")
 @RequiredArgsConstructor
 @Controller
-public class MemberController {
-    private final MemberService memberService;
+public class UsersController {
+    private final UsersService memberService;
 
     // 1. 회원 목록
     @GetMapping("/list")
     public String list(Model model) {
-        List<Member> memberList = this.memberService.getList();
+        List<Users> memberList = this.memberService.getList();
         model.addAttribute("memberList", memberList);
         return "member_list";
     }
@@ -25,20 +25,20 @@ public class MemberController {
     // 2. 상세 조회 (이름 클릭 시 이동)
     @GetMapping(value = "/detail/{mno}")
     public String detail(Model model, @PathVariable("mno") Integer mno) {
-        Member member = this.memberService.getMember(mno);
+        Users member = this.memberService.getMember(mno);
         model.addAttribute("member", member);
         return "member_detail";
     }
 
     // 3. 회원 등록 화면
     @GetMapping("/create")
-    public String memberCreate(MemberForm memberForm) {
+    public String memberCreate(UsersForm memberForm) {
         return "member_form";
     }
 
     // 4. 회원 등록 처리
     @PostMapping("/create")
-    public String memberCreate(@Valid MemberForm memberForm, BindingResult bindingResult) {
+    public String memberCreate(@Valid UsersForm memberForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "member_form";
         }

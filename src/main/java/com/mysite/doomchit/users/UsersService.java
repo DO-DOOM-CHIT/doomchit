@@ -1,4 +1,4 @@
-package com.mysite.kjs.member;
+package com.mysite.doomchit.users;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,20 +8,20 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class MemberService {
-    private final MemberRepository memberRepository;
+public class UsersService {
+    private final UsersRepository memberRepository;
 
-    public List<Member> getList() {
+    public List<Users> getList() {
         return this.memberRepository.findAll();
     }
 
-    public Member getMember(Integer mno) {
-        Optional<Member> member = this.memberRepository.findById(mno);
+    public Users getMember(Integer mno) {
+        Optional<Users> member = this.memberRepository.findById(mno);
         return member.orElse(null);
     }
 
     public void create(String email, String pwd, String mname) {
-        Member m = new Member();
+        Users m = new Users();
         m.setEmail(email);
         m.setPwd(pwd);
         m.setMname(mname);
@@ -30,13 +30,13 @@ public class MemberService {
         this.memberRepository.save(m);
     }
 
-    public void modify(Member member, String mname) {
+    public void modify(Users member, String mname) {
         member.setMname(mname);
         member.setModDate(LocalDateTime.now());
         this.memberRepository.save(member);
     }
 
-    public void delete(Member member) {
+    public void delete(Users member) {
         this.memberRepository.delete(member);
     }
 }

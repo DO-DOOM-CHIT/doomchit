@@ -1,4 +1,4 @@
-package com.mysite.kjs;
+package com.mysite.doomchit;
 
 import lombok.Getter;
 import lombok.Setter;

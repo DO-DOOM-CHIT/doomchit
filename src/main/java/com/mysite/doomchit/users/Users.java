@@ -1,4 +1,4 @@
-package com.mysite.kjs.member;
+package com.mysite.doomchit.users;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "members")
-public class Member {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mno")
