@@ -1,0 +1,19 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+	<h2 class="border-bottom py-2" th:text="${member.mname} + ' 님의 상세 정보'"></h2>
+	<div class="card my-3">
+		<div class="card-body">
+			<div class="mb-3"><strong>번호(MNO):</strong> <span th:text="${member.mno}"></span></div>
+			<div class="mb-3"><strong>이름(MNAME):</strong> <span th:text="${member.mname}"></span></div>
+			<div class="mb-3"><strong>이메일(EMAIL):</strong> <span th:text="${member.email}"></span></div>
+			<div class="mb-3"><strong>비밀번호(PWD):</strong> <span th:text="${member.pwd}"></span></div>
+			<div class="mb-3"><strong>등록일시:</strong> <span
+					th:text="${#temporals.format(member.creDate, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
+			<div class="mb-3"><strong>수정일시:</strong> <span
+					th:text="${#temporals.format(member.modDate, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
+		</div>
+	</div>
+	<a th:href="@{/member/list}" class="btn btn-secondary">목록으로 돌아가기</a>
+</div>
+
+</html>
