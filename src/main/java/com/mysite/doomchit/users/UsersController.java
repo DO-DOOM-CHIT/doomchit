@@ -12,37 +12,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class UsersController {
-    private final UsersService memberService;
+    private final UsersService UsersService;
 
     // 1. 회원 목록
-    @GetMapping("/list")
+    @GetMapping("/main")
     public String list(Model model) {
-        List<Users> memberList = this.memberService.getList();
-        model.addAttribute("memberList", memberList);
-        return "member_list";
-    }
-
-    // 2. 상세 조회 (이름 클릭 시 이동)
-    @GetMapping(value = "/detail/{mno}")
-    public String detail(Model model, @PathVariable("mno") Integer mno) {
-        Users member = this.memberService.getMember(mno);
-        model.addAttribute("member", member);
-        return "member_detail";
+        List<Users> usersList = this.UsersService.getList();
+        model.addAttribute("usersList", usersList);
+        return "users_list";
     }
 
     // 3. 회원 등록 화면
     @GetMapping("/create")
-    public String memberCreate(UsersForm memberForm) {
-        return "member_form";
+    public String usersCreate(UsersForm UsersForm) {
+        return "users_form";
     }
 
     // 4. 회원 등록 처리
     @PostMapping("/create")
-    public String memberCreate(@Valid UsersForm memberForm, BindingResult bindingResult) {
+    public String UsersCreate(@Valid UsersForm usersForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "member_form";
+            return "users_form";
         }
-        this.memberService.create(memberForm.getEmail(), memberForm.getPwd(), memberForm.getMname());
-        return "redirect:/member/list";
+        this.UsersService.create(usersForm.getUserId(), usersForm.getUserPwd(), usersForm.getUsername());
+        return "redirect:/users/list";
     }
 }

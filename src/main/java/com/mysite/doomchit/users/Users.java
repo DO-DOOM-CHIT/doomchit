@@ -9,25 +9,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "members")
+@Table(name = "users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mno")
-    private Integer mno;
+    @Column(name = "uno")
+    private Integer uno;
 
-    @Column(length = 45, nullable = false, unique = true)
-    private String email;
+    @Column(length = 50, nullable = false, unique = true)
+    private String userId;
 
-    @Column(length = 45, nullable = false)
-    private String pwd;
+    @Column(length = 100, nullable = false)
+    private String userPwd;
 
-    @Column(length = 45, nullable = false)
-    private String mname;
+    @Column(length = 50, nullable = false, unique = true)
+    private String username;
 
-    @Column(name = "cre_date")
+    @Column(name = "cre_Date")
     private LocalDateTime creDate = LocalDateTime.now();
 
-    @Column(name = "mod_date")
-    private LocalDateTime modDate = LocalDateTime.now();
 }

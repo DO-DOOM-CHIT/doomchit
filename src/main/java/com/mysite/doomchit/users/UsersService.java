@@ -15,28 +15,26 @@ public class UsersService {
         return this.memberRepository.findAll();
     }
 
-    public Users getMember(Integer mno) {
-        Optional<Users> member = this.memberRepository.findById(mno);
-        return member.orElse(null);
+    public Users getMember(Integer uno) {
+        Optional<Users> users = this.memberRepository.findById(uno);
+        return users.orElse(null);
     }
 
-    public void create(String email, String pwd, String mname) {
-        Users m = new Users();
-        m.setEmail(email);
-        m.setPwd(pwd);
-        m.setMname(mname);
-        m.setCreDate(LocalDateTime.now());
-        m.setModDate(LocalDateTime.now());
-        this.memberRepository.save(m);
+    public void create(String userId, String userPwd, String username) {
+        Users u = new Users();
+        u.setUserId(userId);
+        u.setUserPwd(userPwd);
+        u.setUsername(username);
+        u.setCreDate(LocalDateTime.now());
+        this.memberRepository.save(u);
     }
 
-    public void modify(Users member, String mname) {
-        member.setMname(mname);
-        member.setModDate(LocalDateTime.now());
-        this.memberRepository.save(member);
+    public void modify(Users users, String username) {
+        users.setUsername(username);
+        this.memberRepository.save(users);
     }
 
-    public void delete(Users member) {
-        this.memberRepository.delete(member);
+    public void delete(Users users) {
+        this.memberRepository.delete(users);
     }
 }
