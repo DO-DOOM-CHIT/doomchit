@@ -23,7 +23,7 @@ public class UsersController {
     }
 
     // 3. 회원 등록 화면
-    @GetMapping("/create")
+    @GetMapping("/signup")
     public String usersCreate(UsersForm UsersForm) {
         return "users_form";
     }

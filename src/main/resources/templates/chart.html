@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>DoomChit Chart</title>
+    <style>
+        body { font-family: sans-serif; background-color: #121212; color: #fff; padding: 20px; }
+        h1 { color: #1db954; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #333; }
+        th { color: #b3b3b3; }
+        img { width: 50px; height: 50px; border-radius: 4px; }
+        .rank { font-size: 1.2em; font-weight: bold; width: 50px; }
+    </style>
+</head>
+<body>
+    <h1>Global Top 50</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Album</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="music : ${chart}">
+                <td class="rank" th:text="${music.rank}">1</td>
+                <td><img th:src="${music.imageUrl}" alt="Album Cover"></td>
+                <td th:text="${music.title}">Title</td>
+                <td th:text="${music.artist}">Artist</td>
+                <td th:text="${music.albumName}">Album</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
