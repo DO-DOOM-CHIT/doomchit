@@ -1,39 +1,108 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <title>DoomChit Chart</title>
     <style>
-        body { font-family: sans-serif; background-color: #121212; color: #fff; padding: 20px; }
-        h1 { color: #1db954; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #333; }
-        th { color: #b3b3b3; }
-        img { width: 50px; height: 50px; border-radius: 4px; }
-        .rank { font-size: 1.2em; font-weight: bold; width: 50px; }
+        body {
+            font-family: sans-serif;
+            background-color: #121212;
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #1db954;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            color: #b3b3b3;
+        }
+
+        img {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
+        }
+
+        .rank {
+            font-size: 1.2em;
+            font-weight: bold;
+            width: 50px;
+            text-align: center;
+        }
+
+        .info-col {
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        small {
+            color: #888;
+        }
     </style>
 </head>
+
 <body>
-    <h1>Global Top 50</h1>
+    <h1>Melon Chart Top 100 (데이터 확인용)</h1>
     <table>
         <thead>
             <tr>
-                <th>Rank</th>
-                <th>Cover</th>
-                <th>Title</th>
-                <th>Artist</th>
-                <th>Album</th>
+                <th style="text-align:center;">순위</th>
+                <th>앨범</th>
+                <th>곡 정보</th>
+                <th>상세 정보 (장르/발매일/기획사)</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="music : ${chart}">
                 <td class="rank" th:text="${music.rank}">1</td>
                 <td><img th:src="${music.imageUrl}" alt="Album Cover"></td>
-                <td th:text="${music.title}">Title</td>
-                <td th:text="${music.artist}">Artist</td>
-                <td th:text="${music.albumName}">Album</td>
+                <td>
+                    <div style="font-weight: bold; font-size: 1.1em;" th:text="${music.title}">Title</div>
+                    <div th:text="${music.artist}">Artist</div>
+                    <div style="color: #666; font-size: 0.8em;" th:text="${music.albumName}">Album</div>
+                </td>
+                <td class="info-col">
+                    <div th:if="${music.relDate != null}">
+                        발매: <span th:text="${music.relDate}">2024-01-01</span>
+                    </div>
+                    <div th:if="${music.genre != null}">
+                        장르: <span th:text="${music.genre}">Ballad</span>
+                    </div>
+                    <div th:if="${music.duration != 0}">
+                        길이: <span th:text="${music.duration}">180</span>초
+                    </div>
+                    <div>
+                        <small th:text="|발매사: ${music.publisher != null ? music.publisher : '(정보없음)'}|"></small>
+                    </div>
+                    <div>
+                        <small th:text="|기획사: ${music.agency != null ? music.agency : '(정보없음)'}|"></small>
+                    </div>
+                    <div>
+                        <small th:text="|작사: ${music.lyricist != null ? music.lyricist : '(정보없음)'}|"></small>
+                    </div>
+                    <div>
+                        <small th:text="|작곡: ${music.composer != null ? music.composer : '(정보없음)'}|"></small>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
 </body>
+
 </html>

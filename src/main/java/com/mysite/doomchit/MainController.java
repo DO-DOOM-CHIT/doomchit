@@ -24,8 +24,15 @@ public class MainController {
 
     @GetMapping("/doomchit/main")
     public String main(Model model) {
-        List<Music> chart = musicService.getSpotifyChart();
+        List<Music> chart = musicService.getMelonChart();
         model.addAttribute("chart", chart);
         return "chart";
+    }
+
+    // JSON 데이터 확인용 임시 페이지
+    @org.springframework.web.bind.annotation.ResponseBody
+    @GetMapping("/debug")
+    public String debug() {
+        return musicService.getRawMelonChartJson();
     }
 }
