@@ -93,3 +93,15 @@
 .search-box button i {
   font-size: 16px;
 }
+
+/* ===== Header Nav Active ===== */
+.header-nav a {
+  color: #111;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.header-nav a.active {
+  color: #A352D2;
+  font-weight: 700;
+}

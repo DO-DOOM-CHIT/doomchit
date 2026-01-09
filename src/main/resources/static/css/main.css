@@ -13,7 +13,8 @@ body {
 
 /* ===== Layout ===== */
 .page-wrap {
-  width: 1440px;
+  max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -39,6 +40,19 @@ body {
 main {
   padding: 32px 120px;
 }
+
+@media (max-width: 1200px) {
+  main {
+    padding: 24px 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 16px 16px;
+  }
+}
+
 
 .page-top {
   display: flex;
@@ -91,12 +105,22 @@ main {
 .chart-box {
   background: #ffffff;
   padding: 0 24px;
+  max-height: 600px;
+  overflow-y: auto;
+
+  /* ⭐ 핵심 */
+  overflow-x: auto;
+}
+
+.chart-box-inner {
+  min-width: 900px; /* ← 스크롤 기준은 여기 */
 }
 
 .chart-table {
   width: 100%;
   border-collapse: collapse;
 }
+
 
 .chart-table thead th {
   height: 48px;
@@ -105,7 +129,7 @@ main {
   color: #666;
   border-bottom: 1px solid #e5e5e5;
   background: #FAFAFA;
-  text-align: left;
+  text-align: center;
 }
 
 .chart-table tbody tr {
@@ -113,17 +137,21 @@ main {
   border-bottom: 1px solid #eee;
 }
 
+.chart-table th,
 .chart-table td {
+  padding: 12px 16px;   /* ⭐ 기본 여백 */
   font-size: 14px;
+  vertical-align: middle;
+  text-align: center;
 }
 
 /* ===== Column ===== */
-.col-rank { width: 80px; }
-.col-song { width: 360px; }
-.col-album { width: 260px; }
-.col-comment { width: 160px; }
-.col-like { width: 160px; }
-.col-rating { width: 160px; }
+.col-rank   { width: 8%; }
+.col-song   { width: 30%; }
+.col-album  { width: 20%; }
+.col-comment{ width: 14%; }
+.col-like   { width: 14%; }
+.col-rating { width: 14%; }
 
 /* ===== Song Info ===== */
 .song {
@@ -162,7 +190,92 @@ main {
   color: #A352D2;
 }
 
-/* ===== Rating ===== */
-.rating {
+/* ===== Rating (Stars) ===== */
+.star-rating {
+  display: flex;
+  flex-direction: row;   /* ⭐ 세로 방지 */
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;   /* ⭐ 줄바꿈 방지 */
   color: #A352D2;
+  font-size: 18px;
+}
+
+
+.rating i,
+.star-rating i {
+  font-size: 16px;
+  color: #A352D2;
+  line-height: 1;
+}
+
+/* ===============================
+   Responsive
+================================ */
+
+/* 노트북 / 태블릿 */
+@media (max-width: 1200px) {
+  main {
+    padding: 24px 48px;
+  }
+
+  .nav {
+    margin-left: 48px;
+  }
+}
+
+/* 태블릿 / 모바일 */
+@media (max-width: 768px) {
+  main {
+    padding: 16px 16px;
+  }
+
+  .nav {
+    margin-left: 16px;
+    gap: 16px;
+  }
+
+  .page-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* 테이블 가로 스크롤 허용 */
+  .chart-box {
+    overflow-x: auto;
+  }
+
+.chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.chart-table th,
+.chart-table td {
+  white-space: normal;
+  word-break: break-word;
+  vertical-align: middle;
+}
+
+  /* 모바일에서는 일부 컬럼 숨김 */
+  .col-album {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+  .chart-table th,
+  .chart-table td {
+    padding: 8px 8px;   /* ⭐ 컬럼 사이 여백 축소 */
+  }
+}
+}
+
+.chart-table tbody tr {
+  cursor: pointer;
+}
+
+.chart-table tbody tr:hover {
+  background: #faf7ff;
 }

@@ -12,7 +12,6 @@
 ========================== */
 document.addEventListener('DOMContentLoaded', () => {
   loadHeader();
-  setActiveMenu();
 });
 
 /**
@@ -29,6 +28,7 @@ function loadHeader() {
       headerContainer.innerHTML = html;
 
       // 헤더 로드 후 로그인 상태 처리
+      setActiveMenu();
       checkLoginStatus();
     })
     .catch(err => {
@@ -42,15 +42,18 @@ function loadHeader() {
 function setActiveMenu() {
   const path = window.location.pathname;
 
-  const navLinks = document.querySelectorAll('.nav a');
+  const menuLinks = document.querySelectorAll('.header-nav a');
+  menuLinks.forEach(link => link.classList.remove('active'));
 
-  navLinks.forEach(link => {
-    if (path.includes(link.getAttribute('href'))) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
+  if (path.includes('likes')) {
+    document
+      .querySelector('.header-nav a[data-menu="likes"]')
+      ?.classList.add('active');
+  } else {
+    document
+      .querySelector('.header-nav a[data-menu="main"]')
+      ?.classList.add('active');
+  }
 }
 
 /* ==========================

@@ -4,6 +4,7 @@
  * - JPA Entity → DTO → JSON
  */
 
+// 임시 데이터
 const chartData = [
   {
     id: 1,
@@ -26,17 +27,25 @@ const chartData = [
   // 실제로는 API에서 가져옴
 ];
 
+// DOM 요소
 const chartBody = document.getElementById('chartBody');
 const sortBtn = document.querySelector('.sort-btn');
 const sortMenu = document.querySelector('.sort-menu');
 
-/* ===== Render ===== */
+// 차트 렌더링
 function renderChart(list) {
   chartBody.innerHTML = '';
 
+// 각 곡 행 생성
   list.forEach((song, index) => {
     const tr = document.createElement('tr');
 
+  // 행 클릭 시 리뷰 페이지 이동
+  tr.addEventListener('click', () => {
+    window.location.href = `/doomchit/reviews.html?id=${musicId}`;
+  });
+
+  // 행 내용 채우기
     tr.innerHTML = `
       <td>${index + 1}</td>
       <td>
@@ -61,31 +70,54 @@ function renderChart(list) {
           ${song.like.toLocaleString()}
         </div>
       </td>
-      <td class="rating">
-        ${'★'.repeat(song.rating)}
+      <td>
+        <div class="rating">
+          ${createEmptyStars()}
+        </div>
       </td>
     `;
 
+    // ⭐ 행 전체 클릭 가능하게 (임시 # 처리)
+    tr.style.cursor = 'pointer';
+    tr.addEventListener('click', () => {
+    // TODO: 나중에 URL 확정되면 여기만 수정
+    window.location.href = '#';
+});
+
+// 행을 테이블 본문에 추가
     chartBody.appendChild(tr);
   });
 }
 
-/* ===== Sort ===== */
+// 정렬 메뉴 토글 및 정렬 기능
 sortBtn.addEventListener('click', () => {
   sortMenu.style.display =
     sortMenu.style.display === 'block' ? 'none' : 'block';
 });
 
+// 정렬 옵션 클릭 시 차트 재렌더링
 sortMenu.addEventListener('click', (e) => {
   const type = e.target.dataset.sort;
-
   if (!type) return;
 
+  // 정렬
   const sorted = [...chartData].sort((a, b) => b[type] - a[type]);
   renderChart(sorted);
 
+  // 메뉴 닫기
   sortMenu.style.display = 'none';
 });
 
-/* ===== Init ===== */
+// 초기 차트 렌더링
 renderChart(chartData);
+
+// 별점 아이콘 생성 함수
+function createEmptyStars() {
+  return `
+    <i class="fa-regular fa-star"></i>
+    <i class="fa-regular fa-star"></i>
+    <i class="fa-regular fa-star"></i>
+    <i class="fa-regular fa-star"></i>
+    <i class="fa-regular fa-star"></i>
+  `;
+}
