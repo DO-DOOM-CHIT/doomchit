@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="../js/common.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/fontawesome-all.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/fontawesome-all.min.css" />
+
+    <title>곡 정보 - DoomChit</title>
+    <style>
+      #album-main-img {
+        width: 282px;
+      }
+
+      #album-sub-img {
+        width: 141px;
+      }
+
+      #album-img {
+        width: 100%;
+      }
+
+      dt,
+      #stars {
+        float: left;
+      }
+
+      #music-sum-list > dt,
+      #music-production > .list > dt {
+        width: 4rem;
+      }
+
+      #music-infos > .list > dt {
+        width: 7rem;
+      }
+
+      #stars,
+      #likes-icon {
+        color: #a352d2;
+      }
+
+      .form-control {
+        border: none;
+      }
+
+      /*광역*/
+      a {
+        color: #a352d2;
+        text-decoration-line: none;
+      }
+
+      .btn-primary {
+        background-color: #a352d2;
+        border-color: #a352d2;
+      }
+
+      .btn-primary:hover {
+        background-color: darkred;
+        border-color: darkred;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header" class="bg-dark-subtle p-4 mb-5"><h1>DOOMCHIT</h1></div>
+
+    <div id="contents" class="container-xl">
+      <div id="music-info" class="border-top pb-5">
+        <div id="music-summary" class="row pb-4">
+          <div id="album-main-img" class="col-sm-3 pb-3">
+            <img class="w-100" src="../img/album_sample.jpg" />
+          </div>
+          <div class="col-sm">
+            <h3>곡 제목</h3>
+            <h4 class="pb-2"><a href="#">가수명</a></h4>
+            <dl id="music-sum-list" class="list">
+              <dt>발매일</dt>
+              <dd>2026.01.07.</dd>
+              <dt>장르</dt>
+              <dd>블루스</dd>
+              <dt>길이</dt>
+              <dd>1:30</dd>
+            </dl>
+            <div id="ratings">
+              <div id="rating" class="fs-4">
+                <dl>
+                  <dt id="stars" class="me-2">
+                    <i class="fa-solid fa-star"></i
+                    ><i class="fa-solid fa-star"></i
+                    ><i class="fa-solid fa-star"></i
+                    ><i class="fa-solid fa-star"></i
+                    ><i class="fa-solid fa-star"></i>
+                  </dt>
+                  <dt class="pe-2 fs-6">5.0</dt>
+                  <dd class="pe-2 fs-6">(1,234명이 참여)</dd>
+                </dl>
+              </div>
+            </div>
+            <div id="likes">
+              <dl>
+                <dt>
+                  <a href="#">
+                    <i
+                      id="likes-icon"
+                      class="fa-regular fa-heart fs-3 pe-1"
+                    ></i>
+                  </a>
+                </dt>
+                <dd>98,657</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+        <div id="music-lyrics" class="pb-4">
+          <h2 class="pb-2 border-bottom">가사</h2>
+          <div id="lyrics">
+            <p>
+              동해물과 백두산이 마르고 닳도록<br />하느님이 보우하사 우리나라
+              만세<br />무궁화 삼천리 화려강산<br />대한사람 대한으로 길이
+              보전하세
+            </p>
+            <p>
+              남산 위에 저 소나무 철갑을 두른 듯<br />바람서리 불변함은 우리
+              기상일세
+            </p>
+          </div>
+        </div>
+        <div id="music-production" class="pb-4">
+          <h2 class="pb-2 border-bottom">노래 / 작곡 / 작사</h2>
+          <dl class="list">
+            <dt>노래</dt>
+            <dd><a href="#">가수명</a></dd>
+            <dt>작곡</dt>
+            <dd>작곡가</dd>
+            <dt>작사</dt>
+            <dd>작사가</dd>
+          </dl>
+        </div>
+        <div id="music-album" class="pb-4">
+          <h2 class="pb-2 border-bottom">수록 앨범</h2>
+          <div id="music-summary" class="row pb-4">
+            <div id="album-sub-img" class="col-sm-2">
+              <img class="w-100" src="../img/album_sample.jpg" />
+            </div>
+            <div class="col-sm mt-3">
+              <h4>앨범명</h4>
+              <h6 class="pb-2"><a href="#">가수명</a></h6>
+              <p>2026.01.07.</p>
+            </div>
+          </div>
+        </div>
+        <div id="music-infos">
+          <h2 class="pb-2 border-bottom">상세 정보</h2>
+          <dl class="list">
+            <dt>제목</dt>
+            <dd>곡 제목</dd>
+            <dt>장르</dt>
+            <dd>블루스</dd>
+            <dt>길이</dt>
+            <dd>1:30</dd>
+            <dt>발매일</dt>
+            <dd>2026.01.07.</dd>
+            <dt>첫 수록 앨범</dt>
+            <dd>앨범명</dd>
+            <dt>발매사</dt>
+            <dd>발매사</dd>
+            <dt>기획사</dt>
+            <dd>기획사</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div id="reviews">
+        <div id="reviews-tab">
+          <h2 class="pb-2 border-bottom" th:text="|리뷰 ${count}개|">
+            리뷰 1,234개
+            <a href="#reviews">최신순</a> | <a href="#reviews">추천순</a>
+          </h2>
+          <div></div>
+        </div>
+
+        <div class="bg-body-secondary rounded mb-4">
+          <div class="p-3">
+            댓글을 입력하려면 <a href="#">로그인</a>을 해야합니다.
+          </div>
+        </div>
+
+        <div class="border rounded p-3 mb-4">
+          <form id="reviews">
+            <textarea class="form-control mb-3"></textarea>
+            <div id="rating" class="d-flex justify-content-between">
+              <div id="stars" class="me-2 pt-2 fs-3">
+                <a href="#reviews"><i class="fa-solid fa-star"></i></a
+                ><a href="#reviews"><i class="fa-solid fa-star"></i></a
+                ><a href="#reviews"><i class="fa-solid fa-star"></i></a
+                ><a href="#reviews"><i class="fa-solid fa-star"></i></a
+                ><a href="#reviews"><i class="fa-solid fa-star"></i></a>
+                <label>5.0</label>
+              </div>
+              <button class="btn btn-primary btn-lg" type="submit">
+                리뷰 등록하기
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="reviewed" class="border-bottom mb-3">
+          <div id="stars" class="me-2">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i
+            ><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i
+            ><i class="fa-solid fa-star"></i>
+          </div>
+          <dl>
+            <dd class="fw-bold pe-2">5.0</dd>
+          </dl>
+          <p>
+            공무원인 근로자는 법률이 정하는 자에 한하여 단결권·단체교섭권 및
+            단체행동권을 가진다. 일반사면을 명하려면 국회의 동의를 얻어야 한다.
+            대통령이 제1항의 기간내에 공포나 재의의 요구를 하지 아니한 때에도 그
+            법률안은 법률로서 확정된다.<br />모든 국민은 근로의 권리를 가진다.
+            국가는 사회적·경제적 방법으로 근로자의 고용의 증진과 적정임금의
+            보장에 노력하여야 하며, 법률이 정하는 바에 의하여 최저임금제를
+            시행하여야 한다.
+          </p>
+          <dl>
+            <dt>리뷰 작성자</dt>
+            <dd>· 2026.01.08.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer" class="bg-dark-subtle p-4">두둠칫 두둠칫 두둠칫</div>
+  </body>
+</html>
