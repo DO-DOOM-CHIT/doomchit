@@ -4,9 +4,9 @@
   "settings": {
     "width": 2500,
     "height": 2500,
-    "scrollTop": -282.1506,
-    "scrollLeft": -756.7332,
-    "zoomLevel": 0.76,
+    "scrollTop": -53.6053,
+    "scrollLeft": -1015.1418,
+    "zoomLevel": 1,
     "show": 511,
     "database": 4,
     "databaseName": "Doomchit",
@@ -33,15 +33,15 @@
     "tableIds": [
       "o0_6wYL-oLl7c9BwWJasg",
       "yO5dDKP2WRAGy0KvrCCtH",
-      "N1f2utmjkocX1W0Mwx4Dq",
       "d6frCU3v3Qmao5qgEjCpa",
-      "eGQRz-UgnrFRbv5LLT1ML"
+      "eGQRz-UgnrFRbv5LLT1ML",
+      "N1f2utmjkocX1W0Mwx4Dq"
     ],
     "relationshipIds": [
       "RU3-6vsIAAJQONw3hoLGN",
-      "Ya1qgOkBl-l9NMOvLmWwP",
       "ZaAE8fFAVbyBFUQGkwBez",
       "4ZIQYwrM8d8Le-fDgnkFo",
+      "Ya1qgOkBl-l9NMOvLmWwP",
       "goH1vDMOO3OEd9h7cFQsK",
       "PapTLoS4Q5TQJCexjW4dp"
     ],
@@ -125,6 +125,7 @@
         "comment": "음악",
         "columnIds": [
           "vclAFa3_QHU9Z7dx-YmjP",
+          "1AftyDyzyW-C_ApOW6vD4",
           "1UZF7pjyyl654rNLJ8Zxh",
           "acJOoR9lR5qDbhdrf6Xqx",
           "5yvlhLABqNi72e43VoT4Z",
@@ -141,6 +142,7 @@
           "yIi2l1eKYnpAv3cW0-gVV",
           "ahDMkoSOZKCu5pRdGPgRU",
           "vclAFa3_QHU9Z7dx-YmjP",
+          "1AftyDyzyW-C_ApOW6vD4",
           "1UZF7pjyyl654rNLJ8Zxh",
           "acJOoR9lR5qDbhdrf6Xqx",
           "5yvlhLABqNi72e43VoT4Z",
@@ -155,14 +157,14 @@
         ],
         "ui": {
           "x": 1587.6364,
-          "y": 268.5911,
+          "y": 257.5911,
           "zIndex": 33,
           "widthName": 60,
           "widthComment": 60,
           "color": ""
         },
         "meta": {
-          "updateAt": 1767860108670,
+          "updateAt": 1767943109631,
           "createAt": 1767852605798
         }
       },
@@ -215,9 +217,9 @@
           "bAopMcFRxMryF32nIglWh",
           "DndazBXmmlfL4HB_rJggd",
           "VpVfZCnLec-ghMts1p-b2",
+          "Gmer3KqrdB_zT5AK6lBuw",
           "U0dkkg8L2SJtCrUD3rt9W",
           "BWqd5SA_Lmaqt6DdHS5ED",
-          "Gmer3KqrdB_zT5AK6lBuw",
           "RQajmVigF62oZNQzGwcNS"
         ],
         "ui": {
@@ -229,7 +231,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1767856308009,
+          "updateAt": 1767937843690,
           "createAt": 1767852630383
         }
       }
@@ -940,7 +942,7 @@
         "tableId": "N1f2utmjkocX1W0Mwx4Dq",
         "name": "mno",
         "comment": "음악 고유 번호",
-        "dataType": "INT",
+        "dataType": "LONG",
         "default": "",
         "options": 11,
         "ui": {
@@ -951,7 +953,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767854905191,
+          "updateAt": 1767941963604,
           "createAt": 1767854905191
         }
       },
@@ -980,7 +982,7 @@
         "tableId": "yO5dDKP2WRAGy0KvrCCtH",
         "name": "mno",
         "comment": "리뷰 대상 음악",
-        "dataType": "INT",
+        "dataType": "LONG",
         "default": "",
         "options": 8,
         "ui": {
@@ -991,7 +993,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767855291417,
+          "updateAt": 1767941963604,
           "createAt": 1767855268075
         }
       },
@@ -1060,7 +1062,7 @@
         "tableId": "eGQRz-UgnrFRbv5LLT1ML",
         "name": "mno",
         "comment": "별점 대상 음악",
-        "dataType": "INT",
+        "dataType": "LONG",
         "default": "",
         "options": 8,
         "ui": {
@@ -1071,7 +1073,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767856283500,
+          "updateAt": 1767941963604,
           "createAt": 1767856233093
         }
       },
@@ -1100,7 +1102,7 @@
         "tableId": "d6frCU3v3Qmao5qgEjCpa",
         "name": "mno",
         "comment": "좋아요 대상 음악",
-        "dataType": "INT",
+        "dataType": "LONG",
         "default": "",
         "options": 8,
         "ui": {
@@ -1111,7 +1113,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767856332698,
+          "updateAt": 1767941963604,
           "createAt": 1767856265261
         }
       },
@@ -1133,6 +1135,26 @@
         "meta": {
           "updateAt": 1767860590546,
           "createAt": 1767860076139
+        }
+      },
+      "1AftyDyzyW-C_ApOW6vD4": {
+        "id": "1AftyDyzyW-C_ApOW6vD4",
+        "tableId": "N1f2utmjkocX1W0Mwx4Dq",
+        "name": "musicId",
+        "comment": "음악 API 고유 번호",
+        "dataType": "LONG",
+        "default": "",
+        "options": 8,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 102,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1767943089699,
+          "createAt": 1767941788007
         }
       }
     },
@@ -1176,7 +1198,7 @@
             "vclAFa3_QHU9Z7dx-YmjP"
           ],
           "x": 1587.6364,
-          "y": 325.9244333333333,
+          "y": 318.9244333333333,
           "direction": 1
         },
         "end": {
@@ -1288,7 +1310,7 @@
             "vclAFa3_QHU9Z7dx-YmjP"
           ],
           "x": 1587.6364,
-          "y": 440.5911,
+          "y": 441.5911,
           "direction": 1
         },
         "end": {
@@ -1344,7 +1366,7 @@
             "vclAFa3_QHU9Z7dx-YmjP"
           ],
           "x": 1587.6364,
-          "y": 555.2577666666666,
+          "y": 564.2577666666666,
           "direction": 1
         },
         "end": {
