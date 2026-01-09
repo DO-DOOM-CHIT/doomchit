@@ -48,10 +48,10 @@ public class MusicService {
                 });
     }
 
-    // 멜론 차트 데이터 가져오기
-    public List<Music> getMelonChart() {
+    // 1. 메인 페이지용: 가볍고 빠른 기본 차트 (제목, 가수, 앨범 등 목록 API 정보만)
+    public List<Music> getMelonChartBasic() {
         try {
-            System.out.println("DEBUG: Fetching Melon Chart List...");
+            System.out.println("DEBUG: Fetching Melon Chart Basic...");
 
             String response = webClient.get()
                     .uri(CHART_API_URL)
@@ -60,19 +60,23 @@ public class MusicService {
                     .bodyToMono(String.class)
                     .block();
 
-            List<Music> musicList = parseMelonJson(response);
-
-            // 상세 정보 크롤링 (병렬 처리로 복구 + 헤더 위장으로 차단 우회)
-            System.out.println("DEBUG: Fetching Song & Album Details in Parallel...");
-            musicList.parallelStream().forEach(this::fillSongAndAlbumDetail);
-
-            return musicList;
+            return parseMelonJson(response);
 
         } catch (Exception e) {
             System.err.println("Melon API Error: " + e.getMessage());
             e.printStackTrace();
             return List.of();
         }
+    }
+
+    // 2. 리뷰 페이지용: 모든 상세 정보가 포함된 차트 (크롤링 포함, 느리지만 정보 완벽)
+    public List<Music> getMelonChartDetailed() {
+        List<Music> musicList = getMelonChartBasic();
+
+        System.out.println("DEBUG: Fetching Song & Album Details in Parallel...");
+        musicList.parallelStream().forEach(this::fillSongAndAlbumDetail);
+
+        return musicList;
     }
 
     // 상세 정보 크롤링 (곡 상세 + 앨범 상세)
@@ -152,8 +156,7 @@ public class MusicService {
             }
 
         } catch (Exception e) {
-            // 크롤링 실패해도 전체 프로세스는 멈추지 않음
-            // System.err.println("Scraping Warning for " + music.getTitle());
+            // 크롤링 실패해도 무시
         }
     }
 
@@ -189,7 +192,7 @@ public class MusicService {
                 music.setMusicId(song.path("SONGID").asLong());
                 music.setAlbumId(song.path("ALBUMID").asLong());
 
-                // 기본 정보 (목록 API에서 확보 - 크롤링 실패 시 대비용)
+                // 기본 정보
                 music.setDuration(song.path("PLAYTIME").asInt(0));
 
                 JsonNode genreList = song.path("GENRELIST");
@@ -197,7 +200,6 @@ public class MusicService {
                     music.setGenre(genreList.get(0).asText());
                 }
 
-                // ISSUEDATE 파싱 (안전을 위해 추가)
                 try {
                     String dateStr = song.path("ISSUEDATE").asText();
                     if (dateStr != null && dateStr.length() == 8) {

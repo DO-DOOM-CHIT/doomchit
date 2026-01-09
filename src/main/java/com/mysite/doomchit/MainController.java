@@ -24,7 +24,8 @@ public class MainController {
 
     @GetMapping("/doomchit/main")
     public String main(Model model) {
-        List<Music> chart = musicService.getMelonChart();
+        // 메인 페이지는 기본 정보만 빠르게 로딩 (0.1초)
+        List<Music> chart = musicService.getMelonChartBasic();
         model.addAttribute("chart", chart);
         return "chart";
     }
