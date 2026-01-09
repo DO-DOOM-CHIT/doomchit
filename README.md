@@ -5,7 +5,8 @@ src/
    └─ resources/
       ├─ static/
       │  ├─ css/
-      │  │  └─ main.css          # 공통 스타일 (메인/좋아요)
+      │  │  ├─ main.css          # 공통 스타일 (메인/좋아요)
+      │  │  └─ common.css 
       │  │
       │  ├─ doomchit/
       │  │  ├─ header.html       # 공통 헤더 (JS로 include)
@@ -18,4 +19,4 @@ src/
       │     └─ likes.js          # 좋아요 페이지 전용 JS
       │
       └─ templates/              # (현재 미사용, 서버 렌더링 대비)
-b
+별 수정해야함

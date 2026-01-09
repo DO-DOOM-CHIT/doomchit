@@ -1,0 +1,95 @@
+/* ===== Header ===== */
+.header {
+  width: 1440px;
+  height: 123px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* 상단 줄 */
+.header-top {
+  height: 92px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo a {
+  font-family: 'Gafata', sans-serif;
+  font-size: 50px;
+  color: #A352D2;
+  text-decoration: none;
+}
+
+.now-playing {
+  background: #f5f5f5;
+  width: 420px;
+  height: 36px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #999;
+}
+
+.auth a {
+  font-size: 18px;
+  color: #A352D2;
+  text-decoration: none;
+}
+
+/* 하단 메뉴 */
+.header-nav {
+  height: 31px;
+  padding-left: 120px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav a {
+  font-size: 16px;
+  color: #111;
+  text-decoration: none;
+}
+
+.header-nav a.active {
+  color: #A352D2;
+  font-weight: 700;
+}
+
+/* ===== Search Box ===== */
+.search-box {
+  display: flex;
+  align-items: center;
+  width: 420px;
+  height: 44px;
+  background: #f5f5f5;
+  border-radius: 999px;
+  padding: 0 6px 0 18px;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-box input::placeholder {
+  color: #999;
+}
+
+.search-box button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #A352D2;
+  color: #fff;
+  cursor: pointer;
+}
+
+.search-box button i {
+  font-size: 16px;
+}
