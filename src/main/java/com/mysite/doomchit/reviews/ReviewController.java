@@ -1,43 +1,86 @@
 package com.mysite.doomchit.reviews;
 
+import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.doomchit.musics.Music;
 import com.mysite.doomchit.musics.MusicService;
+import com.mysite.doomchit.users.UserService;
 import com.mysite.doomchit.users.Users;
-// import com.mysite.doomchit.users.UserService; // 필요 시 추가
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/doomchit/reviews")
+@RequestMapping("/doomchit")
 @RequiredArgsConstructor
 @Controller
 public class ReviewController {
+	
+	private final ReviewService reviewService;
+	private final MusicService musicService;
+	private final UserService userService;
+	
+	@GetMapping("/reviews/{mno}")
+	public String reviewDetail(@PathVariable Long mno, Model model) {
 
-  private final ReviewService reviewService;
-  private final MusicService musicService;
-  // private final UserService userService; // 작성자 정보를 위해 필요
+	    Music music = musicService.getMusic(mno);
+	    List<Review> reviewList = reviewService.getReviewList(music);
 
-  @PostMapping("/create")
-  public String createReview(@RequestParam("title") String title,
-      @RequestParam("artist") String artist,
-      @RequestParam("album") String album,
-      @RequestParam("image") String image,
-      @RequestParam("content") String content) {
+	    model.addAttribute("music", music);
+	    model.addAttribute("reviewList", reviewList);
 
-    // 1. 노래 정보 DB 확인 및 저장 (없으면 저장)
-    Music music = musicService.getOrCreateMusic(title, artist, album, image);
+	    return "reviews";
+	}
 
-    // 2. 작성자 정보 가져오기 (임시로 null 또는 로그인 구현된 유저)
-    Users user = null;
-    // user = userService.getUser(principal.getName()); // 로그인 연동 시 사용
+	
+	// 리뷰 작성 ===============================================
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/{mno}")
+	public String createReview(@PathVariable("mno") Long mno, @RequestParam String content) {
+		
+        Music music = musicService.getMusic(mno);
+        Users user = userService.getCurrentUser();
 
-    // 3. 리뷰 저장
-    //reviewService.create(music, user, content);
+        reviewService.create(music, user, content);
 
-    return "redirect:/doomchit/main"; // 작성 후 메인으로 이동
+        return "redirect:/doomchit/reviews/" + mno;
+        
   }
+	
+	// 리뷰 수정 ===============================================
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/modify/{rno}")
+    public String modifyReview(@PathVariable Integer rno, @RequestParam String content) {
+		
+        Review review = reviewService.getReview(rno);
+        Users user = userService.getCurrentUser();
+
+        reviewService.modify(user, review, content);
+
+        return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+        
+    }
+	
+	// 리뷰 삭제 ===============================================
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/delete/{rno}")
+	public String deleteReview(
+            @PathVariable Integer rno
+    ) {
+        Review review = reviewService.getReview(rno);
+        Users user = userService.getCurrentUser();
+
+        reviewService.delete(user, review);
+
+        return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+        
+    }
+	
 }

@@ -47,6 +47,12 @@ public class MusicService {
                     return musicRepository.save(m);
                 });
     }
+    
+    public Music getMusic(Long mno) {
+        return musicRepository.findById(mno)
+                .orElseThrow(() -> new IllegalArgumentException("음악을 찾을 수 없습니다."));
+    }
+
 
     // 1. 메인 페이지용: 가볍고 빠른 기본 차트 (제목, 가수, 앨범 등 목록 API 정보만)
     public List<Music> getMelonChartBasic() {

@@ -37,13 +37,13 @@ public class Review {
 
   // 리뷰 작성일
   @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  private LocalDateTime cre_date;
+  @Column(name = "cre_date", nullable = false, updatable = false)
+  private LocalDateTime creDate;
 
   // 리뷰 수정일
   @UpdateTimestamp
-  @Column(nullable = false)
-  private LocalDateTime mod_date;
+  @Column(name = "mod_date", nullable = false)
+  private LocalDateTime modDate;
 
   @ManyToOne
   @JoinColumn(name = "uno", nullable = false, foreignKey = @ForeignKey(name = "fk_reviews_uno"))
