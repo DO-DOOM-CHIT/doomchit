@@ -42,8 +42,8 @@ public class MusicService {
                     Music m = new Music();
                     m.setTitle(title);
                     m.setArtist(artist);
-                    m.setAlbumName(album);
-                    m.setImageUrl(image);
+                    m.setAlbum_title(album);
+                    m.setImage(image);
                     return musicRepository.save(m);
                 });
     }
@@ -86,8 +86,8 @@ public class MusicService {
             String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
             // 1. 곡 상세 페이지 크롤링
-            if (music.getMusicId() != null) {
-                String songUrl = SONG_DETAIL_URL + music.getMusicId();
+            if (music.getMusic_id() != null) {
+                String songUrl = SONG_DETAIL_URL + music.getMusic_id();
                 Document songDoc = Jsoup.connect(songUrl)
                         .userAgent(userAgent)
                         .header("Accept",
@@ -109,7 +109,7 @@ public class MusicService {
                 if (dateKey != null) {
                     String dateStr = dateKey.nextElementSibling().text();
                     try {
-                        music.setRelDate(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+                        music.setRel_date(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy.MM.dd")));
                     } catch (Exception e) {
                     }
                 }
@@ -132,8 +132,8 @@ public class MusicService {
             }
 
             // 2. 앨범 상세 페이지 크롤링
-            if (music.getAlbumId() != null) {
-                String albumUrl = ALBUM_DETAIL_URL + music.getAlbumId();
+            if (music.getAlbum_id() != null) {
+                String albumUrl = ALBUM_DETAIL_URL + music.getAlbum_id();
                 Document albumDoc = Jsoup.connect(albumUrl)
                         .userAgent(userAgent)
                         .header("Accept",
@@ -181,16 +181,16 @@ public class MusicService {
                     music.setArtist("Unknown");
                 }
 
-                music.setAlbumName(song.path("ALBUMNAME").asText());
+                music.setAlbum_title(song.path("ALBUMNAME").asText());
                 String imgUrl = song.path("ALBUMIMG").asText();
                 if (imgUrl != null && !imgUrl.isEmpty()) {
-                    music.setImageUrl(imgUrl);
+                    music.setImage(imgUrl);
                 } else {
-                    music.setImageUrl("");
+                    music.setImage("");
                 }
 
-                music.setMusicId(song.path("SONGID").asLong());
-                music.setAlbumId(song.path("ALBUMID").asLong());
+                music.setMusic_id(song.path("SONGID").asLong());
+                music.setAlbum_id(song.path("ALBUMID").asLong());
 
                 // 기본 정보
                 music.setDuration(song.path("PLAYTIME").asInt(0));
@@ -206,7 +206,7 @@ public class MusicService {
                         int year = Integer.parseInt(dateStr.substring(0, 4));
                         int month = Integer.parseInt(dateStr.substring(4, 6));
                         int day = Integer.parseInt(dateStr.substring(6, 8));
-                        music.setRelDate(LocalDate.of(year, month, day));
+                        music.setRel_date(LocalDate.of(year, month, day));
                     }
                 } catch (Exception e) {
                 }
