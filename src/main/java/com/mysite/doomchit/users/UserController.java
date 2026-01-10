@@ -1,8 +1,6 @@
 package com.mysite.doomchit.users;
 
-import java.util.List;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -22,18 +20,26 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) {
+    public String signup(@Valid UserForm userForm, BindingResult bindingResult) {
     	
         if (bindingResult.hasErrors()) {
             return "signup";
         }
         
-        if(!userForm.getUser_pwd1().equals(userForm.getUser_pwd2())) {
-        	bindingResult.rejectValue("user_pwd2", "passwordIncorrect", "비밀번호가 일치하지 않습니다.");
+        if(!userForm.getUserPwd1().equals(userForm.getUserPwd2())) {
+        	bindingResult.rejectValue("userPwd2", "passwordIncorrect", "비밀번호가 일치하지 않습니다.");
         	return "signup";
         }
         
-        userService.create(userForm.getUser_id(), userForm.getUser_pwd1(), userForm.getUsername());
+        userService.create(userForm.getUserId(), userForm.getUserPwd1(), userForm.getUsername());
         return "redirect:/";
     }
+    
+    // 로그인 ===========================================
+    // Post는 Spring Security가 가로채서 처리함
+    @GetMapping("/login")
+    public String login() {
+    	return "login";
+    }
+    
 }

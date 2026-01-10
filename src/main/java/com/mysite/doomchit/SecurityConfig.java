@@ -21,7 +21,10 @@ public class SecurityConfig {
 		.authorizeHttpRequests((authorizedHttpRequests)->authorizedHttpRequests
 				.requestMatchers(new AntPathRequestMatcher("/**"))
 				.permitAll())
-		.csrf(csrf -> csrf.disable());
+		.csrf(csrf -> csrf.disable())
+		.formLogin((formLogin)->formLogin
+				.loginPage("/doomchit/login")
+				.defaultSuccessUrl("/"));
 		
 		return http.build();
 	}

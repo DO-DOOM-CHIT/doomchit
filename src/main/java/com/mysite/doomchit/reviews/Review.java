@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.mysite.doomchit.musics.Music;
-import com.mysite.doomchit.users.User;
+import com.mysite.doomchit.users.Users;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,7 +47,7 @@ public class Review {
 
   @ManyToOne
   @JoinColumn(name = "uno", nullable = false, foreignKey = @ForeignKey(name = "fk_reviews_uno"))
-  private User user; // 작성자 (users 테이블과 조인)
+  private Users user; // 작성자 (users 테이블과 조인)
 
   @ManyToOne
   @JoinColumn(name = "mno", nullable = false, foreignKey = @ForeignKey(name = "fk_reviews_mno"))

@@ -86,8 +86,8 @@ public class MusicService {
             String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
             // 1. 곡 상세 페이지 크롤링
-            if (music.getMusic_id() != null) {
-                String songUrl = SONG_DETAIL_URL + music.getMusic_id();
+            if (music.getMusicId() != null) {
+                String songUrl = SONG_DETAIL_URL + music.getMusicId();
                 Document songDoc = Jsoup.connect(songUrl)
                         .userAgent(userAgent)
                         .header("Accept",
@@ -109,7 +109,7 @@ public class MusicService {
                 if (dateKey != null) {
                     String dateStr = dateKey.nextElementSibling().text();
                     try {
-                        music.setRel_date(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+                        music.setRelDate(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy.MM.dd")));
                     } catch (Exception e) {
                     }
                 }
@@ -132,8 +132,8 @@ public class MusicService {
             }
 
             // 2. 앨범 상세 페이지 크롤링
-            if (music.getAlbum_id() != null) {
-                String albumUrl = ALBUM_DETAIL_URL + music.getAlbum_id();
+            if (music.getAlbumId() != null) {
+                String albumUrl = ALBUM_DETAIL_URL + music.getAlbumId();
                 Document albumDoc = Jsoup.connect(albumUrl)
                         .userAgent(userAgent)
                         .header("Accept",
@@ -189,8 +189,8 @@ public class MusicService {
                     music.setImage("");
                 }
 
-                music.setMusic_id(song.path("SONGID").asLong());
-                music.setAlbum_id(song.path("ALBUMID").asLong());
+                music.setMusicId(song.path("SONGID").asLong());
+                music.setAlbumId(song.path("ALBUMID").asLong());
 
                 // 기본 정보
                 music.setDuration(song.path("PLAYTIME").asInt(0));
@@ -206,7 +206,7 @@ public class MusicService {
                         int year = Integer.parseInt(dateStr.substring(0, 4));
                         int month = Integer.parseInt(dateStr.substring(4, 6));
                         int day = Integer.parseInt(dateStr.substring(6, 8));
-                        music.setRel_date(LocalDate.of(year, month, day));
+                        music.setRelDate(LocalDate.of(year, month, day));
                     }
                 } catch (Exception e) {
                 }

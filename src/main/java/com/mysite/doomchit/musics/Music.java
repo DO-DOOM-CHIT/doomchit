@@ -20,7 +20,8 @@ public class Music {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mno; // 음악 고유 번호 (PK)
 
-    private Long music_id; // 음악 API 고유 번호
+    @Column(name = "music_id", nullable = false)
+    private Long musicId; // 음악 API 고유 번호
 
     @Column(nullable = false, length = 100)
     private String artist; // 가수명
@@ -34,7 +35,8 @@ public class Music {
     @Column(length = 50)
     private String genre; // 장르
 
-    private LocalDate rel_date; // 발매일 (DATE)
+    @Column(name = "rel_date")
+    private LocalDate relDate; // 발매일 (DATE)
 
     @Column(length = 150)
     private String album_title; // 앨범명
@@ -55,6 +57,6 @@ public class Music {
     private String composer; // 작곡가
 
     // 로직용 추가 필드 (ERD 이미지에는 없지만 크롤링에 필요)
-    private Long album_id;
+    private Long albumId;
     private Integer rank;
 }

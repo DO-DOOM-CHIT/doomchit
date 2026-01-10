@@ -4,8 +4,8 @@
   "settings": {
     "width": 2500,
     "height": 2500,
-    "scrollTop": -19.2171,
-    "scrollLeft": -1300,
+    "scrollTop": 0,
+    "scrollLeft": -1085,
     "zoomLevel": 1,
     "show": 511,
     "database": 4,
@@ -69,7 +69,7 @@
           "aksbnwiNePhKCBqZBm6Kk"
         ],
         "ui": {
-          "x": 166.9092,
+          "x": 167.9092,
           "y": 353.4548,
           "zIndex": 2,
           "widthName": 60,
@@ -77,7 +77,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1767856368025,
+          "updateAt": 1768046676064,
           "createAt": 1767852309913
         }
       },
@@ -164,7 +164,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1767943576037,
+          "updateAt": 1768046706196,
           "createAt": 1767852605798
         }
       },
@@ -260,7 +260,7 @@
       "R9K24P_imdsn9jWjvFham": {
         "id": "R9K24P_imdsn9jWjvFham",
         "tableId": "o0_6wYL-oLl7c9BwWJasg",
-        "name": "userId",
+        "name": "user_id",
         "comment": "로그인 아이디",
         "dataType": "VARCHAR(50)",
         "default": "",
@@ -273,14 +273,14 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767854459997,
+          "updateAt": 1768046662371,
           "createAt": 1767852447951
         }
       },
       "GklAdy1tRRG-aWIELBREw": {
         "id": "GklAdy1tRRG-aWIELBREw",
         "tableId": "o0_6wYL-oLl7c9BwWJasg",
-        "name": "userPwd",
+        "name": "user_pwd",
         "comment": "로그인 비밀번호",
         "dataType": "VARCHAR(100)",
         "default": "",
@@ -293,7 +293,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767852736759,
+          "updateAt": 1768046666069,
           "createAt": 1767852707308
         }
       },
@@ -320,7 +320,7 @@
       "aksbnwiNePhKCBqZBm6Kk": {
         "id": "aksbnwiNePhKCBqZBm6Kk",
         "tableId": "o0_6wYL-oLl7c9BwWJasg",
-        "name": "creDate",
+        "name": "cre_date",
         "comment": "가입일",
         "dataType": "DATETIME",
         "default": "CURRENT_TIMESTAMP",
@@ -333,7 +333,7 @@
           "widthDefault": 122
         },
         "meta": {
-          "updateAt": 1767854521227,
+          "updateAt": 1768046669473,
           "createAt": 1767852716500
         }
       },
@@ -380,7 +380,7 @@
       "EGMEjf64UIg0X1ekjrBrc": {
         "id": "EGMEjf64UIg0X1ekjrBrc",
         "tableId": "yO5dDKP2WRAGy0KvrCCtH",
-        "name": "creDate",
+        "name": "cre_date",
         "comment": "리뷰 작성일",
         "dataType": "DATETIME",
         "default": "CURRENT_TIMESTAMP",
@@ -393,14 +393,14 @@
           "widthDefault": 122
         },
         "meta": {
-          "updateAt": 1767854531090,
+          "updateAt": 1768046653262,
           "createAt": 1767852841102
         }
       },
       "dky_aKFGd0btJBA2vh1d3": {
         "id": "dky_aKFGd0btJBA2vh1d3",
         "tableId": "yO5dDKP2WRAGy0KvrCCtH",
-        "name": "modDate",
+        "name": "mod_date",
         "comment": "리뷰 수정일",
         "dataType": "DATETIME",
         "default": "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
@@ -413,7 +413,7 @@
           "widthDefault": 312
         },
         "meta": {
-          "updateAt": 1767854570902,
+          "updateAt": 1768046656656,
           "createAt": 1767852845469
         }
       },
@@ -540,7 +540,7 @@
       "AY47yTjwNgwO3AfBtZw3Y": {
         "id": "AY47yTjwNgwO3AfBtZw3Y",
         "tableId": "N1f2utmjkocX1W0Mwx4Dq",
-        "name": "relDate",
+        "name": "rel_date",
         "comment": "발매일",
         "dataType": "DATE",
         "default": "",
@@ -553,14 +553,14 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767854011693,
+          "updateAt": 1768046704172,
           "createAt": 1767853013915
         }
       },
       "IcrxchM54ArVrj2qNN_y2": {
         "id": "IcrxchM54ArVrj2qNN_y2",
         "tableId": "N1f2utmjkocX1W0Mwx4Dq",
-        "name": "albumTitle",
+        "name": "album_title",
         "comment": "앨범명",
         "dataType": "VARCHAR(150)",
         "default": "",
@@ -573,7 +573,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767854027745,
+          "updateAt": 1768046708476,
           "createAt": 1767853018335
         }
       },
@@ -700,7 +700,7 @@
       "fXcsiawhZB4Pmkk326oCx": {
         "id": "fXcsiawhZB4Pmkk326oCx",
         "tableId": "d6frCU3v3Qmao5qgEjCpa",
-        "name": "creDate",
+        "name": "cre_date",
         "comment": "좋아요 누른 시간",
         "dataType": "DATETIME",
         "default": "CURRENT_TIMESTAMP",
@@ -713,7 +713,7 @@
           "widthDefault": 122
         },
         "meta": {
-          "updateAt": 1767854610825,
+          "updateAt": 1768046689473,
           "createAt": 1767854106004
         }
       },
@@ -800,7 +800,7 @@
       "VpVfZCnLec-ghMts1p-b2": {
         "id": "VpVfZCnLec-ghMts1p-b2",
         "tableId": "eGQRz-UgnrFRbv5LLT1ML",
-        "name": "creDate",
+        "name": "cre_date",
         "comment": "별점 등록 시간",
         "dataType": "DATETIME",
         "default": "CURRENT_TIMESTAMP",
@@ -813,7 +813,7 @@
           "widthDefault": 122
         },
         "meta": {
-          "updateAt": 1767854708094,
+          "updateAt": 1768046684794,
           "createAt": 1767854688467
         }
       },
@@ -1140,7 +1140,7 @@
       "1AftyDyzyW-C_ApOW6vD4": {
         "id": "1AftyDyzyW-C_ApOW6vD4",
         "tableId": "N1f2utmjkocX1W0Mwx4Dq",
-        "name": "musicId",
+        "name": "music_id",
         "comment": "음악 API 고유 번호",
         "dataType": "LONG",
         "default": "",
@@ -1153,7 +1153,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1767943089699,
+          "updateAt": 1768046699650,
           "createAt": 1767941788007
         }
       }
@@ -1169,7 +1169,7 @@
           "columnIds": [
             "PK3uuq-cfgGc6LIE3Bcxu"
           ],
-          "x": 696.9092,
+          "x": 697.9092,
           "y": 382.78813333333335,
           "direction": 2
         },
@@ -1253,7 +1253,7 @@
           "columnIds": [
             "PK3uuq-cfgGc6LIE3Bcxu"
           ],
-          "x": 696.9092,
+          "x": 697.9092,
           "y": 500.1214666666667,
           "direction": 2
         },
@@ -1281,7 +1281,7 @@
           "columnIds": [
             "PK3uuq-cfgGc6LIE3Bcxu"
           ],
-          "x": 696.9092,
+          "x": 697.9092,
           "y": 441.45480000000003,
           "direction": 2
         },

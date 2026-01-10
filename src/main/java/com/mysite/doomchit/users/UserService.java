@@ -13,12 +13,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     // 회원가입 =======================================================
-    public User create(String user_id, String user_pwd, String username) {
+    public Users create(String userId, String userPwd, String username) {
 
-        User user = new User();
-        user.setUser_id(user_id);
+        Users user = new Users();
+        user.setUserId(userId);
         // 비밀번호 암호화
-        user.setUser_pwd(passwordEncoder.encode(user_pwd));
+        user.setUserPwd(passwordEncoder.encode(userPwd));
         user.setUsername(username);
         userRepository.save(user);
         

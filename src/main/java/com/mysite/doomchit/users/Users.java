@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-public class User {
+public class Users {
 
     // 유저 고유 번호
     @Id // PK
@@ -20,12 +20,12 @@ public class User {
     private Integer uno;
 
     // 로그인 아이디
-    @Column(length = 50, nullable = false, unique = true)
-    private String user_id;
+    @Column(name = "user_id", length = 50, nullable = false, unique = true)
+    private String userId;
 
     // 로그인 비밀번호
-    @Column(length = 100, nullable = false)
-    private String user_pwd;
+    @Column(name = "user_pwd", length = 100, nullable = false)
+    private String userPwd;
 
     // 닉네임
     @Column(length = 50, nullable = false, unique = true)
@@ -33,7 +33,7 @@ public class User {
 
     // 가입일
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime cre_date;
+    @Column(name = "cre_date", nullable = false, updatable = false)
+    private LocalDateTime creDate;
 
 }
