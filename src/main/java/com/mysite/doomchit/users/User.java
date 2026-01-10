@@ -21,11 +21,11 @@ public class User {
 
     // 로그인 아이디
     @Column(length = 50, nullable = false, unique = true)
-    private String userId;
+    private String user_id;
 
     // 로그인 비밀번호
     @Column(length = 100, nullable = false)
-    private String userPwd;
+    private String user_pwd;
 
     // 닉네임
     @Column(length = 50, nullable = false, unique = true)
@@ -34,6 +34,6 @@ public class User {
     // 가입일
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime creDate;
+    private LocalDateTime cre_date;
 
 }

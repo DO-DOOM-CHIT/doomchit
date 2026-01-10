@@ -1,7 +1,6 @@
 package com.mysite.doomchit.users;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,14 +8,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserForm {
-    @NotEmpty(message = "이메일은 필수항목입니다.")
-    @Email
-    private String userId;
+    @NotBlank(message = "아이디를 입력해 주세요.")
+    private String user_id;
 
-    @NotEmpty(message = "비밀번호는 필수항목입니다.")
-    private String userPwd;
+    @NotBlank(message = "비밀번호를 입력해 주세요.")
+    private String user_pwd1;
+    
+    @NotBlank(message = "비밀번호 확인을 진행해 주세요.")
+    private String user_pwd2;
 
-    @Size(max = 45)
-    @NotEmpty(message = "닉네임은 필수항목입니다.")
+    @Size(max = 50)
+    @NotBlank(message = "닉네임을 입력해 주세요.")
     private String username;
 }
