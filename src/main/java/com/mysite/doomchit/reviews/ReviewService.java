@@ -24,7 +24,7 @@ public class ReviewService {
     review.setMusic(music);
     review.setUser(user);
     review.setContent(content);
-    review.setCreDate(LocalDateTime.now());
+    review.setCre_date(LocalDateTime.now());
     reviewRepository.save(review);
     return review;
   }
@@ -47,7 +47,7 @@ public class ReviewService {
   // 리뷰 수정
   public void modify(Review review, String content) {
     review.setContent(content);
-    review.setModDate(LocalDateTime.now());
+    review.setMod_date(LocalDateTime.now());
     reviewRepository.save(review);
   }
 

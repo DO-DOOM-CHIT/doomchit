@@ -5,16 +5,16 @@
 	<div>
 		<form th:action="@{/doomchit/signup}" th:object="${userForm}" method="post">
 			<div>
-				<label for="userId">사용자 ID</label>
-				<input type="text" th:field="*{userId}">
+				<label for="user_id">사용자 ID</label>
+				<input type="text" th:field="*{user_id}">
 			</div>
 			<div>
-				<label for="userPwd1">비밀번호</label>
-				<input type="password" th:field="*{userPwd1}">
+				<label for="user_pwd1">비밀번호</label>
+				<input type="password" th:field="*{user_pwd1}">
 			</div>
 			<div>
-				<label for="userPwd2">비밀번호 확인</label>
-				<input type="password" th:field="*{userPwd2}">
+				<label for="user_pwd2">비밀번호 확인</label>
+				<input type="password" th:field="*{user_pwd2}">
 			</div>
 			<div>
 				<label for="username">닉네임</label>
