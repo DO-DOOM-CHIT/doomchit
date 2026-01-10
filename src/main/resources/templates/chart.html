@@ -75,11 +75,11 @@
                 <td>
                     <div style="font-weight: bold; font-size: 1.1em;" th:text="${music.title}">Title</div>
                     <div th:text="${music.artist}">Artist</div>
-                    <div style="color: #666; font-size: 0.8em;" th:text="${music.album_title}">Album</div>
+                    <div style="color: #666; font-size: 0.8em;" th:text="${music.albumTitle}">Album</div>
                 </td>
-                <td class="info-col">
-                    <div th:if="${music.rel_date != null}">
-                        발매: <span th:text="${music.rel_date}">2024-01-01</span>
+               <td class="info-col">
+                    <div th:if="${music.relDate != null}">
+                        발매: <span th:text="${music.relDate}">2024-01-01</span>
                     </div>
                     <div th:if="${music.genre != null}">
                         장르: <span th:text="${music.genre}">Ballad</span>

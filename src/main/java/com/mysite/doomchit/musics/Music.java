@@ -38,8 +38,8 @@ public class Music {
     @Column(name = "rel_date")
     private LocalDate relDate; // 발매일 (DATE)
 
-    @Column(length = 150)
-    private String album_title; // 앨범명
+    @Column(name = "album_title", length = 150)
+    private String albumTitle; // 앨범명
 
     @Column(length = 300)
     private String image; // 앨범 이미지 URL

@@ -19,10 +19,10 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
-        return "redirect:/doomchit/main";
+        return "redirect:/doomchit/chart";
     }
 
-    @GetMapping("/doomchit/main")
+    @GetMapping("/doomchit/chart")
     public String main(Model model) {
         // 메인 페이지는 기본 정보만 빠르게 로딩 (0.1초)
         List<Music> chart = musicService.getMelonChartBasic();

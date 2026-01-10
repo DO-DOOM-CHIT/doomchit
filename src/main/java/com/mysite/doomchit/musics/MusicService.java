@@ -42,7 +42,7 @@ public class MusicService {
                     Music m = new Music();
                     m.setTitle(title);
                     m.setArtist(artist);
-                    m.setAlbum_title(album);
+                    m.setAlbumTitle(album);
                     m.setImage(image);
                     return musicRepository.save(m);
                 });
@@ -181,7 +181,7 @@ public class MusicService {
                     music.setArtist("Unknown");
                 }
 
-                music.setAlbum_title(song.path("ALBUMNAME").asText());
+                music.setAlbumTitle(song.path("ALBUMNAME").asText());
                 String imgUrl = song.path("ALBUMIMG").asText();
                 if (imgUrl != null && !imgUrl.isEmpty()) {
                     music.setImage(imgUrl);
