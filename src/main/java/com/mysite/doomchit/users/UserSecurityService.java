@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserSecurityService implements UserDetailsService {
 	
+	// DB에서 유저 찾는 JPA Repo
 	private final UserRepository userRepository;
 
 	@Override
