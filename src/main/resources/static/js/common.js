@@ -22,7 +22,7 @@ function loadHeader() {
 
   if (!headerContainer) return;
 
-  fetch('/doomchit/header.html')
+  fetch('../doomchit/header.html')
     .then(res => res.text())
     .then(html => {
       headerContainer.innerHTML = html;
