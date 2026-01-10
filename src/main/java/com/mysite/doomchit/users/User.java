@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 
     // 유저 고유 번호
     @Id // PK

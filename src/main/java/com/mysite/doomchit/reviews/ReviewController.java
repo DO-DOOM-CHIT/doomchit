@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.doomchit.musics.Music;
 import com.mysite.doomchit.musics.MusicService;
-import com.mysite.doomchit.users.Users;
+import com.mysite.doomchit.users.User;
 // import com.mysite.doomchit.users.UserService; // 필요 시 추가
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class ReviewController {
     Music music = musicService.getOrCreateMusic(title, artist, album, image);
 
     // 2. 작성자 정보 가져오기 (임시로 null 또는 로그인 구현된 유저)
-    Users user = null;
+    User user = null;
     // user = userService.getUser(principal.getName()); // 로그인 연동 시 사용
 
     // 3. 리뷰 저장

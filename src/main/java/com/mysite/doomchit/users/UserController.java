@@ -11,30 +11,30 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/member")
 @RequiredArgsConstructor
 @Controller
-public class UsersController {
-    private final UsersService UsersService;
+public class UserController {
+    private final UserService userService;
 
     // 1. 회원 목록
     @GetMapping("/main")
     public String list(Model model) {
-        List<Users> usersList = this.UsersService.getList();
-        model.addAttribute("usersList", usersList);
-        return "users_list";
+        List<User> userList = userService.getList();
+        model.addAttribute("userList", userList);
+        return "user_list";
     }
 
     // 3. 회원 등록 화면
     @GetMapping("/signup")
-    public String usersCreate(UsersForm UsersForm) {
-        return "users_form";
+    public String userCreate(UserForm userForm) {
+        return "user_form";
     }
 
     // 4. 회원 등록 처리
     @PostMapping("/create")
-    public String UsersCreate(@Valid UsersForm usersForm, BindingResult bindingResult) {
+    public String UserCreate(@Valid UserForm userForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "users_form";
+            return "user_form";
         }
-        this.UsersService.create(usersForm.getUserId(), usersForm.getUserPwd(), usersForm.getUsername());
-        return "redirect:/users/list";
+        userService.create(userForm.getUserId(), userForm.getUserPwd(), userForm.getUsername());
+        return "redirect:/user/list";
     }
 }
