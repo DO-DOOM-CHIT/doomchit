@@ -1,32 +1,27 @@
 package com.mysite.doomchit.users;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public List<User> getList() {
-        return userRepository.findAll();
-    }
+    // 회원가입 =======================================================
+    public User create(String userId, String userPwd, String username) {
 
-    public User getMember(Integer uno) {
-        Optional<User> user = userRepository.findById(uno);
-        return user.orElse(null);
-    }
-
-    public void create(String userId, String userPwd, String username) {
-        User u = new User();
-        u.setUserId(userId);
-        u.setUserPwd(userPwd);
-        u.setUsername(username);
-        u.setCreDate(LocalDateTime.now());
-        userRepository.save(u);
+        User user = new User();
+        user.setUserId(userId);
+        // 비밀번호 암호화
+        user.setUserPwd(passwordEncoder.encode(userPwd));
+        user.setUsername(username);
+        userRepository.save(user);
+        
+        return user;
     }
 
     public void modify(User user, String username) {
