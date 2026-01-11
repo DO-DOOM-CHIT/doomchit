@@ -41,8 +41,12 @@
     <div class="modal-dialog">
     <div id="contents" class="modal-content rounded-4 p-5 shadow">
       <h1 class="d-flex justify-content-center pb-5">DoomChit</h1>
+	  <div th:if="${param.error}">
+		<div class="alert alert-danger text-center">사용자 아이디 또는 비밀 번호를 확인해 주세요.
+		</div>
+	</div>
       
-    <form action="#" method="post">
+    <form th:action="@{/doomchit/login}" method="post">
     <div class="row g-3 align-items-start mb-3">
       <div class="col-3">
         <label for="userId" class="col-form-label">아이디</label>
@@ -50,7 +54,6 @@
 
       <div class="col-9">
         <input id="userId" name="userId" type="text" class="form-control" placeholder="아이디를 입력해 주세요">
-        <div class="form-text text-danger ps-1">아이디를 입력해 주세요</div>
       </div>
     </div>
 
@@ -61,13 +64,12 @@
 
       <div class="col-9">
         <input id="userPwd" name="userPwd" type="password" class="form-control" placeholder="비밀 번호를 입력해 주세요">
-        <div class="form-text text-danger ps-1">비밀 번호를 입력해 주세요</div>
       </div>
     </div>
     
     <div class="text-center col">
       <button type="submit" class="btn btn-primary w-100 fs-5 mb-4">로그인</button>
-      <a href="#" class="d-block fs-6">회원 가입</a>
+      <a th:href="@{/doomchit/signup}" class="d-block fs-6">회원 가입</a>
     </div>
   </form>
   </div>
