@@ -111,10 +111,11 @@
               <dl>
                 <dt id="stars" class="me-2">
                   <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                    class="fa-solid fa-star"></i><i class="fa-solid fa-star pe-2"></i><label
-                    id="avgRating" th:text="${avgRating}">5.0</label>
+                    class="fa-solid fa-star"></i><i class="fa-solid fa-star pe-2"></i><label id="avgRating"
+                    th:text="${avgRating}">5.0</label>
                 </dt>
-                <dd id="ratingCount" class="pe-2 pt-2 fs-6" th:text="'(' + ${#lists.size(reviewList)} + '명이 참여)'"></dd></dd>
+                <dd id="ratingCount" class="pe-2 pt-2 fs-6" th:text="'(' + ${#lists.size(reviewList)} + '명이 참여)'"></dd>
+                </dd>
               </dl>
             </div>
           </div>
@@ -145,11 +146,28 @@
       <div id="music-lyrics" class="pb-4">
         <h2 class="pb-2 border-bottom">가사</h2>
         <div id="lyrics" name="lyrics">
-          <p>
-            가사 데이터가 없습니다. (추후 구현 예정)
-          </p>
+          <div id="lyricsContent" class="lyrics-content collapsed">
+            <p th:text="${music.lyrics != null ? music.lyrics : '가사 데이터가 없습니다.'}" style="white-space: pre-wrap;">
+              가사 데이터가 없습니다.
+            </p>
+          </div>
+          <button id="lyricsBtn" class="show-more-btn" onclick="toggleLyrics()">펼치기</button>
         </div>
       </div>
+
+      <script>
+        function toggleLyrics() {
+          const content = document.getElementById('lyricsContent');
+          const btn = document.getElementById('lyricsBtn');
+          if (content.classList.contains('collapsed')) {
+            content.classList.remove('collapsed');
+            btn.innerText = "접기";
+          } else {
+            content.classList.add('collapsed');
+            btn.innerText = "펼치기";
+          }
+        }
+      </script>
 
       <div id="music-production" class="pb-4">
         <h2 class="pb-2 border-bottom">노래 / 작곡 / 작사</h2>
@@ -235,7 +253,9 @@
           <dl class="d-flex justify-content-between">
             <div>
               <dt id="reviewsUser" class="pe-2" th:text="${review.user.username}"></dt>
-              <dd id="creDate" class="d-flex align-items-center"><i class="fa-solid fa-ellipsis pe-2"></i><div th:text="${#temporals.format(review.creDate, 'yyyy.MM.dd')}"></div></dd>
+              <dd id="creDate" class="d-flex align-items-center"><i class="fa-solid fa-ellipsis pe-2"></i>
+                <div th:text="${#temporals.format(review.creDate, 'yyyy.MM.dd')}"></div>
+              </dd>
             </div>
             <!-- ✅ 본인만 수정/삭제 -->
             <div sec:authorize="isAuthenticated()" th:if="${#authentication.name == review.user.userId}">

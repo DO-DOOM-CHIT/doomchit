@@ -57,14 +57,25 @@ public class MusicService {
         // 1. DB 확인
         return musicRepository.findByMusicId(musicId)
                 .map(m -> {
+                    boolean needUpdate = false;
                     // 기존 데이터 화질 개선 (Regex 이용)
                     if (m.getImage() != null && m.getImage().contains("/resize/")) {
                         String newImage = m.getImage().replaceAll("/resize/\\d+", "/resize/500");
                         if (!newImage.equals(m.getImage())) {
                             m.setImage(newImage);
-                            return musicRepository.save(m);
+                            needUpdate = true;
                         }
                     }
+
+                    if (m.getDuration() == null || m.getDuration() == 0 || m.getLyrics() == null
+                            || m.getLyrics().isEmpty()) {
+                        fillSongAndAlbumDetail(m);
+                        needUpdate = true;
+                    }
+                    if (needUpdate) {
+                        return musicRepository.save(m);
+                    }
+
                     return m;
                 })
                 .orElseGet(() -> {
@@ -198,12 +209,11 @@ public class MusicService {
 
     // 상세 정보 크롤링 (곡 상세 + 앨범 상세)
     private void fillSongAndAlbumDetail(Music music) {
-        try {
-            // 헤더 설정 (차단 우회용 - 리얼 브라우저처럼 보이기)
-            String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
+        String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
-            // 1. 곡 상세 페이지 크롤링
-            if (music.getMusicId() != null) {
+        // 1. 곡 상세 페이지 크롤링
+        if (music.getMusicId() != null) {
+            try {
                 String songUrl = SONG_DETAIL_URL + music.getMusicId();
                 Document songDoc = Jsoup.connect(songUrl)
                         .userAgent(userAgent)
@@ -222,29 +232,36 @@ public class MusicService {
                 }
 
                 // 발매일 추출
-                // 발매일 추출
                 Element dateKey = songDoc.selectFirst("dl.list dt:contains(발매일)");
                 if (dateKey != null) {
-                    String dateStr = dateKey.nextElementSibling().text();
                     try {
-                        music.setRelDate(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+                        music.setRelDate(LocalDate.parse(dateKey.nextElementSibling().text(),
+                                DateTimeFormatter.ofPattern("yyyy.MM.dd")));
                     } catch (Exception e) {
                     }
                 }
 
-                // 재생시간 추출 (추가)
-                Element timeKey = songDoc.selectFirst("dl.list dt:contains(재생시간)");
-                if (timeKey != null) {
-                    try {
-                        String timeStr = timeKey.nextElementSibling().text(); // 예: "3:42"
-                        String[] parts = timeStr.split(":");
-                        if (parts.length == 2) {
-                            int min = Integer.parseInt(parts[0]);
-                            int sec = Integer.parseInt(parts[1]);
-                            music.setDuration(min * 60 + sec);
-                        }
-                    } catch (Exception e) {
+                // 앨범 ID 추출 (재생시간 확보용 - 곡 상세에는 재생시간이 없음)
+                Element albumLink = songDoc.selectFirst("a[href*='goAlbumDetail']");
+                if (albumLink != null) {
+                    String href = albumLink.attr("href"); // javascript:melon.link.goAlbumDetail('10554246');
+                    String albumIdStr = href.replaceAll("[^0-9]", "");
+                    if (!albumIdStr.isEmpty()) {
+                        music.setAlbumId(Long.parseLong(albumIdStr));
                     }
+                }
+
+                // 가사 추출
+                Element lyricDiv = songDoc.selectFirst("div.lyric");
+                if (lyricDiv != null) {
+                    String html = lyricDiv.html();
+                    String text = html.replaceAll("(?i)<br[^>]*>", "__MelonNewLine__");
+                    text = org.jsoup.Jsoup.parse(text).text();
+                    text = text.replace("__MelonNewLine__", "\n");
+
+                    if (text.contains("[가사 준비중]"))
+                        text = "가사 준비중입니다.";
+                    music.setLyrics(text);
                 }
 
                 // 작사/작곡 추출
@@ -262,19 +279,17 @@ public class MusicService {
                             music.setComposer(String.join(", ", names.eachText()));
                     }
                 }
+            } catch (Exception e) {
+                // Ignore
             }
+        }
 
-            // 2. 앨범 상세 페이지 크롤링
-            if (music.getAlbumId() != null) {
+        // 2. 앨범 상세 페이지 크롤링 (앨범 정보 + 재생시간 확보)
+        if (music.getAlbumId() != null) {
+            try {
                 String albumUrl = ALBUM_DETAIL_URL + music.getAlbumId();
                 Document albumDoc = Jsoup.connect(albumUrl)
                         .userAgent(userAgent)
-                        .header("Accept",
-                                "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
-                        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
-                        .header("Referer", "https://www.melon.com/chart/index.htm")
-                        .timeout(10000)
-                        .ignoreHttpErrors(true)
                         .get();
 
                 // 발매사
@@ -286,10 +301,35 @@ public class MusicService {
                 Element agencyKey = albumDoc.selectFirst("dl.list dt:contains(기획사)");
                 if (agencyKey != null)
                     music.setAgency(agencyKey.nextElementSibling().text());
-            }
 
-        } catch (Exception e) {
-            // 크롤링 실패해도 무시
+                // 재생시간 추출 (트랙 리스트에서 검색)
+                // form#frm table tbody tr
+                Elements rows = albumDoc.select("form#frm table tbody tr");
+                for (Element row : rows) {
+                    // 이 행이 현재 musicId인지 확인
+                    Element input = row.selectFirst("input[name='input_check']");
+                    if (input != null && input.val().equals(String.valueOf(music.getMusicId()))) {
+                        // 찾았다. 시간 추출. 보통 마지막 쪽에 위치.
+                        Elements cols = row.select("td");
+                        for (Element col : cols) {
+                            String txt = col.text().trim();
+                            if (txt.contains(":") && txt.length() < 10) {
+                                String[] parts = txt.split(":");
+                                if (parts.length == 2) {
+                                    try {
+                                        int min = Integer.parseInt(parts[0]);
+                                        int sec = Integer.parseInt(parts[1]);
+                                        music.setDuration(min * 60 + sec);
+                                    } catch (Exception ex) {
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+            }
         }
     }
 

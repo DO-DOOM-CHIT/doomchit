@@ -57,6 +57,9 @@ public class Music {
     @Column(length = 100)
     private String composer; // 작곡가
 
+    @Column(columnDefinition = "TEXT")
+    private String lyrics; // 가사
+
     // 로직용 추가 필드 (ERD 이미지에는 없지만 크롤링에 필요)
     private Long albumId;
 
