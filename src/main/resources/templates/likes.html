@@ -50,59 +50,57 @@
 
       <!-- 차트 -->
       <section class="chart-wrapper">
-        <div class="chart-scroll-x">
-          <div class="chart-scroll-y">
-            <table class="chart-table">
-              <thead>
-                <tr>
-                  <th class="col-rank">순위</th>
-                  <th class="col-song">곡정보</th>
-                  <th class="col-album">앨범</th>
-                  <th class="col-comment">댓글</th>
-                  <th class="col-like">좋아요</th>
-                  <th class="col-rating">평점</th>
-                </tr>
-              </thead>
+  <div class="chart-scroll-x">
+    <div class="chart-scroll-y">
+      <table class="chart-table">
+            <thead>
+              <tr>
+                <th class="col-rank">순위</th>
+                <th class="col-song">곡정보</th>
+                <th class="col-album">앨범</th>
+                <th class="col-comment">댓글</th>
+                <th class="col-like">좋아요</th>
+                <th class="col-rating">평점</th>
+              </tr>
+            </thead>
 
-              <tbody id="chartBody">
-                <tr th:each="music, stat : ${chart}"
-                  th:onclick="|location.href='@{/doomchit/music/detail/{id}(id=${music.musicId})}'|"
-                  style="cursor: pointer;">
-                  <td class="col-rank" th:text="${music.rank}">1</td>
-                  <td class="col-song">
-                    <div class="song">
-                      <img th:src="${music.image}" class="thumb" alt="Album Cover">
-                      <div>
-                        <div class="song-title" th:text="${music.title}">Title</div>
-                        <div class="song-artist" th:text="${music.artist}">Artist</div>
-                      </div>
+            <tbody id="chartBody">
+              <tr th:each="music, stat : ${chart}"
+                th:onclick="|location.href='@{/doomchit/music/detail/{id}(id=${music.musicId})}'|"
+                style="cursor: pointer;">
+                <td class="col-rank" th:text="${music.rank}">1</td>
+                <td class="col-song">
+                  <div class="song">
+                    <img th:src="${music.image}" class="thumb" alt="Album Cover">
+                    <div>
+                      <div class="song-title" th:text="${music.title}">Title</div>
+                      <div class="song-artist" th:text="${music.artist}">Artist</div>
                     </div>
-                  </td>
-                  <td class="col-album">
-					<div class="album-title" th:text="${music.albumTitle}">Album</div>
-				  </td>
-                  <td class="col-comment">
-                    <div class="icon-text">
-                      <i class="fa-regular fa-comment"></i> 0
-                    </div>
-                  </td>
-                  <td class="col-like">
-                    <div class="icon-text">
-                      <i class="fa-regular fa-heart"></i>
-                      <span
-                        th:text="${music.likeCount != null ? #numbers.formatInteger(music.likeCount, 0, 'COMMA') : '0'}">0</span>
-                    </div>
-                  </td>
-                  <td class="col-rating">
-                    <div class="star-rating">
-                      <i class="fa-solid fa-star"></i> 0.0
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+                  </div>
+                </td>
+            <td class="col-album">
+               <div class="album-title" th:text="${music.albumTitle}">Album</div>
+             </td>
+                <td class="col-comment">
+                  <div class="icon-text">
+                    <i class="fa-regular fa-comment"></i> 0
+                  </div>
+                </td>
+                <td class="col-like">
+                  <div class="icon-text">
+                    <i class="fa-regular fa-heart"></i> 0
+                  </div>
+                </td>
+                <td class="col-rating">
+                  <div class="star-rating">
+                    <i class="fa-solid fa-star"></i> 0.0
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
       </section>
     </main>
 

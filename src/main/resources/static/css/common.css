@@ -101,19 +101,14 @@
   font-size: 16px;
 }
 
+/* ===== Nav Active (페이지별) ===== */
 .header-nav a.active {
   color: #A352D2;
   font-weight: 700;
 }
 
-/* ===== Nav Active (페이지별) ===== */
-body[data-page="main"] .header-nav a[data-menu="main"],
-body[data-page="likes"] .header-nav a[data-menu="likes"] {
-  color: #A352D2;
-  font-weight: 700;
-}
-
-html, body {
+html,
+body {
   height: auto;
   overflow-y: auto;
 }

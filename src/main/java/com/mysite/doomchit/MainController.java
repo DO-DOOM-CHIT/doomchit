@@ -49,6 +49,7 @@ public class MainController {
             }
         }
 
+        model.addAttribute("pageName", "main");
         model.addAttribute("chart", chart);
         return "main";
     }
@@ -72,6 +73,7 @@ public class MainController {
             }
         }
 
+        model.addAttribute("pageName", "likes");
         model.addAttribute("chart", chart);
         return "likes";
     }
