@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/bootstrap.min.css" />
     <link rel="stylesheet" href="../css/fontawesome-all.min.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Gafata&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <title>로그인 - DoomChit</title>
     
     <style>      
@@ -42,7 +45,7 @@
     <div id="contents" class="modal-content rounded-4 p-5 shadow">
       <h1 class="d-flex justify-content-center pb-5">DoomChit</h1>
 	  <div th:if="${param.error}">
-		<div class="alert alert-danger text-center">사용자 아이디 또는 비밀 번호를 확인해 주세요.
+		<div class="text-danger text-center pb-3">사용자 아이디 또는 비밀 번호를 확인해 주세요.
 		</div>
 	</div>
       
