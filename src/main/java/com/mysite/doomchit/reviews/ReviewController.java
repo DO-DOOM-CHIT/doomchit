@@ -6,17 +6,18 @@ import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.doomchit.musics.Music;
 import com.mysite.doomchit.musics.MusicService;
 import com.mysite.doomchit.users.UserService;
 import com.mysite.doomchit.users.Users;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/doomchit")
@@ -38,10 +39,8 @@ public class ReviewController {
         List<Review> reviewList = reviewService.getReviewList(music);
 
         // 평균 평점 / 리뷰 개수
-        model.addAttribute("avgRating",
-                reviewService.getAverageRatingOrZero(music));
-        model.addAttribute("reviewCount",
-                reviewService.getReviewCount(music));
+        model.addAttribute("avgRating", reviewService.getAverageRatingOrZero(music));
+        model.addAttribute("reviewCount", reviewService.getReviewCount(music));
 
         // 앨범 수록곡
         if (music.getAlbumId() != null) {
@@ -68,6 +67,7 @@ public class ReviewController {
 
         model.addAttribute("music", music);
         model.addAttribute("reviewList", reviewList);
+        model.addAttribute("reviewForm", new ReviewForm());
 
         return "reviews";
     }
@@ -87,14 +87,24 @@ public class ReviewController {
     // 리뷰 작성 =================================================
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{mno}")
-    public String createReview(@PathVariable("mno") Long mno,
-                               @RequestParam("content") String content,
-                               @RequestParam("rating") BigDecimal rating) {
-
+    public String createReview(@PathVariable("mno") Long mno, @Valid ReviewForm reviewForm,
+            BindingResult bindingResult, Model model) {
         Music music = musicService.getMusic(mno);
-        Users user = userService.getCurrentUser();
 
-        reviewService.create(music, user, content, rating);
+        if (bindingResult.hasErrors()) {
+            // 기존 상세페이지 데이터 다시 세팅
+            List<Review> reviewList = reviewService.getReviewList(music);
+
+            model.addAttribute("music", music);
+            model.addAttribute("reviewList", reviewList);
+            model.addAttribute("avgRating", reviewService.getAverageRatingOrZero(music));
+            model.addAttribute("reviewCount", reviewService.getReviewCount(music));
+
+            return "reviews"; // 다시 리뷰 페이지
+        }
+
+        Users user = userService.getCurrentUser();
+        reviewService.create(music, user, reviewForm.getContent(), reviewForm.getRating());
 
         return "redirect:/doomchit/reviews/" + mno;
     }
@@ -102,14 +112,16 @@ public class ReviewController {
     // 리뷰 수정 =================================================
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{rno}")
-    public String modifyReview(@PathVariable("rno") Integer rno,
-                               @RequestParam("content") String content,
-                               @RequestParam("rating") BigDecimal rating) {
-
+    public String modifyReview(@PathVariable("rno") Integer rno, @Valid ReviewForm reviewForm,
+            BindingResult bindingResult) {
         Review review = reviewService.getReview(rno);
         Users user = userService.getCurrentUser();
 
-        reviewService.modify(user, review, content, rating);
+        if (bindingResult.hasErrors()) {
+            return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+        }
+
+        reviewService.modify(user, review, reviewForm.getContent(), reviewForm.getRating());
 
         return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
     }
