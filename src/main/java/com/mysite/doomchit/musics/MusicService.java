@@ -53,19 +53,31 @@ public class MusicService {
                 .orElseThrow(() -> new IllegalArgumentException("음악을 찾을 수 없습니다."));
     }
 
-    public Music getOrCreateMusicByMusicId(Long musicId) {
+    public Music getOrCreateMusicByMusicId(Long musicId, String title, String artist, String image) {
         // 1. DB 확인
         return musicRepository.findByMusicId(musicId).orElseGet(() -> {
-            // 2. DB에 없으면 차트 API에서 탐색
+            // 2. 파라미터가 있으면 바로 생성 (검색 결과 클릭 시)
+            if (title != null && !title.isEmpty()) {
+                Music m = new Music();
+                m.setMusicId(musicId);
+                m.setTitle(title);
+                m.setArtist(artist);
+                m.setImage(image);
+                m.setDuration(0); // DB Not Null 제약조건 대응
+                // m.setCreDate(java.time.LocalDateTime.now()); // Entity에 필드 없음
+
+                fillSongAndAlbumDetail(m); // 상세 정보 크롤링
+                return musicRepository.save(m);
+            }
+
+            // 3. 파라미터 없으면 차트 API에서 탐색 (기존 로직)
             List<Music> chart = getMelonChartBasic();
             for (Music m : chart) {
                 if (m.getMusicId().equals(musicId)) {
-                    // 3. 차트에서 찾으면 상세 정보 크롤링 후 저장
                     fillSongAndAlbumDetail(m);
                     return musicRepository.save(m);
                 }
             }
-            // 4. 차트에도 없으면(예외) - 여기서는 단순히 에러 처리하거나 빈 객체 반환
             throw new IllegalArgumentException("차트에서 데이터를 찾을 수 없습니다: " + musicId);
         });
     }
@@ -104,6 +116,71 @@ public class MusicService {
         musicList.parallelStream().forEach(this::fillSongAndAlbumDetail);
 
         return musicList;
+    }
+
+    // 3. 검색어 자동완성 (Melon API 프록시)
+    public List<java.util.Map<String, Object>> searchMelon(String keyword) {
+        List<java.util.Map<String, Object>> results = new ArrayList<>();
+        try {
+            // jscallback 파라미터 제외하고 요청
+            String searchUrl = "https://www.melon.com/search/keyword/index.json?query="
+                    + java.net.URLEncoder.encode(keyword, "UTF-8");
+
+            String response = webClient.get()
+                    .uri(searchUrl)
+                    .header("User-Agent", USER_AGENT)
+                    .header("Referer", "https://www.melon.com/")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            // JSONP Wrapper 제거 (괄호 제거)
+            if (response != null) {
+                int start = response.indexOf("{");
+                int end = response.lastIndexOf("}");
+                if (start != -1 && end != -1) {
+                    response = response.substring(start, end + 1);
+                }
+            }
+
+            // JSON parsing
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response);
+
+            /*
+             * 아티스트 정보 제외 (곡 정보만 표시)
+             * // 1) 아티스트 (ARTISTCONTENTS)
+             * if (root.has("ARTISTCONTENTS")) {
+             * for (JsonNode node : root.get("ARTISTCONTENTS")) {
+             * java.util.Map<String, Object> item = new java.util.HashMap<>();
+             * item.put("type", "artist");
+             * item.put("name", node.path("ARTISTNAME").asText());
+             * item.put("detail", node.path("NATIONALITYNAME").asText() + "/" +
+             * node.path("SEXNAME").asText() + "/"
+             * + node.path("ACTTYPENAME").asText());
+             * item.put("image", node.path("ARTISTIMG").asText().replace("/120", "/64")); //
+             * 작은 이미지
+             * results.add(item);
+             * }
+             * }
+             */
+
+            // 2) 곡 (SONGCONTENTS)
+            if (root.has("SONGCONTENTS")) {
+                for (JsonNode node : root.get("SONGCONTENTS")) {
+                    java.util.Map<String, Object> item = new java.util.HashMap<>();
+                    item.put("type", "song");
+                    item.put("id", node.path("SONGID").asText());
+                    item.put("name", node.path("SONGNAME").asText());
+                    item.put("detail", node.path("ARTISTNAME").asText());
+                    item.put("image", node.path("ALBUMIMG").asText().replace("/120", "/64"));
+                    results.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
     }
 
     // 상세 정보 크롤링 (곡 상세 + 앨범 상세)

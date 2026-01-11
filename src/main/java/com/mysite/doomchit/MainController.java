@@ -79,8 +79,9 @@ public class MainController {
 
     // JSON 데이터 확인용 임시 페이지
     @org.springframework.web.bind.annotation.ResponseBody
-    @GetMapping("/debug")
-    public String debug() {
-        return musicService.getRawMelonChartJson();
+    @GetMapping("/doomchit/search")
+    public java.util.List<java.util.Map<String, Object>> search(
+            @org.springframework.web.bind.annotation.RequestParam("keyword") String keyword) {
+        return musicService.searchMelon(keyword);
     }
 }

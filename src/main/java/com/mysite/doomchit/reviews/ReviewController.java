@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.doomchit.musics.Music;
 import com.mysite.doomchit.musics.MusicService;
@@ -93,9 +94,12 @@ public class ReviewController {
 
 	// 외부 musicId → 내부 mno 브릿지
 	@GetMapping("/music/detail/{musicId}")
-	public String musicDetailBridge(@PathVariable("musicId") Long musicId) {
+	public String musicDetailBridge(@PathVariable("musicId") Long musicId,
+			@RequestParam(value = "title", required = false) String title,
+			@RequestParam(value = "artist", required = false) String artist,
+			@RequestParam(value = "image", required = false) String image) {
 		try {
-			Music music = musicService.getOrCreateMusicByMusicId(musicId);
+			Music music = musicService.getOrCreateMusicByMusicId(musicId, title, artist, image);
 			return "redirect:/doomchit/reviews/" + music.getMno();
 		} catch (Exception e) {
 			e.printStackTrace();
