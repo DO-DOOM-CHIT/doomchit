@@ -30,6 +30,14 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/doomchit/likes")
+    public String likes(Model model) {
+        // 좋아요 페이지 (일단 메인과 동일한 차트 데이터 사용)
+        List<Music> chart = musicService.getMelonChartBasic();
+        model.addAttribute("chart", chart);
+        return "likes";
+    }
+
     // JSON 데이터 확인용 임시 페이지
     @org.springframework.web.bind.annotation.ResponseBody
     @GetMapping("/debug")
