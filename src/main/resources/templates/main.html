@@ -25,7 +25,7 @@
 
     <!-- header.html 은 서버에서 include/fragment로 들어온다고 가정 -->
     <th:block th:replace="fragments/header :: header"></th:block>
-    
+
     <main>
       <div class="page-top">
         <h1 class="page-title">차트</h1>
@@ -63,10 +63,34 @@
             </thead>
 
             <tbody id="chartBody">
-              <!-- 
-            JS에서 렌더링
-            (JPA/API 연동 시 이 부분만 교체)
-          -->
+              <tr th:each="music, stat : ${chart}">
+                <td class="col-rank" th:text="${music.rank}">1</td>
+                <td class="col-song">
+                  <div class="song">
+                    <img th:src="${music.image}" class="thumb" alt="Album Cover">
+                    <div>
+                      <div class="song-title" th:text="${music.title}">Title</div>
+                      <div class="song-artist" th:text="${music.artist}">Artist</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-album" th:text="${music.albumTitle}">Album</td>
+                <td class="col-comment">
+                  <div class="icon-text">
+                    <i class="fa-regular fa-comment"></i> 0
+                  </div>
+                </td>
+                <td class="col-like">
+                  <div class="icon-text">
+                    <i class="fa-regular fa-heart"></i> 0
+                  </div>
+                </td>
+                <td class="col-rating">
+                  <div class="star-rating">
+                    <i class="fa-solid fa-star"></i> 0.0
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
       </section>

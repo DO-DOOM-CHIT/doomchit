@@ -108,8 +108,8 @@ sortMenu.addEventListener('click', (e) => {
   sortMenu.style.display = 'none';
 });
 
-// 초기 차트 렌더링
-renderChart(chartData);
+// 초기 차트 렌더링 (서버 사이드 렌더링을 위해 JS 렌더링 중단)
+// renderChart(chartData);
 
 // 별점 아이콘 생성 함수
 function createEmptyStars() {
