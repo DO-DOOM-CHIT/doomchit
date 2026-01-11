@@ -21,7 +21,8 @@
 
     <!-- 로그인 -->
     <div class="auth">
-      <a href="/doomchit/login" class="login-link">로그인</a>
+      <a class="login-link" sec:authorize="isAnonymous()" th:href="@{/doomchit/login}">로그인</a>
+      <a class="logout-link" sec:authorize="isAuthenticated()" th:href="@{/doomchit/logout}">로그아웃</a>
     </div>
 
   </div>
