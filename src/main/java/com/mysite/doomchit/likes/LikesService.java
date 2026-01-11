@@ -41,4 +41,9 @@ public class LikesService {
   public long getLikeCount(Music music) {
     return likesRepository.countByMusic(music);
   }
+
+  public java.util.List<Music> getLikedMusic(Users user) {
+    java.util.List<Likes> likesList = likesRepository.findByUserOrderByCreDateDesc(user);
+    return likesList.stream().map(Likes::getMusic).toList();
+  }
 }

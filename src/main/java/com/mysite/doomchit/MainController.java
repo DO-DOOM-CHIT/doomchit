@@ -17,6 +17,8 @@ public class MainController {
 
     private final MusicService musicService;
     private final com.mysite.doomchit.likes.LikesRepository likesRepository;
+    private final com.mysite.doomchit.users.UserService userService;
+    private final com.mysite.doomchit.likes.LikesService likesService;
 
     @GetMapping("/")
     public String root() {
@@ -56,18 +58,22 @@ public class MainController {
 
     @GetMapping("/doomchit/likes")
     public String likes(Model model) {
-        // 좋아요 페이지 (일단 메인과 동일한 차트 데이터 사용)
-        List<Music> chart = musicService.getMelonChartBasic();
+        List<Music> chart = new java.util.ArrayList<>();
+
+        try {
+            com.mysite.doomchit.users.Users user = userService.getCurrentUser();
+            if (user != null) {
+                chart = likesService.getLikedMusic(user);
+            }
+        } catch (Exception e) {
+            // 비로그인 시 빈 목록
+        }
 
         // 좋아요 카운트 채우기
         for (Music m : chart) {
             try {
-                Music dbMusic = musicService.findMusicByMusicId(m.getMusicId());
-                if (dbMusic != null) {
-                    m.setLikeCount(likesRepository.countByMusic(dbMusic));
-                } else {
-                    m.setLikeCount(0L);
-                }
+                // 이미 DB에서 가져온 Music이므로 mno가 있음. countByMusic 바로 가능
+                m.setLikeCount(likesRepository.countByMusic(m));
             } catch (Exception e) {
                 m.setLikeCount(0L);
             }
