@@ -163,33 +163,6 @@
         </dl>
       </div>
 
-      <div id="music-album" class="pb-4">
-        <h2 class="pb-2 border-bottom">수록 앨범 (수록곡)</h2>
-        <div id="music-sub-albums" class="row row-cols-sm-5 row-cols-md-5 g-3">
-
-          <!-- 트랙 리스트 반복 -->
-          <div th:each="track : ${tracks}" id="music-sub-album" class="col">
-            <div class="col pb-4">
-              <div id="album-img">
-                <!-- 앨범 이미지는 현재 보고 있는 곡의 앨범 이미지와 동일 -->
-                <img class="card-img-top" th:src="${music.image}" />
-              </div>
-              <div id="music-sub-album-text" class="col-sm mt-3">
-                <!-- 여기서는 '곡 제목'을 앨범 타이틀 자리에 표시 -->
-                <h4 name="albumTitle" th:text="${track.title}">곡 제목</h4>
-                <h6 name="artist" class="pb-2">
-                  <!-- 클릭 시 해당 곡의 상세 페이지로 이동 -->
-                  <a th:href="@{/doomchit/music/detail/{id}(id=${track.musicId})}" th:text="${track.artist}">가수명</a>
-                </h6>
-                <!-- 이 트랙도 같은 앨범이므로 발매일은 동일 -->
-                <div name="relDate" th:text="${music.relDate}">2026.01.07.</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
       <div id="music-infos" class="pb-5">
         <h2 class="pb-2 border-bottom">상세 정보</h2>
         <dl class="list">
@@ -212,31 +185,33 @@
       </div>
 
 
-      <div id="reviews" class="mb-5">
-        <div id="reviews-tab">
-          <h2 class="d-flex justify-content-between pb-2 border-bottom">
-            리뷰 <span th:text="|${#lists.size(reviewList)}개|">0개</span>
-            <div class="fs-6 pt-2">
-              <b>최신순</b><label class="px-2">|</label><a href="#reviews">추천순</a>
-            </div>
-          </h2>
-          <div></div>
-        </div>
+	  <div id="reviews" class="mb-5">
+	          <div id="reviews-tab">
+	  		  <div class="d-flex justify-content-between pb-2 mb-3 border-bottom">
+	  			<h2>
+	  				리뷰 <span th:text="|${#lists.size(reviewList)}개|">0개</span>
+	  			</h2>
+	  			<div class="fs-6 pt-2">
+	  						<b>최신순</b><label class="px-2">|</label><a href="#reviews">추천순</a>
+	  					</div>
+	  		  </div>
+	  		  
+	          </div>
 
-        <div sec:authorize="isAnonymous()" class="bg-body-secondary rounded mb-4">
-          <div class="p-3">
-            댓글을 입력하려면 <a th:href="@{/doomchit/login}">로그인</a>을 해야합니다.
-          </div>
-        </div>
+	          <div sec:authorize="isAnonymous()" class="bg-body-secondary rounded mb-4">
+	            <div class="p-3">
+	              댓글을 입력하려면 <a th:href="@{/doomchit/login}">로그인</a>을 해야합니다.
+	            </div>
+	          </div>
 
         <div sec:authorize="isAuthenticated()" class="border rounded p-3 mb-4">
-          <form id="reviews" th:action="@{/doomchit/{mno}(mno=${music.mno})}" method="post">
-            <textarea name="content" class="form-control border mb-3" placeholder="리뷰를 등록하려면 평점 주기 및 댓글을 작성하세요."
+          <form id="reviews" th:action="@{/doomchit/{mno}(mno=${music.mno})}" th:object="${reviewForm}" method="post">
+            <textarea th:field="*{content}" class="form-control border mb-3" placeholder="리뷰를 등록하려면 평점 주기 및 댓글을 작성하세요."
               required></textarea>
             <div id="rating" class="d-flex justify-content-between">
               <div id="stars" class="me-2 pt-2 fs-3">
                 <a href="#reviews"><i class="fa-solid fa-star"></i></a>
-                <input id="rating_input" type="range" name="rating" min="0" max="10">
+                <input id="rating_input" type="range" th:field="*{rating}" min="1" max="5">
                 <label id="rating_value"></label>
               </div>
               <button class="btn btn-primary btn-lg" type="submit">
@@ -281,9 +256,6 @@
       </div>
 
     </div>
-
-    <!-- 푸터 -->
-    <div id="footer" class="bg-dark-subtle p-4">두둠칫 두둠칫 두둠칫</div>
 
     <script>
       const rating_value = document.querySelector("#rating_value");
