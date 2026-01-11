@@ -65,7 +65,9 @@
             </thead>
 
             <tbody id="chartBody">
-              <tr th:each="music, stat : ${chart}">
+              <tr th:each="music, stat : ${chart}"
+                th:onclick="|location.href='@{/doomchit/music/detail/{id}(id=${music.musicId})}'|"
+                style="cursor: pointer;">
                 <td class="col-rank" th:text="${music.rank}">1</td>
                 <td class="col-song">
                   <div class="song">

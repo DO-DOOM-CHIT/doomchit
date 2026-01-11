@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MusicRepository extends JpaRepository<Music, Long> {
   Optional<Music> findByTitleAndArtist(String title, String artist);
+
+  Optional<Music> findByMusicId(Long musicId);
 }

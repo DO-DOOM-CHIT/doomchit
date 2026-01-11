@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,10 +24,10 @@ public class Music {
     @Column(name = "music_id", nullable = false)
     private Long musicId; // 음악 API 고유 번호
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 500)
     private String artist; // 가수명
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 500)
     private String title; // 음악 제목
 
     @Column(nullable = false)
@@ -58,5 +59,7 @@ public class Music {
 
     // 로직용 추가 필드 (ERD 이미지에는 없지만 크롤링에 필요)
     private Long albumId;
+
+    @Transient
     private Integer rank;
 }

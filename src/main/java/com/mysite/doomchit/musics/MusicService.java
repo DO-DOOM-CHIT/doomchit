@@ -47,12 +47,28 @@ public class MusicService {
                     return musicRepository.save(m);
                 });
     }
-    
+
     public Music getMusic(Long mno) {
         return musicRepository.findById(mno)
                 .orElseThrow(() -> new IllegalArgumentException("음악을 찾을 수 없습니다."));
     }
 
+    public Music getOrCreateMusicByMusicId(Long musicId) {
+        // 1. DB 확인
+        return musicRepository.findByMusicId(musicId).orElseGet(() -> {
+            // 2. DB에 없으면 차트 API에서 탐색
+            List<Music> chart = getMelonChartBasic();
+            for (Music m : chart) {
+                if (m.getMusicId().equals(musicId)) {
+                    // 3. 차트에서 찾으면 상세 정보 크롤링 후 저장
+                    fillSongAndAlbumDetail(m);
+                    return musicRepository.save(m);
+                }
+            }
+            // 4. 차트에도 없으면(예외) - 여기서는 단순히 에러 처리하거나 빈 객체 반환
+            throw new IllegalArgumentException("차트에서 데이터를 찾을 수 없습니다: " + musicId);
+        });
+    }
 
     // 1. 메인 페이지용: 가볍고 빠른 기본 차트 (제목, 가수, 앨범 등 목록 API 정보만)
     public List<Music> getMelonChartBasic() {
@@ -164,6 +180,64 @@ public class MusicService {
         } catch (Exception e) {
             // 크롤링 실패해도 무시
         }
+    }
+
+    // 앨범 수록곡 가져오기
+    public List<Music> getAlbumTracklist(Long albumId) {
+        List<Music> tracks = new ArrayList<>();
+        try {
+            String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
+            String albumUrl = ALBUM_DETAIL_URL + albumId;
+
+            Document doc = Jsoup.connect(albumUrl)
+                    .userAgent(userAgent)
+                    .header("Accept",
+                            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+                    .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+                    .timeout(10000)
+                    .get();
+
+            // 수록곡 테이블 파싱
+            Elements rows = doc.select("form#frm table tbody tr");
+            for (Element row : rows) {
+                try {
+                    // 1. 곡 제목
+                    Element titleElem = row.selectFirst(".wrap_song_info .ellipsis.rank01 a");
+                    if (titleElem == null)
+                        continue;
+                    String title = titleElem.text();
+
+                    // 2. 가수
+                    Element artistElem = row.selectFirst(".wrap_song_info .ellipsis.rank02 a");
+                    String artist = (artistElem != null) ? artistElem.text() : "Unknown";
+
+                    // 3. Music ID (href="javascript:melon.play.playSong('100000', '36599950');")
+                    // 보통 두 번째 파라미터가 songId
+                    String href = titleElem.attr("href");
+                    Long musicId = 0L;
+                    if (href.contains("playSong")) {
+                        String[] parts = href.split("'");
+                        if (parts.length >= 4) {
+                            musicId = Long.parseLong(parts[3]);
+                        }
+                    }
+
+                    Music track = new Music();
+                    track.setTitle(title);
+                    track.setArtist(artist);
+                    track.setMusicId(musicId);
+                    track.setAlbumId(albumId); // 같은 앨범
+
+                    tracks.add(track);
+                } catch (Exception e) {
+                    // 개별 곡 파싱 실패 시 패스
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tracks;
     }
 
     // JSON 파싱 로직 (목록 API)
