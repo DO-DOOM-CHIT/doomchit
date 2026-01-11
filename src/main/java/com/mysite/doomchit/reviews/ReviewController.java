@@ -1,5 +1,6 @@
 package com.mysite.doomchit.reviews;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,75 +28,103 @@ public class ReviewController {
 	private final MusicService musicService;
 	private final UserService userService;
 
-	@GetMapping("/reviews/{mno}")
-	public String reviewDetail(@PathVariable("mno") Long mno, Model model) {
+    // 리뷰 페이지 (음악 상세 + 리뷰 목록)
+    @GetMapping("/reviews/{mno}")
+    public String reviewDetail(@PathVariable("mno") Long mno, Model model) {
 
-		Music music = musicService.getMusic(mno);
-		List<Review> reviewList = reviewService.getReviewList(music);
+        Music music = musicService.getMusic(mno);
 
-		// 앨범 수록곡 가져오기
-		if (music.getAlbumId() != null) {
-			List<Music> tracks = musicService.getAlbumTracklist(music.getAlbumId());
-			model.addAttribute("tracks", tracks);
-		}
+        // 전체 리뷰 목록 (최신순)
+        List<Review> reviewList = reviewService.getReviewList(music);
 
-		model.addAttribute("music", music);
-		model.addAttribute("reviewList", reviewList);
+        // 평균 평점 / 리뷰 개수
+        model.addAttribute("avgRating",
+                reviewService.getAverageRatingOrZero(music));
+        model.addAttribute("reviewCount",
+                reviewService.getReviewCount(music));
 
-		return "reviews";
-	}
+        // 앨범 수록곡
+        if (music.getAlbumId() != null) {
+            model.addAttribute("tracks",
+                    musicService.getAlbumTracklist(music.getAlbumId()));
+        }
 
-	@GetMapping("/music/detail/{musicId}")
-	public String musicDetailBridge(@PathVariable("musicId") Long musicId) {
-		try {
-			Music music = musicService.getOrCreateMusicByMusicId(musicId);
-			return "redirect:/doomchit/reviews/" + music.getMno();
-		} catch (Exception e) {
-			e.printStackTrace(); // 콘솔에 에러 출력
-			return "redirect:/doomchit/main"; // 에러 발생 시 메인으로 복귀
-		}
-	}
+        // 로그인 유저의 내 리뷰 처리
+        try {
+            Users user = userService.getCurrentUser();
 
-	// 리뷰 작성 ===============================================
-	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/{mno}")
-	public String createReview(@PathVariable("mno") Long mno, @RequestParam String content) {
+            reviewService.getMyReview(music, user)
+                    .ifPresent(myReview -> {
+                        model.addAttribute("myReview", myReview);
 
-		Music music = musicService.getMusic(mno);
-		Users user = userService.getCurrentUser();
+                        // 전체 리뷰 목록에서 내 리뷰 제거 (중복 방지)
+                        reviewList.removeIf(r ->
+                                r.getRno().equals(myReview.getRno()));
+                    });
 
-		reviewService.create(music, user, content);
+        } catch (Exception e) {
+            // 비로그인 상태면 그냥 넘어감
+        }
 
-		return "redirect:/doomchit/reviews/" + mno;
+        model.addAttribute("music", music);
+        model.addAttribute("reviewList", reviewList);
 
-	}
+        return "reviews";
+    }
 
-	// 리뷰 수정 ===============================================
-	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/modify/{rno}")
-	public String modifyReview(@PathVariable("rno") Integer rno, @RequestParam String content) {
+    // 외부 musicId → 내부 mno 브릿지
+    @GetMapping("/music/detail/{musicId}")
+    public String musicDetailBridge(@PathVariable("musicId") Long musicId) {
+        try {
+            Music music = musicService.getOrCreateMusicByMusicId(musicId);
+            return "redirect:/doomchit/reviews/" + music.getMno();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/doomchit/main";
+        }
+    }
 
-		Review review = reviewService.getReview(rno);
-		Users user = userService.getCurrentUser();
+    // 리뷰 작성 =================================================
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{mno}")
+    public String createReview(@PathVariable("mno") Long mno,
+                               @RequestParam("content") String content,
+                               @RequestParam("rating") BigDecimal rating) {
 
-		reviewService.modify(user, review, content);
+        Music music = musicService.getMusic(mno);
+        Users user = userService.getCurrentUser();
 
-		return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+        reviewService.create(music, user, content, rating);
 
-	}
+        return "redirect:/doomchit/reviews/" + mno;
+    }
 
-	// 리뷰 삭제 ===============================================
-	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/delete/{rno}")
-	public String deleteReview(
-			@PathVariable("rno") Integer rno) {
-		Review review = reviewService.getReview(rno);
-		Users user = userService.getCurrentUser();
+    // 리뷰 수정 =================================================
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{rno}")
+    public String modifyReview(@PathVariable("rno") Integer rno,
+                               @RequestParam("content") String content,
+                               @RequestParam("rating") BigDecimal rating) {
 
-		reviewService.delete(user, review);
+        Review review = reviewService.getReview(rno);
+        Users user = userService.getCurrentUser();
 
-		return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+        reviewService.modify(user, review, content, rating);
 
-	}
+        return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+    }
+
+    // 리뷰 삭제 =================================================
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/delete/{rno}")
+    public String deleteReview(@PathVariable("rno") Integer rno) {
+
+        Review review = reviewService.getReview(rno);
+        Users user = userService.getCurrentUser();
+
+        reviewService.delete(user, review);
+
+        return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+    }
 
 }
