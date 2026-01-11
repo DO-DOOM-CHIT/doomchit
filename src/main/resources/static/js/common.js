@@ -55,48 +55,37 @@ function setActiveMenu() {
    3. 로그인 상태 체크
 ========================== */
 function checkLoginStatus() {
-  /**
-   * TODO (백엔드 연동 시)
-   *
-   * fetch('/api/auth/me')
-   *  → 로그인 유저 정보 반환
-   */
+  fetch('/api/auth/me')
+    .then(res => {
+      if (!res.ok) throw new Error('not login');
+      return res.json();
+    })
+    .then(user => {
+      // ✅ 로그인 상태
+      document.querySelector('.auth').innerHTML = `
+        <span class="user-name">${user.username}님, 환영합니다^0^</span>
+        <button class="logout-btn">로그아웃</button>
+      `;
 
-  // 지금은 임시로 false
-  const isLogin = false;
-
-  const authArea = document.querySelector('.auth');
-
-  if (!authArea) return;
-
-  if (isLogin) {
-    // 로그인 상태
-    authArea.innerHTML = `
-      <span class="user-name">나혜</span>
-      <button class="logout-btn">로그아웃</button>
-    `;
-
-    document
-      .querySelector('.logout-btn')
-      .addEventListener('click', logout);
-
-  } else {
-    // 비로그인 상태
-    authArea.innerHTML = `
-      <a href="/doomchit/login" class="login-link">로그인</a>
-    `;
-  }
+      document
+        .querySelector('.logout-btn')
+        .addEventListener('click', logout);
+    })
+    .catch(() => {
+      // ✅ 비로그인 상태
+      document.querySelector('.auth').innerHTML = `
+        <a href="/doomchit/login" class="login-link">로그인</a>
+      `;
+    });
 }
+
 
 /* ==========================
    4. 로그아웃
 ========================== */
 function logout() {
-  /**
-   * TODO (백엔드 연동 시)
-   * POST /api/auth/logout
-   */
-  alert('로그아웃 (추후 API 연동)');
+  fetch('/api/auth/logout', { method: 'POST' })
+    .then(() => location.reload());
 }
 
 /* ==========================
