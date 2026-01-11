@@ -1,9 +1,17 @@
 package com.mysite.doomchit.users;
 
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -79,5 +87,15 @@ public class UserController {
     public String login() {
     	return "login";
     }
+    
+    // 지금 로그인된 사용자가 누구인지 알려주는 API
+    @GetMapping("/me")
+    @ResponseBody
+    public Map<String, String> me(Principal principal) {
+        Map<String, String> result = new HashMap<>();
+        result.put("username", principal.getName());
+        return result;
+    }
+
     
 }
