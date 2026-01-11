@@ -22,11 +22,11 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     // 리뷰 개수
     long countByMusic(Music music);
     
-    // 평균 평점 (0.5 단위 반올림)
+    // 평균 평점 (소수점 한 자리로 반올림, JPQL 문법 사용)
     @Query("""
-        SELECT ROUND(AVG(r.rating) * 2) / 2
-        FROM Review r
-        WHERE r.music = :music
+	    SELECT ROUND(AVG(r.rating), 1)
+	    FROM Review r
+	    WHERE r.music = :music
     """)
     BigDecimal getAverageRatingByMusic(@Param("music") Music music);
 }
