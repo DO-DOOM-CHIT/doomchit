@@ -101,8 +101,15 @@ sortMenu.addEventListener('click', (e) => {
   if (!type) return;
 
   // 정렬
-  const sorted = [...chartData].sort((a, b) => b[type] - a[type]);
-  renderChart(sorted);
+  sortMenu.addEventListener('click', (e) => {
+  e.stopPropagation(); // ⭐ 핵심
+
+  const li = e.target.closest('[data-sort]');
+  if (!li) return;
+
+  const type = li.dataset.sort;
+  location.href = `/doomchit/main?sort=${type}`;
+});
 
   // 메뉴 닫기
   sortMenu.style.display = 'none';
