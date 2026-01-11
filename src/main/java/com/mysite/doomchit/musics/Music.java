@@ -65,4 +65,10 @@ public class Music {
 
     @Transient
     private Long likeCount;
+
+    @Transient
+    private Long commentCount;
+
+    @Transient
+    private Double averageRating;
 }

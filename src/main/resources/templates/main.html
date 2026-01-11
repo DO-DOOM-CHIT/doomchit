@@ -79,11 +79,12 @@
                     </div>
                   </td>
                   <td class="col-album">
-					<div class="album-title" th:text="${music.albumTitle}">Album</div>
-				  </td>
+                    <div class="album-title" th:text="${music.albumTitle}">Album</div>
+                  </td>
                   <td class="col-comment">
                     <div class="icon-text">
-                      <i class="fa-regular fa-comment"></i> 0
+                      <i class="fa-regular fa-comment"></i> <span
+                        th:text="${music.commentCount != null ? #numbers.formatInteger(music.commentCount, 0, 'COMMA') : '0'}">0</span>
                     </div>
                   </td>
                   <td class="col-like">
@@ -95,7 +96,8 @@
                   </td>
                   <td class="col-rating">
                     <div class="star-rating">
-                      <i class="fa-solid fa-star"></i> 0.0
+                      <i class="fa-solid fa-star"></i> <span
+                        th:text="${music.averageRating != null ? #numbers.formatDecimal(music.averageRating, 1, 1) : '0.0'}">0.0</span>
                     </div>
                   </td>
                 </tr>
