@@ -48,7 +48,7 @@
     <div class="modal modal-sheet position-static d-block bg-body-secondary p-2 py-md-5">
     <div class="modal-dialog">
     <div id="contents" class="modal-content rounded-4 p-5 shadow">
-      <h1 class="d-flex justify-content-center pb-5">DoomChit</h1>
+      <a th:href="@{/doomchit/main}"><h1 class="d-flex justify-content-center pb-5">DoomChit</h1></a>
       
     <form th:action="@{/doomchit/signup}" th:object="${userForm}" method="post">
     <div class="row g-3 align-items-start mb-3">
