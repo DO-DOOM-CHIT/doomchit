@@ -94,27 +94,27 @@
         <div id="album-main-img" class="featurette-image img-fluid col col-md-3 pb-3">
           <img name="musicsImage" class="w-100" th:src="${music.image}" src="../img/album_sample.jpg" />
         </div>
-        <div class="col pt-2 pe-3">
-          <h3 name="musicsTitle" class="text-break" th:text="${music.title}">곡 제목</h3>
-          <h4 name="artist" class="text-break pb-2"><a href="#" th:text="${music.artist}">가수명</a></h4>
+		<div class="col pt-2 pe-3">
+          <h3 name="musicsTitle" class="text-break" th:text="${music.title}"></h3>
+          <h4 name="artist" class="text-break pb-2"><a href="#" th:text="${music.artist}"></a></h4>
           <dl id="music-sum-list" class="list">
             <dt>발매일</dt>
-            <dd name="relDate" th:text="${music.relDate}">2026.01.07.</dd>
+            <dd name="relDate" th:text="${music.relDate}"></dd>
             <dt>장르</dt>
-            <dd name="genre" th:text="${music.genre}">블루스</dd>
+            <dd name="genre" th:text="${music.genre}"></dd>
             <dt>길이</dt>
             <dd name="duration"
-              th:text="${music.duration / 60} + ':' + ${#numbers.formatInteger(music.duration % 60, 2)}">0:00</dd>
+              th:text="${music.duration / 60} + ':' + ${#numbers.formatInteger(music.duration % 60, 2)}"></dd>
           </dl>
           <div id="ratings">
             <div id="rating" class="fs-4">
-              <dl>
-                <dt id="stars" class="me-2">
-                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                    class="fa-solid fa-star"></i><i class="fa-solid fa-star pe-2"></i><label id="avgRating"
-                    th:text="${avgRating}">5.0</label>
-                </dt>
-                <dd id="ratingCount" class="pe-2 pt-2 fs-6" th:text="'(' + ${#lists.size(reviewList)} + '명이 참여)'"></dd>
+				<dl>
+				  <dt id="stars" class="me-2 d-flex align-items-center" th:with="rating=${avgRating}">
+				    <th:block th:each="num : ${#numbers.sequence(1, 5)}"><i th:if="${num <= rating}" class="fa-solid fa-star"></i><i th:if="${num > rating && (num - 0.5) <= rating}" class="fa-solid fa-star-half-stroke"></i><i th:if="${(num - 0.5) > rating}" class="fa-regular fa-star"></i></th:block>
+				    <label id="avgRating" th:text="${avgRating}" class="ms-1">0.0</label>
+				  </dt>
+
+				  <dd id="ratingCount" class="pe-2 pt-2 fs-6 text-muted" th:text="|(${#lists.size(reviewList)}명이 참여)|"></dd>
                 </dd>
               </dl>
             </div>
@@ -239,11 +239,11 @@
           </form>
         </div>
 
-        <div th:each="review : ${reviewList}" id="reviewed" class="border-bottom p-3 mb-3">
-          <div id="stars" class="me-2">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-              class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
+		<div th:each="review : ${reviewList}" id="reviewed" class="border-bottom p-3 mb-3">
+			<div id="stars" class="me-2" th:with="rating=${review.rating}">
+			  <th:block th:each="num : ${#numbers.sequence(1, 5)}"><i th:if="${num <= rating}" class="fa-solid fa-star"></i><i th:if="${num > rating && (num - 0.5) <= rating}" class="fa-solid fa-star-half-stroke"></i><i th:if="${(num - 0.5) > rating}" class="fa-regular fa-star"></i></th:block>
+			</div>
+
           <dl>
             <dd id="rating" th:text="${review.rating}" class="fw-bold pe-2"></dd>
           </dl>
@@ -253,9 +253,7 @@
           <dl class="d-flex justify-content-between">
             <div>
               <dt id="reviewsUser" class="pe-2" th:text="${review.user.username}"></dt>
-              <dd id="creDate" class="d-flex align-items-center"><i class="fa-solid fa-ellipsis pe-2"></i>
-                <div th:text="${#temporals.format(review.creDate, 'yyyy.MM.dd')}"></div>
-              </dd>
+              <dd id="creDate" class="d-flex align-items-center"><i class="fa-solid fa-ellipsis pe-2"></i><div th:text="${#temporals.format(review.creDate, 'yyyy.MM.dd')}"></div></dd>
             </div>
             <!-- ✅ 본인만 수정/삭제 -->
             <div sec:authorize="isAuthenticated()" th:if="${#authentication.name == review.user.userId}">
