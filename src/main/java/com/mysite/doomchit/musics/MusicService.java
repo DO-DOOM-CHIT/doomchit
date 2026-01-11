@@ -70,6 +70,11 @@ public class MusicService {
         });
     }
 
+    // DB에서 단순히 찾기 (없으면 null)
+    public Music findMusicByMusicId(Long musicId) {
+        return musicRepository.findByMusicId(musicId).orElse(null);
+    }
+
     // 1. 메인 페이지용: 가볍고 빠른 기본 차트 (제목, 가수, 앨범 등 목록 API 정보만)
     public List<Music> getMelonChartBasic() {
         try {

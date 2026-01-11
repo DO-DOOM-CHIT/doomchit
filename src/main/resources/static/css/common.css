@@ -112,3 +112,8 @@ body[data-page="likes"] .header-nav a[data-menu="likes"] {
   color: #A352D2;
   font-weight: 700;
 }
+
+html, body {
+  height: auto;
+  overflow-y: auto;
+}

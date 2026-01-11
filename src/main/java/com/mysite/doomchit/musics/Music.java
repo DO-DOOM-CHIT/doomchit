@@ -62,4 +62,7 @@ public class Music {
 
     @Transient
     private Integer rank;
+
+    @Transient
+    private Long likeCount;
 }
