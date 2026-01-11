@@ -185,24 +185,24 @@
       </div>
 
 
-	  <div id="reviews" class="mb-5">
-	          <div id="reviews-tab">
-	  		  <div class="d-flex justify-content-between pb-2 mb-3 border-bottom">
-	  			<h2>
-	  				리뷰 <span th:text="|${#lists.size(reviewList)}개|">0개</span>
-	  			</h2>
-	  			<div class="fs-6 pt-2">
-	  						<b>최신순</b><label class="px-2">|</label><a href="#reviews">추천순</a>
-	  					</div>
-	  		  </div>
-	  		  
-	          </div>
+      <div id="reviews" class="mb-5">
+        <div id="reviews-tab">
+          <div class="d-flex justify-content-between pb-2 mb-3 border-bottom">
+            <h2>
+              리뷰 <span th:text="|${#lists.size(reviewList)}개|">0개</span>
+            </h2>
+            <div class="fs-6 pt-2">
+              <b>최신순</b><label class="px-2">|</label><a href="#reviews">추천순</a>
+            </div>
+          </div>
 
-	          <div sec:authorize="isAnonymous()" class="bg-body-secondary rounded mb-4">
-	            <div class="p-3">
-	              댓글을 입력하려면 <a th:href="@{/doomchit/login}">로그인</a>을 해야합니다.
-	            </div>
-	          </div>
+        </div>
+
+        <div sec:authorize="isAnonymous()" class="bg-body-secondary rounded mb-4">
+          <div class="p-3">
+            댓글을 입력하려면 <a th:href="@{/doomchit/login}">로그인</a>을 해야합니다.
+          </div>
+        </div>
 
         <div sec:authorize="isAuthenticated()" class="border rounded p-3 mb-4">
           <form id="reviews" th:action="@{/doomchit/{mno}(mno=${music.mno})}" th:object="${reviewForm}" method="post">
@@ -267,6 +267,7 @@
         });
       }
     </script>
+    <script th:src="@{/js/main.js}"></script>
 </body>
 
 </html>
