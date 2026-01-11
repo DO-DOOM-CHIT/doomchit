@@ -32,7 +32,7 @@
         <h1 class="page-title">좋아요</h1>
 
         <!-- 정렬 방식 -->
-        <div class="sort"></div>
+        <div class="sort">
           <button class="sort-btn">
             정렬방식 <i class="fa-solid fa-chevron-down"></i>
           </button>
@@ -78,7 +78,9 @@
                     </div>
                   </div>
                 </td>
-                <td class="col-album" th:text="${music.albumTitle}">Album</td>
+				<td class="col-album">
+					<div class="album-title" th:text="${music.albumTitle}">Album</div>
+			    </td>
                 <td class="col-comment">
                   <div class="icon-text">
                     <i class="fa-regular fa-comment"></i> 0
