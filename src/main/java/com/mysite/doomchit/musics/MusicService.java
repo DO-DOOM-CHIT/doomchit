@@ -55,31 +55,44 @@ public class MusicService {
 
     public Music getOrCreateMusicByMusicId(Long musicId, String title, String artist, String image) {
         // 1. DB 확인
-        return musicRepository.findByMusicId(musicId).orElseGet(() -> {
-            // 2. 파라미터가 있으면 바로 생성 (검색 결과 클릭 시)
-            if (title != null && !title.isEmpty()) {
-                Music m = new Music();
-                m.setMusicId(musicId);
-                m.setTitle(title);
-                m.setArtist(artist);
-                m.setImage(image);
-                m.setDuration(0); // DB Not Null 제약조건 대응
-                // m.setCreDate(java.time.LocalDateTime.now()); // Entity에 필드 없음
+        return musicRepository.findByMusicId(musicId)
+                .map(m -> {
+                    // 기존 데이터 화질 개선 (Regex 이용)
+                    if (m.getImage() != null && m.getImage().contains("/resize/")) {
+                        String newImage = m.getImage().replaceAll("/resize/\\d+", "/resize/500");
+                        if (!newImage.equals(m.getImage())) {
+                            m.setImage(newImage);
+                            return musicRepository.save(m);
+                        }
+                    }
+                    return m;
+                })
+                .orElseGet(() -> {
+                    // 2. 파라미터가 있으면 바로 생성 (검색 결과 클릭 시)
+                    if (title != null && !title.isEmpty()) {
+                        Music m = new Music();
+                        m.setMusicId(musicId);
+                        m.setTitle(title);
+                        m.setArtist(artist);
+                        // 고화질 이미지로 변환 (Regex)
+                        m.setImage(image.replaceAll("/resize/\\d+", "/resize/500"));
+                        m.setDuration(0); // DB Not Null 제약조건 대응
+                        // m.setCreDate(java.time.LocalDateTime.now()); // Entity에 필드 없음
 
-                fillSongAndAlbumDetail(m); // 상세 정보 크롤링
-                return musicRepository.save(m);
-            }
+                        fillSongAndAlbumDetail(m); // 상세 정보 크롤링
+                        return musicRepository.save(m);
+                    }
 
-            // 3. 파라미터 없으면 차트 API에서 탐색 (기존 로직)
-            List<Music> chart = getMelonChartBasic();
-            for (Music m : chart) {
-                if (m.getMusicId().equals(musicId)) {
-                    fillSongAndAlbumDetail(m);
-                    return musicRepository.save(m);
-                }
-            }
-            throw new IllegalArgumentException("차트에서 데이터를 찾을 수 없습니다: " + musicId);
-        });
+                    // 3. 파라미터 없으면 차트 API에서 탐색 (기존 로직)
+                    List<Music> chart = getMelonChartBasic();
+                    for (Music m : chart) {
+                        if (m.getMusicId().equals(musicId)) {
+                            fillSongAndAlbumDetail(m);
+                            return musicRepository.save(m);
+                        }
+                    }
+                    throw new IllegalArgumentException("차트에서 데이터를 찾을 수 없습니다: " + musicId);
+                });
     }
 
     // DB에서 단순히 찾기 (없으면 null)
@@ -173,7 +186,7 @@ public class MusicService {
                     item.put("id", node.path("SONGID").asText());
                     item.put("name", node.path("SONGNAME").asText());
                     item.put("detail", node.path("ARTISTNAME").asText());
-                    item.put("image", node.path("ALBUMIMG").asText().replace("/120", "/64"));
+                    item.put("image", node.path("ALBUMIMG").asText().replaceAll("/resize/\\d+", "/resize/500"));
                     results.add(item);
                 }
             }
@@ -209,11 +222,27 @@ public class MusicService {
                 }
 
                 // 발매일 추출
+                // 발매일 추출
                 Element dateKey = songDoc.selectFirst("dl.list dt:contains(발매일)");
                 if (dateKey != null) {
                     String dateStr = dateKey.nextElementSibling().text();
                     try {
                         music.setRelDate(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+                    } catch (Exception e) {
+                    }
+                }
+
+                // 재생시간 추출 (추가)
+                Element timeKey = songDoc.selectFirst("dl.list dt:contains(재생시간)");
+                if (timeKey != null) {
+                    try {
+                        String timeStr = timeKey.nextElementSibling().text(); // 예: "3:42"
+                        String[] parts = timeStr.split(":");
+                        if (parts.length == 2) {
+                            int min = Integer.parseInt(parts[0]);
+                            int sec = Integer.parseInt(parts[1]);
+                            music.setDuration(min * 60 + sec);
+                        }
                     } catch (Exception e) {
                     }
                 }
