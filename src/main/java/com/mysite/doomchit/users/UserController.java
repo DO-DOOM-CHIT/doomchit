@@ -88,14 +88,4 @@ public class UserController {
     	return "login";
     }
     
-    // 지금 로그인된 사용자가 누구인지 알려주는 API
-    @GetMapping("/me")
-    @ResponseBody
-    public Map<String, String> me(Principal principal) {
-        Map<String, String> result = new HashMap<>();
-        result.put("username", principal.getName());
-        return result;
-    }
-
-    
 }
