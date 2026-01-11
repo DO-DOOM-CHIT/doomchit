@@ -112,9 +112,9 @@
                 <dt id="stars" class="me-2">
                   <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
                     class="fa-solid fa-star"></i><i class="fa-solid fa-star pe-2"></i><label
-                    name="ratingTotal">5.0</label>
+                    id="avgRating" th:text="${avgRating}">5.0</label>
                 </dt>
-                <dd name="ratingCount" class="pe-2 pt-2 fs-6">(1,234명이 참여)</dd>
+                <dd id="ratingCount" class="pe-2 pt-2 fs-6" th:text="'(' + ${#lists.size(reviewList)} + '명이 참여)'"></dd></dd>
               </dl>
             </div>
           </div>
