@@ -101,15 +101,22 @@ sortMenu.addEventListener('click', (e) => {
   if (!type) return;
 
   // 정렬
-  const sorted = [...chartData].sort((a, b) => b[type] - a[type]);
-  renderChart(sorted);
+  sortMenu.addEventListener('click', (e) => {
+  e.stopPropagation(); // ⭐ 핵심
+
+  const li = e.target.closest('[data-sort]');
+  if (!li) return;
+
+  const type = li.dataset.sort;
+  location.href = `/doomchit/main?sort=${type}`;
+});
 
   // 메뉴 닫기
   sortMenu.style.display = 'none';
 });
 
-// 초기 차트 렌더링
-renderChart(chartData);
+// 초기 차트 렌더링 (서버 사이드 렌더링을 위해 JS 렌더링 중단)
+// renderChart(chartData);
 
 // 별점 아이콘 생성 함수
 function createEmptyStars() {
