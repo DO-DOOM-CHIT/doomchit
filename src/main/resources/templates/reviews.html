@@ -256,9 +256,9 @@
               <dd id="creDate" class="d-flex align-items-center"><i class="fa-solid fa-ellipsis pe-2"></i><div th:text="${#temporals.format(review.creDate, 'yyyy.MM.dd')}"></div></dd>
             </div>
             <!-- ✅ 본인만 수정/삭제 -->
-            <div sec:authorize="isAuthenticated()" th:if="${#authentication.name == review.user.userId}">
+            <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.userId == review.userId}">
               <form th:action="@{/doomchit/delete/{rno}(rno=${review.rno})}" method="post" style="display:inline;"
-                onsubmit="return confirm('삭제할까?');">
+                onsubmit="return confirm('작성한 리뷰를 삭제할까요?');">
                 <button class="btn btn-sm btn-outline-danger">삭제</button>
               </form>
             </div>
