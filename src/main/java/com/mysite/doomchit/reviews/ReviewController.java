@@ -28,10 +28,16 @@ public class ReviewController {
 	private final UserService userService;
 
 	@GetMapping("/reviews/{mno}")
-	public String reviewDetail(@PathVariable Long mno, Model model) {
+	public String reviewDetail(@PathVariable("mno") Long mno, Model model) {
 
 		Music music = musicService.getMusic(mno);
 		List<Review> reviewList = reviewService.getReviewList(music);
+
+		// 앨범 수록곡 가져오기
+		if (music.getAlbumId() != null) {
+			List<Music> tracks = musicService.getAlbumTracklist(music.getAlbumId());
+			model.addAttribute("tracks", tracks);
+		}
 
 		model.addAttribute("music", music);
 		model.addAttribute("reviewList", reviewList);
@@ -40,9 +46,14 @@ public class ReviewController {
 	}
 
 	@GetMapping("/music/detail/{musicId}")
-	public String musicDetailBridge(@PathVariable Long musicId) {
-		Music music = musicService.getOrCreateMusicByMusicId(musicId);
-		return "redirect:/doomchit/reviews/" + music.getMno();
+	public String musicDetailBridge(@PathVariable("musicId") Long musicId) {
+		try {
+			Music music = musicService.getOrCreateMusicByMusicId(musicId);
+			return "redirect:/doomchit/reviews/" + music.getMno();
+		} catch (Exception e) {
+			e.printStackTrace(); // 콘솔에 에러 출력
+			return "redirect:/doomchit/main"; // 에러 발생 시 메인으로 복귀
+		}
 	}
 
 	// 리뷰 작성 ===============================================
@@ -62,7 +73,7 @@ public class ReviewController {
 	// 리뷰 수정 ===============================================
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{rno}")
-	public String modifyReview(@PathVariable Integer rno, @RequestParam String content) {
+	public String modifyReview(@PathVariable("rno") Integer rno, @RequestParam String content) {
 
 		Review review = reviewService.getReview(rno);
 		Users user = userService.getCurrentUser();
@@ -77,7 +88,7 @@ public class ReviewController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/delete/{rno}")
 	public String deleteReview(
-			@PathVariable Integer rno) {
+			@PathVariable("rno") Integer rno) {
 		Review review = reviewService.getReview(rno);
 		Users user = userService.getCurrentUser();
 

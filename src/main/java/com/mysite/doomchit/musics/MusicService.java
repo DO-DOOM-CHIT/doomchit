@@ -182,6 +182,64 @@ public class MusicService {
         }
     }
 
+    // 앨범 수록곡 가져오기
+    public List<Music> getAlbumTracklist(Long albumId) {
+        List<Music> tracks = new ArrayList<>();
+        try {
+            String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
+            String albumUrl = ALBUM_DETAIL_URL + albumId;
+
+            Document doc = Jsoup.connect(albumUrl)
+                    .userAgent(userAgent)
+                    .header("Accept",
+                            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+                    .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+                    .timeout(10000)
+                    .get();
+
+            // 수록곡 테이블 파싱
+            Elements rows = doc.select("form#frm table tbody tr");
+            for (Element row : rows) {
+                try {
+                    // 1. 곡 제목
+                    Element titleElem = row.selectFirst(".wrap_song_info .ellipsis.rank01 a");
+                    if (titleElem == null)
+                        continue;
+                    String title = titleElem.text();
+
+                    // 2. 가수
+                    Element artistElem = row.selectFirst(".wrap_song_info .ellipsis.rank02 a");
+                    String artist = (artistElem != null) ? artistElem.text() : "Unknown";
+
+                    // 3. Music ID (href="javascript:melon.play.playSong('100000', '36599950');")
+                    // 보통 두 번째 파라미터가 songId
+                    String href = titleElem.attr("href");
+                    Long musicId = 0L;
+                    if (href.contains("playSong")) {
+                        String[] parts = href.split("'");
+                        if (parts.length >= 4) {
+                            musicId = Long.parseLong(parts[3]);
+                        }
+                    }
+
+                    Music track = new Music();
+                    track.setTitle(title);
+                    track.setArtist(artist);
+                    track.setMusicId(musicId);
+                    track.setAlbumId(albumId); // 같은 앨범
+
+                    tracks.add(track);
+                } catch (Exception e) {
+                    // 개별 곡 파싱 실패 시 패스
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tracks;
+    }
+
     // JSON 파싱 로직 (목록 API)
     private List<Music> parseMelonJson(String json) {
         List<Music> musicList = new ArrayList<>();

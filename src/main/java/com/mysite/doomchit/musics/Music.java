@@ -24,10 +24,10 @@ public class Music {
     @Column(name = "music_id", nullable = false)
     private Long musicId; // 음악 API 고유 번호
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 500)
     private String artist; // 가수명
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 500)
     private String title; // 음악 제목
 
     @Column(nullable = false)
