@@ -68,7 +68,7 @@ public class MusicService {
                     }
 
                     if (m.getDuration() == null || m.getDuration() == 0 || m.getLyrics() == null
-                            || m.getLyrics().isEmpty()) {
+                            || m.getLyrics().isEmpty() || m.getLyrics().split("\n").length < 5) {
                         fillSongAndAlbumDetail(m);
                         needUpdate = true;
                     }
@@ -255,12 +255,19 @@ public class MusicService {
                 Element lyricDiv = songDoc.selectFirst("div.lyric");
                 if (lyricDiv != null) {
                     String html = lyricDiv.html();
-                    String text = html.replaceAll("(?i)<br[^>]*>", "__MelonNewLine__");
-                    text = org.jsoup.Jsoup.parse(text).text();
-                    text = text.replace("__MelonNewLine__", "\n");
+                    // 1. BR 태그를 줄바꿈으로 변환
+                    html = html.replaceAll("(?i)<br\\s*/?>", "\n");
+                    // 2. 나머지 태그 제거
+                    html = html.replaceAll("<[^>]+>", "");
+                    // 3. HTML 엔티티 디코딩
+                    html = org.jsoup.parser.Parser.unescapeEntities(html, true);
 
-                    if (text.contains("[가사 준비중]"))
+                    // 4. 과도한 줄바꿈 제거 (연속된 줄바꿈을 하나로)
+                    String text = html.replaceAll("(\\r\\n|\\r|\\n)+", "\n").trim();
+
+                    if (text.contains("[가사 준비중]")) {
                         text = "가사 준비중입니다.";
+                    }
                     music.setLyrics(text);
                 }
 
