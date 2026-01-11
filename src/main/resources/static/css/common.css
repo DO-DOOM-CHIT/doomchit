@@ -1,8 +1,9 @@
 /* ===== Header ===== */
 .header {
-  width: 1440px;
+  max-width: 1440px;   /* ❗ width → max-width */
   height: 123px;
   border-bottom: 1px solid #e5e5e5;
+  margin: 0 auto;      /* ❗ 가운데 정렬 */
 }
 
 /* 상단 줄 */
