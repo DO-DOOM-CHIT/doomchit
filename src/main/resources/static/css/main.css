@@ -143,6 +143,7 @@ main {
   width: 100%;
   height: 100%;
   position: relative;
+  z-index: 1;
 }
 
 .chart-scroll-x {
@@ -316,4 +317,9 @@ main {
 
 .chart-table tbody tr:hover {
   background: #faf7ff;
+}
+
+.sort {
+  position: relative;
+  z-index: 1000; /* ⭐ 차트보다 위 */
 }
