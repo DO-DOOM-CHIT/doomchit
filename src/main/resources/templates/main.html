@@ -19,7 +19,8 @@
   <link rel="stylesheet" href="../css/common.css" />
 </head>
 
-<body>
+<body data-page="main">
+
 
   <div class="page-wrap">
 
@@ -48,9 +49,10 @@
       </div>
 
       <!-- 차트 -->
-      <section class="chart-box">
-        <div class="chart-box-inner">
-          <table class="chart-table">
+      <section class="chart-wrapper">
+  <div class="chart-scroll-x">
+    <div class="chart-scroll-y">
+      <table class="chart-table">
             <thead>
               <tr>
                 <th class="col-rank">순위</th>
@@ -93,6 +95,8 @@
               </tr>
             </tbody>
           </table>
+    </div>
+  </div>
       </section>
     </main>
 

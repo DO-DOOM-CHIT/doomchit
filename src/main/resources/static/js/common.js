@@ -11,48 +11,43 @@
    1. header.html 불러오기
 ========================== */
 document.addEventListener('DOMContentLoaded', () => {
-  // loadHeader();
+  loadHeader();
 });
 
 /**
  * header.html을 현재 페이지에 삽입
  */
-// function loadHeader() {
-//   const headerContainer = document.getElementById('header');
+function loadHeader() {
+  const headerContainer = document.getElementById('header');
+  if (!headerContainer) return;
 
-//   if (!headerContainer) return;
+  fetch('/doomchit/header.html')
+    .then(res => res.text())
+    .then(html => {
+      headerContainer.innerHTML = html;
 
-//   fetch('../doomchit/header.html')
-//     .then(res => res.text())
-//     .then(html => {
-//       headerContainer.innerHTML = html;
-
-//       // 헤더 로드 후 로그인 상태 처리
-//       setActiveMenu();
-//       checkLoginStatus();
-//     })
-//     .catch(err => {
-//       console.error('header.html 로드 실패', err);
-//     });
-// }
+      // ✅ 여기서 실행 (핵심)
+      setActiveMenu();
+      checkLoginStatus();
+    })
+    .catch(err => {
+      console.error('header.html 로드 실패', err);
+    });
+}
 
 /* ==========================
    2. 메뉴 active 처리
 ========================== */
 function setActiveMenu() {
-  const path = window.location.pathname;
+  const path = location.pathname;
 
-  const menuLinks = document.querySelectorAll('.header-nav a');
-  menuLinks.forEach(link => link.classList.remove('active'));
+  const links = document.querySelectorAll('.header-nav a');
+  links.forEach(a => a.classList.remove('active'));
 
-  if (path.includes('likes')) {
-    document
-      .querySelector('.header-nav a[data-menu="likes"]')
-      ?.classList.add('active');
-  } else {
-    document
-      .querySelector('.header-nav a[data-menu="main"]')
-      ?.classList.add('active');
+  if (path.includes('/likes')) {
+    document.querySelector('[data-menu="likes"]')?.classList.add('active');
+  } else if (path.includes('/main')) {
+    document.querySelector('[data-menu="main"]')?.classList.add('active');
   }
 }
 
