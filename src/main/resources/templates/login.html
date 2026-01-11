@@ -19,11 +19,9 @@
     
     <title>로그인 - DoomChit</title>
     
-
     <style>
 
-        h1,
-        .logo {
+        h1, .logo {
             color: #a352d2;
             font-family: 'Gafata', sans-serif;
             letter-spacing: 0.5px;
@@ -108,16 +106,17 @@
                                 required
                             />
                         </div>
+						
+						<!-- 에러 메시지 -->
+	                    <div
+	                        th:if="${param.error}"
+	                        class="text-danger text-center"
+	                    >
+	                        아이디 또는 비밀번호가 일치하지 않습니다.
+	                    </div>
                     </div>
 
-                    <!-- 에러 메시지 -->
-                    <div
-                        th:if="${param.error}"
-                        class="mb-3 text-center"
-                        style="color: red;"
-                    >
-                        아이디 또는 비밀번호가 일치하지 않습니다.
-                    </div>
+                    
 
                     <!-- 버튼 -->
                     <div class="text-center">
