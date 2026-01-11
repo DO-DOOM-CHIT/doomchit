@@ -17,7 +17,6 @@ public class UserForm {
     @NotBlank(message = "비밀번호 확인을 진행해 주세요.")
     private String userPwd2;
 
-    @Size(max = 50)
     @NotBlank(message = "닉네임을 입력해 주세요.")
     private String username;
 }

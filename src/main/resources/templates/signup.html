@@ -7,6 +7,10 @@
 			<div>
 				<label for="userId">사용자 ID</label>
 				<input type="text" th:field="*{userId}">
+				<div th:if="${#fields.hasErrors('userId')}"
+				     th:errors="*{userId}"
+				     style="color:red;">
+				</div>
 			</div>
 			<div>
 				<label for="userPwd1">비밀번호</label>
@@ -15,10 +19,16 @@
 			<div>
 				<label for="userPwd2">비밀번호 확인</label>
 				<input type="password" th:field="*{userPwd2}">
+				<div th:if="${#fields.hasErrors('userPwd2')}"
+				     th:errors="*{userPwd2}"
+				     style="color:red;">
 			</div>
 			<div>
 				<label for="username">닉네임</label>
 				<input type="text" th:field="*{username}">
+				<div th:if="${#fields.hasErrors('username')}"
+				     th:errors="*{username}"
+				     style="color:red;">
 			</div>
 			<button type="submit">회원가입</button>
 		</form>
