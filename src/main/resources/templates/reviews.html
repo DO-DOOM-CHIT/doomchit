@@ -229,7 +229,7 @@
             <div id="rating" class="d-flex justify-content-between">
               <div id="stars" class="me-2 pt-2 fs-3">
                 <a href="#reviews"><i class="fa-solid fa-star"></i></a>
-                <input id="rating_input" type="range" th:field="*{rating}" min="1" max="5">
+                <input id="rating_input" type="range" th:field="*{rating}" step="0.5" min="1" max="5">
                 <label id="rating_value"></label>
               </div>
               <button class="btn btn-primary btn-lg" type="submit">
