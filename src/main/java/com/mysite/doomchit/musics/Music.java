@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,5 +59,7 @@ public class Music {
 
     // 로직용 추가 필드 (ERD 이미지에는 없지만 크롤링에 필요)
     private Long albumId;
+
+    @Transient
     private Integer rank;
 }
