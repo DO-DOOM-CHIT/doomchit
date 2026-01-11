@@ -47,12 +47,28 @@ public class MusicService {
                     return musicRepository.save(m);
                 });
     }
-    
+
     public Music getMusic(Long mno) {
         return musicRepository.findById(mno)
                 .orElseThrow(() -> new IllegalArgumentException("음악을 찾을 수 없습니다."));
     }
 
+    public Music getOrCreateMusicByMusicId(Long musicId) {
+        // 1. DB 확인
+        return musicRepository.findByMusicId(musicId).orElseGet(() -> {
+            // 2. DB에 없으면 차트 API에서 탐색
+            List<Music> chart = getMelonChartBasic();
+            for (Music m : chart) {
+                if (m.getMusicId().equals(musicId)) {
+                    // 3. 차트에서 찾으면 상세 정보 크롤링 후 저장
+                    fillSongAndAlbumDetail(m);
+                    return musicRepository.save(m);
+                }
+            }
+            // 4. 차트에도 없으면(예외) - 여기서는 단순히 에러 처리하거나 빈 객체 반환
+            throw new IllegalArgumentException("차트에서 데이터를 찾을 수 없습니다: " + musicId);
+        });
+    }
 
     // 1. 메인 페이지용: 가볍고 빠른 기본 차트 (제목, 가수, 앨범 등 목록 API 정보만)
     public List<Music> getMelonChartBasic() {

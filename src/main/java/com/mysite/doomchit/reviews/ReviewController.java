@@ -22,65 +22,69 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class ReviewController {
-	
+
 	private final ReviewService reviewService;
 	private final MusicService musicService;
 	private final UserService userService;
-	
+
 	@GetMapping("/reviews/{mno}")
 	public String reviewDetail(@PathVariable Long mno, Model model) {
 
-	    Music music = musicService.getMusic(mno);
-	    List<Review> reviewList = reviewService.getReviewList(music);
+		Music music = musicService.getMusic(mno);
+		List<Review> reviewList = reviewService.getReviewList(music);
 
-	    model.addAttribute("music", music);
-	    model.addAttribute("reviewList", reviewList);
+		model.addAttribute("music", music);
+		model.addAttribute("reviewList", reviewList);
 
-	    return "reviews";
+		return "reviews";
 	}
 
-	
+	@GetMapping("/music/detail/{musicId}")
+	public String musicDetailBridge(@PathVariable Long musicId) {
+		Music music = musicService.getOrCreateMusicByMusicId(musicId);
+		return "redirect:/doomchit/reviews/" + music.getMno();
+	}
+
 	// 리뷰 작성 ===============================================
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{mno}")
 	public String createReview(@PathVariable("mno") Long mno, @RequestParam String content) {
-		
-        Music music = musicService.getMusic(mno);
-        Users user = userService.getCurrentUser();
 
-        reviewService.create(music, user, content);
+		Music music = musicService.getMusic(mno);
+		Users user = userService.getCurrentUser();
 
-        return "redirect:/doomchit/reviews/" + mno;
-        
-  }
-	
+		reviewService.create(music, user, content);
+
+		return "redirect:/doomchit/reviews/" + mno;
+
+	}
+
 	// 리뷰 수정 ===============================================
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{rno}")
-    public String modifyReview(@PathVariable Integer rno, @RequestParam String content) {
-		
-        Review review = reviewService.getReview(rno);
-        Users user = userService.getCurrentUser();
+	public String modifyReview(@PathVariable Integer rno, @RequestParam String content) {
 
-        reviewService.modify(user, review, content);
+		Review review = reviewService.getReview(rno);
+		Users user = userService.getCurrentUser();
 
-        return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
-        
-    }
-	
+		reviewService.modify(user, review, content);
+
+		return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+
+	}
+
 	// 리뷰 삭제 ===============================================
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/delete/{rno}")
 	public String deleteReview(
-            @PathVariable Integer rno
-    ) {
-        Review review = reviewService.getReview(rno);
-        Users user = userService.getCurrentUser();
+			@PathVariable Integer rno) {
+		Review review = reviewService.getReview(rno);
+		Users user = userService.getCurrentUser();
 
-        reviewService.delete(user, review);
+		reviewService.delete(user, review);
 
-        return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
-        
-    }
-	
+		return "redirect:/doomchit/reviews/" + review.getMusic().getMno();
+
+	}
+
 }
