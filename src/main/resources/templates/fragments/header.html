@@ -26,8 +26,8 @@
 
   <!-- 하단 메뉴 -->
   <nav class="header-nav">
-    <a href="/doomchit/main" data-menu="main">둠칫차트</a>
-    <a href="/doomchit/likes" data-menu="likes">좋아요</a>
+    <a href="/doomchit/main" data-menu="main" th:classappend="${pageName == 'main'} ? 'active'">둠칫차트</a>
+    <a href="/doomchit/likes" data-menu="likes" th:classappend="${pageName == 'likes'} ? 'active'">좋아요</a>
   </nav>
 
 
