@@ -6,7 +6,7 @@
 
     <!-- 로고 -->
     <div class="logo">
-      <a href="/doomchit/main">DoomChit</a>
+      <a th:href="@{/doomchit/main}">DoomChit</a>
     </div>
 
     <!-- 검색 영역 -->
@@ -22,7 +22,12 @@
     <!-- 로그인 -->
     <div class="auth">
       <a class="login-link" sec:authorize="isAnonymous()" th:href="@{/doomchit/login}">로그인</a>
-      <a class="logout-link" sec:authorize="isAuthenticated()" th:href="@{/doomchit/logout}">로그아웃</a>
+	  <div sec:authorize="isAuthenticated()" class="user-info">
+	    <p class="welcome-text">환영합니다!</p>
+	    <a class="logout-link" th:href="@{/doomchit/logout}">
+	      로그아웃
+	    </a>
+	  </div>
     </div>
 
   </div>
