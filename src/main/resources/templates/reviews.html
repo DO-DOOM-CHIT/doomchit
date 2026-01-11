@@ -103,7 +103,8 @@
             <dt>장르</dt>
             <dd name="genre" th:text="${music.genre}">블루스</dd>
             <dt>길이</dt>
-            <dd name="duration">1:30</dd>
+            <dd name="duration"
+              th:text="${music.duration / 60} + ':' + ${#numbers.formatInteger(music.duration % 60, 2)}">0:00</dd>
           </dl>
           <div id="ratings">
             <div id="rating" class="fs-4">
@@ -197,7 +198,8 @@
           <dt class="flex-shrink-0 text-nowrap me-3">장르</dt>
           <dd name="genre" class="d-flex text-break" th:text="${music.genre}">블루스</dd>
           <dt class="flex-shrink-0 text-nowrap me-3">길이</dt>
-          <dd name="duration" class="d-flex text-break">1:30</dd>
+          <dd name="duration" class="d-flex text-break"
+            th:text="${music.duration / 60} + ':' + ${#numbers.formatInteger(music.duration % 60, 2)}">0:00</dd>
           <dt class="flex-shrink-0 text-nowrap me-3">발매일</dt>
           <dd name="relDate" class="d-flex text-break" th:text="${music.relDate}">2026.01.07.</dd>
           <dt class="flex-shrink-0 text-nowrap me-3">첫 수록 앨범</dt>
