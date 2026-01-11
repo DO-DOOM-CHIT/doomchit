@@ -13,4 +13,6 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
   long countByMusic(Music music);
 
   boolean existsByUserAndMusic(Users user, Music music);
+
+  java.util.List<Likes> findByUserOrderByCreDateDesc(Users user);
 }
