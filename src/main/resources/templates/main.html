@@ -2,107 +2,80 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8">
-    <title>DoomChit Chart</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #121212;
-            color: #fff;
-            padding: 20px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoomChit | 차트</title>
 
-        h1 {
-            color: #1db954;
-        }
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gafata&family=Inter:wght@400;500;700&display=swap"
+    rel="stylesheet">
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #333;
-        }
-
-        th {
-            color: #b3b3b3;
-        }
-
-        img {
-            width: 60px;
-            height: 60px;
-            border-radius: 4px;
-        }
-
-        .rank {
-            font-size: 1.2em;
-            font-weight: bold;
-            width: 50px;
-            text-align: center;
-        }
-
-        .info-col {
-            font-size: 0.9em;
-            color: #ccc;
-        }
-
-        small {
-            color: #888;
-        }
-    </style>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/common.css" />
 </head>
 
 <body>
-    <h1>Melon Chart Top 100 (데이터 확인용)</h1>
-    <table>
-        <thead>
-            <tr>
-                <th style="text-align:center;">순위</th>
-                <th>앨범</th>
-                <th>곡 정보</th>
-                <th>상세 정보 (장르/발매일/기획사)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="music : ${chart}">
-                <td class="rank" th:text="${music.rank}">1</td>
-                <td><img th:src="${music.image}" alt="Album Cover"></td>
-                <td>
-                    <div style="font-weight: bold; font-size: 1.1em;" th:text="${music.title}">Title</div>
-                    <div th:text="${music.artist}">Artist</div>
-                    <div style="color: #666; font-size: 0.8em;" th:text="${music.albumTitle}">Album</div>
-                </td>
-               <td class="info-col">
-                    <div th:if="${music.relDate != null}">
-                        발매: <span th:text="${music.relDate}">2024-01-01</span>
-                    </div>
-                    <div th:if="${music.genre != null}">
-                        장르: <span th:text="${music.genre}">Ballad</span>
-                    </div>
-                    <div th:if="${music.duration != 0}">
-                        길이: <span th:text="${music.duration}">180</span>초
-                    </div>
-                    <div>
-                        <small th:text="|발매사: ${music.publisher != null ? music.publisher : '(정보없음)'}|"></small>
-                    </div>
-                    <div>
-                        <small th:text="|기획사: ${music.agency != null ? music.agency : '(정보없음)'}|"></small>
-                    </div>
-                    <div>
-                        <small th:text="|작사: ${music.lyricist != null ? music.lyricist : '(정보없음)'}|"></small>
-                    </div>
-                    <div>
-                        <small th:text="|작곡: ${music.composer != null ? music.composer : '(정보없음)'}|"></small>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+
+  <div class="page-wrap">
+
+    <!-- header.html 은 서버에서 include/fragment로 들어온다고 가정 -->
+    <th:block th:replace="fragments/header :: header"></th:block>
+    
+    <main>
+      <div class="page-top">
+        <h1 class="page-title">차트</h1>
+
+        <!-- 정렬 방식 -->
+        <div class="sort">
+          <button class="sort-btn">
+            정렬방식 <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul class="sort-menu">
+            <!-- 
+            data-sort 값 기준으로 JS에서 정렬
+            API 연동 후에도 그대로 사용
+          -->
+            <li data-sort="comment">댓글 수</li>
+            <li data-sort="like">좋아요 수</li>
+            <li data-sort="rating">평점순</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 차트 -->
+      <section class="chart-box">
+        <div class="chart-box-inner">
+          <table class="chart-table">
+            <thead>
+              <tr>
+                <th class="col-rank">순위</th>
+                <th class="col-song">곡정보</th>
+                <th class="col-album">앨범</th>
+                <th class="col-comment">댓글</th>
+                <th class="col-like">좋아요</th>
+                <th class="col-rating">평점</th>
+              </tr>
+            </thead>
+
+            <tbody id="chartBody">
+              <!-- 
+            JS에서 렌더링
+            (JPA/API 연동 시 이 부분만 교체)
+          -->
+            </tbody>
+          </table>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/main.js"></script>
 </body>
 
 </html>

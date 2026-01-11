@@ -11,30 +11,30 @@
    1. header.html 불러오기
 ========================== */
 document.addEventListener('DOMContentLoaded', () => {
-  loadHeader();
+  // loadHeader();
 });
 
 /**
  * header.html을 현재 페이지에 삽입
  */
-function loadHeader() {
-  const headerContainer = document.getElementById('header');
+// function loadHeader() {
+//   const headerContainer = document.getElementById('header');
 
-  if (!headerContainer) return;
+//   if (!headerContainer) return;
 
-  fetch('../doomchit/header.html')
-    .then(res => res.text())
-    .then(html => {
-      headerContainer.innerHTML = html;
+//   fetch('../doomchit/header.html')
+//     .then(res => res.text())
+//     .then(html => {
+//       headerContainer.innerHTML = html;
 
-      // 헤더 로드 후 로그인 상태 처리
-      setActiveMenu();
-      checkLoginStatus();
-    })
-    .catch(err => {
-      console.error('header.html 로드 실패', err);
-    });
-}
+//       // 헤더 로드 후 로그인 상태 처리
+//       setActiveMenu();
+//       checkLoginStatus();
+//     })
+//     .catch(err => {
+//       console.error('header.html 로드 실패', err);
+//     });
+// }
 
 /* ==========================
    2. 메뉴 active 처리
