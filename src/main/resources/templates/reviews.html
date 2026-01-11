@@ -227,16 +227,15 @@
               class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           </div>
           <dl>
-            <dd name="rating" class="fw-bold pe-2">5.0</dd>
+            <dd id="rating" th:text="${review.rating}" class="fw-bold pe-2"></dd>
           </dl>
-          <p th:text="${review.content}" style="white-space: pre-wrap;" name="content">
+          <p th:text="${review.content}" style="white-space: pre-wrap;">
             내용
           </p>
           <dl class="d-flex justify-content-between">
             <div>
-              <dt name="reviewsUser" class="pe-2" th:text="${review.user.username}">리뷰 작성자</dt>
-              <dd name="creDate"><i class="fa-solid fa-ellipsis pe-2"></i><span
-                  th:text="${#temporals.format(review.creDate, 'yyyy.MM.dd')}">2026.01.08.</span></dd>
+              <dt id="reviewsUser" class="pe-2" th:text="${review.user.username}"></dt>
+              <dd id="creDate" class="d-flex align-items-center"><i class="fa-solid fa-ellipsis pe-2"></i><div th:text="${#temporals.format(review.creDate, 'yyyy.MM.dd')}"></div></dd>
             </div>
             <!-- ✅ 본인만 수정/삭제 -->
             <div sec:authorize="isAuthenticated()" th:if="${#authentication.name == review.user.userId}">
