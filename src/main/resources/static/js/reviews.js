@@ -1,29 +1,62 @@
-function toggleLyrics() {
-  const content = document.getElementById("lyricsContent");
-  const btn = document.getElementById("lyricsBtn");
-  if (content.classList.contains("collapsed")) {
-    content.classList.remove("collapsed");
-    btn.innerHTML = '접기<i class="fa-solid fa-angle-up ps-1"></i>';
-  } else {
-    content.classList.add("collapsed");
-    btn.innerHTML = '펼치기<i class="fa-solid fa-angle-down ps-1"></i>';
+document.querySelectorAll(".stars").forEach((ratingStars) => {
+  const starsFill = ratingStars.querySelector(".stars-fill");
+  const ratingWrap = ratingStars.closest(".rating-wrap");
+  const ratingInput = ratingWrap.querySelector("input[type='hidden']");
+  const ratingValueText = ratingWrap.querySelector(".rating-value");
+
+  if (!starsFill || !ratingInput) return;
+
+  // ⭐ 확정된 값
+  let confirmedRating = parseFloat(ratingInput.value) || 5;
+
+  const renderUI = (rating) => {
+    starsFill.style.width = (rating / 5) * 100 + "%";
+    if (ratingValueText) {
+      ratingValueText.textContent = rating.toFixed(1);
+    }
+  };
+
+  // 초기 렌더
+  renderUI(confirmedRating);
+
+  const calculateRating = (clientX) => {
+    const rect = ratingStars.getBoundingClientRect();
+    let offsetX = clientX - rect.left;
+    offsetX = Math.max(0, Math.min(offsetX, rect.width));
+
+    const step = Math.floor((offsetX / rect.width) * 10);
+    return Math.max(1, Math.min(5, (step + 1) / 2));
+  };
+
+  // 🟡 hover = 미리보기
+  ratingStars.addEventListener("mousemove", (e) => {
+    const previewRating = calculateRating(e.clientX);
+    // ⭐ 별만 미리보기
+    starsFill.style.width = (previewRating / 5) * 100 + "%";
+  });
+
+
+  // 🔵 hover 종료 → 확정값으로 복귀
+  ratingStars.addEventListener("mouseleave", () => {
+    renderUI(confirmedRating);
+  });
+
+  // ✅ 클릭 = 확정
+  ratingStars.addEventListener("click", (e) => {
+    confirmedRating = calculateRating(e.clientX);
+    ratingInput.value = confirmedRating;
+    renderUI(confirmedRating);
+  });
+  
+  const form = ratingStars.closest("form");
+
+  if (form) {
+    form.addEventListener("submit", () => {
+      // ⭐ 별점 한 번도 안 건드린 경우 대비
+      if (!ratingInput.value) {
+        ratingInput.value = confirmedRating;
+      }
+    });
   }
-}
 
-const rating_value1 = document.querySelector("#rating_value1");
-const rating_input1 = document.querySelector("#rating_input1");
-if (rating_value1 && rating_input1) {
-  rating_value1.textContent = rating_input1.value;
-  rating_input1.addEventListener("input", (event) => {
-    rating_value1.textContent = event.target.value;
-  });
-}
-
-const rating_value2 = document.querySelector("#rating_value2");
-const rating_input2 = document.querySelector("#rating_input2");
-if (rating_value2 && rating_input2) {
-  rating_value2.textContent = rating_input2.value;
-  rating_input2.addEventListener("input", (event) => {
-    rating_value2.textContent = event.target.value;
-  });
-}
+});

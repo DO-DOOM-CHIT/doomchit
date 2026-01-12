@@ -1,19 +1,26 @@
 /* ===== Common ===== */
 a {
+  font-family: 'Inter', sans-serif;
   color: #a352d2;
   text-decoration-line: none;
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+}
+
 /* ===== Header ===== */
 .header {
+  font-family: 'Inter', sans-serif;
   max-width: 1440px;
   /* ❗ width → max-width */
   height: 123px;
   border-bottom: 1px solid #e5e5e5;
   margin: 0 auto;
+  }
+  
   /* ❗ 가운데 정렬 */
-
-  .user-info {
+  .header .user-info {
     display: flex;
     flex-direction: column;
     /* 세로 정렬 */
@@ -22,7 +29,7 @@ a {
     gap: 4px;
   }
 
-  .welcome-text {
+  .header .welcome-text {
     margin-top: 20px;
     font-size: 20px;
     color: #a352d2;
@@ -30,17 +37,17 @@ a {
     font-weight: 400;
   }
 
-  .logout-link {
+  .header .logout-link {
     font-size: 15px;
     color: #999;
     /* 연한 회색 */
     text-decoration: none;
   }
 
-  .logout-link:hover {
+  .header .logout-link:hover {
     text-decoration: underline;
   }
-}
+
 
 /* Lyrics */
 .lyrics-content {

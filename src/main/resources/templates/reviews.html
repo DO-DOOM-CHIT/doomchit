@@ -7,23 +7,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<title th:text="${music.title} + ' - DoomChit'">곡 정보 - DoomChit</title>
 
-    <!-- Google Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Gafata&family=Inter:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+	<!-- Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Gafata&family=Inter:wght@400;500;700&display=swap"
+	  rel="stylesheet">
+
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
     <!-- CSS -->
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/fontawesome-all.min.js}"></script>
+
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}" />
-    <link rel="stylesheet" th:href="@{/css/common.css}" />
     <link rel="stylesheet" th:href="@{/css/reviews.css}" />
-    <title th:text="${music.title} + ' - DoomChit'">곡 정보 - DoomChit</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    
   </head>
 
   <body>
@@ -61,27 +63,25 @@
             </dl>
             <div id="ratings">
               <div id="rating" class="fs-4">
-                <dl>
-                  <dt
-                    id="stars"
-                    class="d-flex align-items-center me-2"
-                    th:with="rating=${avgRating}"
-                  >
+				<dl class="d-flex align-items-center mb-0">
+				  <dt
+				    id="stars"
+				    class="d-flex align-items-center me-2 review-stars"
+				    th:with="rating=${avgRating}"
+				  >
                     <!-- 평점 아이콘 -->
 					<th:block th:each="num : ${#numbers.sequence(1, 5)}">
 						<i th:if="${num <= rating}" class="fa-solid fa-star"></i><i th:if="${num > rating && (num - 0.5) <= rating}" class="fa-solid fa-star-half-stroke"></i><i th:if="${(num - 0.5) > rating}" class="fa-regular fa-star"></i>
 				  	</th:block>
-                    <label id="avgRating" th:text="${avgRating}" class="ms-1"
-                      >0.0</label
-                    >
+                    <label id="avgRating" th:text="${avgRating}" class="ms-1"></label>
                   </dt>
 
-                  <dd
-                    id="ratingCount"
-                    class="pe-2 pt-2 fs-6 text-muted"
-                    th:text="|(${#lists.size(reviewList)}명이 참여)|"
-                  ></dd>
-                </dl>
+				  <dd
+				      id="ratingCount"
+				      class="ms-2 fs-6 text-muted"
+				      th:text="|(${#lists.size(reviewList)}명이 참여)|"
+				    ></dd>
+				  </dl>
               </div>
             </div>
             <div id="likes">
@@ -227,7 +227,7 @@
             <div class="d-flex justify-content-between pb-2 mb-3 border-bottom">
               <h2>
                 리뷰
-                <span th:text="|${#lists.size(reviewList)}개|">0개</span>
+                <span th:text="|(총 ${#lists.size(reviewList)}개)|" class="fs-4"></span>
               </h2>
 
               <div class="fs-6 pt-2">
@@ -283,52 +283,68 @@
               <textarea
                 th:field="*{content}"
                 class="form-control border mb-3"
-                placeholder="리뷰를 등록하려면 평점 주기 및 댓글을 작성하세요."
+                placeholder="리뷰를 작성해 보세요."
                 required
               ></textarea>
-              <div id="rating" class="d-flex justify-content-between">
-                <div id="stars" class="me-2 pt-2 fs-3">
-                  <a href="#reviews"><i class="fa-solid fa-star"></i></a>
-                  <input
-                    id="rating_input1"
-                    type="range"
-                    th:field="*{rating}"
-                    step="0.5"
-                    min="1"
-                    max="5"
-                  />
-                  <label id="rating_value1"></label>
-                </div>
-                <button class="btn btn-primary btn-lg" type="submit">
-                  리뷰 등록하기
-                </button>
-              </div>
+			  <div id="rating" class="d-flex justify-content-between align-items-center">
+			    <div id="stars" class="me-2">
+			      <div class="rating-wrap">
+			        <!-- 배경(회색) 별 5개 -->
+					<div class="stars" id="ratingStars" aria-label="평점 선택">
+					  <!-- 배경 별 -->
+					  <div class="stars-bg">
+					    <i class="fa-regular fa-star"></i>
+					    <i class="fa-regular fa-star"></i>
+					    <i class="fa-regular fa-star"></i>
+					    <i class="fa-regular fa-star"></i>
+					    <i class="fa-regular fa-star"></i>
+					  </div>
+
+					  <!-- 채워지는 별 -->
+					  <div class="stars-fill" id="starsFill">
+					    <i class="fa-solid fa-star"></i>
+					    <i class="fa-solid fa-star"></i>
+					    <i class="fa-solid fa-star"></i>
+					    <i class="fa-solid fa-star"></i>
+					    <i class="fa-solid fa-star"></i>
+					  </div>
+					</div>
+					
+					<span class="rating-value ms-2">5.0</span>
+
+			        <!-- 서버로 넘어갈 값 (중요: th:field 유지) -->
+			        <input type="hidden" id="ratingInput" th:field="*{rating}" value="5.0" />
+			        <!-- (선택) 숫자 보여주고 싶으면 -->
+			        <!-- <span id="ratingText" class="ms-2"></span> -->
+			      </div>
+			    </div>
+
+			    <button class="btn btn-primary btn-lg" type="submit">
+			      리뷰 작성하기
+			    </button>
+			  </div>
             </form>
           </div>
 
-          <div
-            th:each="review : ${reviewList}"
-            id="reviewed"
-            class="border-bottom p-3 mb-3"
-          >
-            <div id="stars" class="me-2" th:with="rating=${review.rating}">
-              <!-- 평점 아이콘 2 -->
-              <th:block th:each="num : ${#numbers.sequence(1, 5)}">
-                <i th:if="${num <= rating}" class="fa-solid fa-star"></i
-                ><i
-                  th:if="${num > rating && (num - 0.5) <= rating}"
-                  class="fa-solid fa-star-half-stroke"
-                ></i
-                ><i
-                  th:if="${(num - 0.5) > rating}"
-                  class="fa-regular fa-star"
-                ></i>
-              </th:block>
-            </div>
+		  <div
+		    th:each="review : ${reviewList}"
+		    class="border-bottom p-3 mb-3 review-item"
+		    th:data-rno="${review.rno}"
+		  >
+		  
+		  <div class="d-flex align-items-center review-stars" th:with="rating=${review.rating}">
+		    <th:block th:each="num : ${#numbers.sequence(1, 5)}">
+		      <i th:if="${num <= rating}" class="fa-solid fa-star"></i>
+		      <i th:if="${num > rating && (num - 0.5) <= rating}" class="fa-solid fa-star-half-stroke"></i>
+		      <i th:if="${(num - 0.5) > rating}" class="fa-regular fa-star"></i>
+		    </th:block>
 
-            <dl>
-              <dd th:text="${review.rating}" class="fw-bold pe-2"></dd>
-            </dl>
+		    <span
+		      class="review-rating-text"
+		      th:text="${review.rating}"
+		    >0.0</span>
+		  </div>
+			
             <p th:text="${review.content}" style="white-space: pre-wrap"></p>
 
             <dl>
@@ -394,20 +410,40 @@
                               class="d-flex justify-content-between align-items-center"
                             >
                               <div class="d-flex align-items-center">
-                                <a href="#reviews"
-                                  ><i class="fa-solid fa-star fs-3 ps-2"></i
-                                ></a>
-                                <input
-                                  type="range"
-                                  id="rating_input2"
-								  th:field="*{rating}"
-								  th:value="${review.rating}"
-                                  step="0.5"
-                                  min="1"
-                                  max="5"
-                                  oninput="this.nextElementSibling.value = this.value"
-                                />
-                                <h1 id="rating_value2" class="ps-2"></h1>
+								<!-- ⭐ 별점 선택 (수정 모달용) -->
+								<div class="rating-wrap">
+								  <div class="stars" aria-label="평점 선택">
+								    <!-- 배경 별 -->
+								    <div class="stars-bg">
+								      <i class="fa-regular fa-star"></i>
+								      <i class="fa-regular fa-star"></i>
+								      <i class="fa-regular fa-star"></i>
+								      <i class="fa-regular fa-star"></i>
+								      <i class="fa-regular fa-star"></i>
+								    </div>
+
+								    <!-- 채워지는 별 -->
+								    <div
+								      class="stars-fill"
+								      style="width: calc(([[${review.rating}]]) / 5 * 100%)"
+								    >
+								      <i class="fa-solid fa-star"></i>
+								      <i class="fa-solid fa-star"></i>
+								      <i class="fa-solid fa-star"></i>
+								      <i class="fa-solid fa-star"></i>
+								      <i class="fa-solid fa-star"></i>
+								    </div>
+								  </div>
+
+								  <span class="rating-value ms-2" th:text="${review.rating}">4.5</span>
+								  
+								  <!-- 서버로 보낼 값 (⭐ 중요) -->
+								  <input
+								    type="hidden"
+								    th:field="*{rating}"
+								    th:value="${review.rating}"
+								  />
+								</div>
                               </div>
                               <div>
                                 <button class="btn btn-primary" type="submit">
@@ -487,6 +523,8 @@
 
           <script th:src="@{/js/reviews.js}"></script>
           <script th:src="@{/js/main.js}"></script>
+		  <script th:src="@{/js/bootstrap.min.js}"></script>
+		  <script th:src="@{/js/fontawesome-all.min.js}"></script>
         </div>
       </div>
     </div>

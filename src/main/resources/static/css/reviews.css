@@ -19,8 +19,8 @@ dd > #text {
   text-overflow: auto;
 }
 
-dt,
-#stars {
+/* ❗ stars는 float 제거 (dt만 유지) */
+dt {
   float: left;
 }
 
@@ -33,13 +33,12 @@ dt,
   width: 7rem;
 }
 
-#stars,
-#likes-icon,
-#rating_value1,
-#rating_value2 {
+/* ❗ 좋아요 아이콘 */
+#likes-icon {
   color: #a352d2;
 }
 
+/* 리뷰 탭 */
 #reviews-tab {
   a {
     color: black;
@@ -49,6 +48,77 @@ dt,
     color: #a352d2;
   }
 }
+
+/* =========================
+   ⭐ 별점 UI (신규)
+   ========================= */
+
+.rating-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+.stars {
+  position: relative;
+  display: inline-block;
+  font-size: 22px;          /* ⭐ 크기 줄임 */
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: -2px;    /* ⭐ 별 간격 줄임 */
+}
+
+.stars-bg {
+  color: #ddd;
+}
+
+.stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  color: #a352d2;
+  pointer-events: none;
+  letter-spacing: -2px;    /* ⭐ 겹침 동일 적용 */
+}
+
+/* =========================
+   ⭐ 리뷰 출력용 별 색상
+   ========================= */
+
+.review-stars {
+  display: inline-flex;
+  align-items: center;
+  color: #a352d2;
+  margin-bottom: 15px;
+}
+
+.review-stars i {
+  font-size: 20px;         /* ⭐ 리뷰 쪽은 살짝 더 작게 */
+  margin-right: 1px;      /* ⭐ 별 간격 최소화 */
+}
+
+.review-stars .fa-regular {
+  color: #ddd;
+}
+
+.review-rating-text {
+  margin-left: 6px;
+  font-weight: 600;
+  color: #a352d2;
+}
+
+.rating-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  min-width: 32px;
+}
+
+
+/* ========================= */
 
 .form-control {
   border: none;
