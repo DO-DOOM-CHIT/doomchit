@@ -299,7 +299,6 @@
 
           <div
             sec:authorize="isAuthenticated()"
-            th:if="${myReview == null}"
             class="border rounded p-3 mb-4"
           >
             <form
@@ -335,7 +334,7 @@
           </div>
 
           <div
-            id="myReview"
+            id="myReviewEdit"
             sec:authorize="isAuthenticated()"
             th:if="${myReview != null and #authentication.name == myReview.user.userId}"
             class="border rounded p-3 mb-4"
@@ -370,76 +369,80 @@
                     수정
                   </button>
 
-                  <button
-                    class="btn btn-lg btn-outline-danger"
-                    type="submit"
-                    th:formaction="@{/doomchit/delete/{rno}(rno=${myReview.rno})}"
-                    formmethod="post"
-                    onclick="return confirm('작성한 리뷰를 삭제할까요?');"
-                  >
-                    삭제
-                  </button>
+                  <button class="btn btn-lg">취소</button>
                 </div>
               </div>
             </form>
           </div>
-		  
-		  <div
-		              sec:authorize="isAuthenticated()"
-		              th:if="${myReview != null and #authentication.name == myReview.user.userId}"
-		              id="myReview"
-		              class="border-bottom border-primary p-3 mb-3"
-		            >
-		              <div id="stars" class="me-2" th:with="rating=${myReview.rating}">
-		                <th:block th:each="num : ${#numbers.sequence(1, 5)}"
-		                  ><i th:if="${num <= rating}" class="fa-solid fa-star"></i
-		                  ><i
-		                    th:if="${num > rating && (num - 0.5) <= rating}"
-		                    class="fa-solid fa-star-half-stroke"
-		                  ></i
-		                  ><i
-		                    th:if="${(num - 0.5) > rating}"
-		                    class="fa-regular fa-star"
-		                  ></i
-		                ></th:block>
-		              </div>
 
-		              <dl>
-		                <dd
-		                  id="rating"
-		                  th:text="${myReview.rating}"
-		                  class="fw-bold pe-2"
-		                ></dd>
-		              </dl>
+          <div
+            sec:authorize="isAuthenticated()"
+            th:if="${myReview != null and #authentication.name == myReview.user.userId}"
+            id="myReview"
+            class="border-bottom border-dark p-3 mb-3"
+          >
+            <div id="stars" class="me-2" th:with="rating=${myReview.rating}">
+              <th:block th:each="num : ${#numbers.sequence(1, 5)}"
+                ><i th:if="${num <= rating}" class="fa-solid fa-star"></i
+                ><i
+                  th:if="${num > rating && (num - 0.5) <= rating}"
+                  class="fa-solid fa-star-half-stroke"
+                ></i
+                ><i
+                  th:if="${(num - 0.5) > rating}"
+                  class="fa-regular fa-star"
+                ></i
+              ></th:block>
+            </div>
 
-		              <p th:text="${myReview.content}" style="white-space: pre-wrap"></p>
+            <dl>
+              <dd
+                id="rating"
+                th:text="${myReview.rating}"
+                class="fw-bold pe-2"
+              ></dd>
+            </dl>
 
-		              <dl class="d-flex justify-content-between">
-		                <div>
-		                  <dt
-		                    id="reviewsUser"
-		                    class="pe-2"
-		                    th:text="${myReview.user.username}"
-		                  ></dt>
+            <p th:text="${myReview.content}" style="white-space: pre-wrap"></p>
 
-		                  <dd id="creDate" class="d-flex align-items-center">
-		                    <i class="fa-solid fa-ellipsis pe-2"></i>
-		                    <div
-		                      th:text="${#temporals.format(myReview.creDate, 'yyyy.MM.dd')}"
-		                    ></div>
-		                  </dd>
-		                </div>
+            <dl class="d-flex align-items-end justify-content-between">
+              <div>
+                <dt
+                  id="reviewsUser"
+                  class="pe-2"
+                  th:text="${myReview.user.username}"
+                ></dt>
 
-		                <form
-		                  th:action="@{/doomchit/delete/{rno}(rno=${myReview.rno})}"
-		                  method="post"
-		                  style="display: inline"
-		                  onsubmit="return confirm('작성한 리뷰를 삭제할까요?');"
-		                >
-		                  <button class="btn btn-sm btn-outline-danger">삭제</button>
-		                </form>
-		              </dl>
-		            </div>
+                <dd id="creDate" class="d-flex align-items-center">
+                  <i class="fa-solid fa-ellipsis pe-2"></i>
+                  <div
+                    th:text="${#temporals.format(myReview.creDate, 'yyyy.MM.dd')}"
+                  ></div>
+                </dd>
+              </div>
+
+              <div id="rating" class="d-flex">
+                <button
+                  class="btn btn-primary btn-lg m-1"
+                  type="submit"
+                  th:formaction="@{/doomchit/delete/{rno}(rno=${myReview.rno})}"
+                  formmethod="post"
+                  onclick="return confirm('작성한 리뷰를 삭제할까요?');"
+                >
+                  수정
+                </button>
+
+                <form
+                  th:action="@{/doomchit/delete/{rno}(rno=${myReview.rno})}"
+                  method="post"
+                  style="display: inline"
+                  onsubmit="return confirm('작성한 리뷰를 삭제할까요?');"
+                >
+                  <button class="btn btn-outline-danger btn-lg m-1">삭제</button>
+                </form>
+              </div>
+            </dl>
+          </div>
 
           <div
             th:each="review : ${reviewList}"
