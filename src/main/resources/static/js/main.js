@@ -14,8 +14,43 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    let selectedIndex = -1;
+
     // Search Logic
     if (searchInput && searchResultBox) {
+        // Keyboard Navigation
+        searchInput.addEventListener('keydown', (e) => {
+            const items = searchResultBox.querySelectorAll('.search-item');
+            if (items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex++;
+                if (selectedIndex >= items.length) selectedIndex = items.length - 1;
+                updateSelection(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex--;
+                if (selectedIndex < -1) selectedIndex = -1;
+                updateSelection(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                const targetIndex = selectedIndex === -1 ? 0 : selectedIndex;
+                if (items[targetIndex]) items[targetIndex].click();
+            }
+        });
+
+        function updateSelection(items) {
+            items.forEach((item, index) => {
+                if (index === selectedIndex) {
+                    item.classList.add('selected');
+                    item.scrollIntoView({ block: 'nearest' });
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+        
         const handleSearch = async (e) => {
             const keyword = e.target.value.trim();
 
@@ -54,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSearchResults(data, keyword) {
+        selectedIndex = -1;
         if (!data || data.length === 0) {
             searchResultBox.classList.remove('active');
             return;

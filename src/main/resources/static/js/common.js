@@ -81,35 +81,3 @@ function logout() {
   .then(() => location.reload());
 }
 
-
-/* ==========================
-   검색 기능
-========================== */
-document.addEventListener('click', (e) => {
-  if (e.target.closest('#searchBtn')) {
-    handleSearch();
-  }
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && e.target.id === 'searchInput') {
-    handleSearch();
-  }
-});
-
-function handleSearch() {
-  const keyword = document.getElementById('searchInput').value.trim();
-
-  if (!keyword) return;
-
-  /**
-   * TODO (백엔드 연동)
-   * GET /api/search?keyword=
-   * or
-   * /doomchit/search?keyword=
-   */
-  console.log('검색어:', keyword);
-
-  // 임시 동작
-  alert(`"${keyword}" 검색 (API 연동 예정)`);
-}
