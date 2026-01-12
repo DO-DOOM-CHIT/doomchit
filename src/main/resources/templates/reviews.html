@@ -286,10 +286,7 @@
             </div>
           </div>
 
-          <div
-            sec:authorize="isAuthenticated()"
-            class="border rounded p-3 mb-4"
-          >
+          <div sec:authorize="isAuthenticated()" th:if="${myReview == null}" class="border rounded p-3 mb-4">
             <form
               id="reviews"
               th:action="@{/doomchit/{mno}(mno=${music.mno})}"
@@ -324,7 +321,7 @@
 
           <div
             sec:authorize="isAuthenticated()"
-            th:if="${myReview != null and #authentication.name == myReview.user.userId}"
+            th:if="${#authentication.name == myReview.user.userId}"
             id="myReview"
             class="border-bottom p-3 mb-3"
           >
@@ -425,7 +422,7 @@
 
           <!-- 리뷰 없을 때 -->
           <div th:if="${#lists.isEmpty(reviewList)}" class="text-muted p-3">
-            아직 리뷰가 없습니다.a
+            아직 리뷰가 없습니다.
           </div>
         </div>
       </div>
