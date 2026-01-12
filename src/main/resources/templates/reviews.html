@@ -275,15 +275,24 @@
               </h2>
 			  
 			  <div class="fs-6 pt-2">
-			      <a th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='latest')}">
-			          <b th:if="${param.sort == null or param.sort == 'latest'}">최신순</b>
-			          <span th:if="${param.sort != null and param.sort != 'latest'}">최신순</span>
-			      </a>
-			      <label class="px-2">|</label>
-			      <a th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='rating')}">
-			          <b th:if="${param.sort == 'rating'}">추천순</b>
-			          <span th:if="${param.sort != 'rating'}">추천순</span>
-			      </a>
+				<th:block th:with="isLatest=${param.sort == null or param.sort[0] == 'latest'}">
+				    <b th:if="${isLatest}" class="fw-bold">최신순</b>
+				    
+				    <a th:unless="${isLatest}" 
+				       th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='latest')}">
+				       최신순
+				    </a>
+				</th:block>
+				|
+				<th:block th:with="isRating=${param.sort != null and param.sort[0] == 'rating'}">
+				    <b th:if="${isRating}" class="fw-bold">추천순</b>
+				    
+				    <a th:unless="${isRating}" 
+				       th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='rating')}">
+				       추천순
+				    </a>
+				</th:block>
+
 			  </div>
 
             </div>
