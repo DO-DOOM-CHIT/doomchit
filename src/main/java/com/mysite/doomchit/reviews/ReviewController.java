@@ -69,9 +69,6 @@ public class ReviewController {
 			reviewService.getMyReview(music, user)
 					.ifPresent(myReview -> {
 						model.addAttribute("myReview", myReview);
-
-						// 전체 리뷰 목록에서 내 리뷰 제거 (중복 방지)
-						reviewList.removeIf(r -> r.getRno().equals(myReview.getRno()));
 					});
 
 		} catch (Exception e) {
