@@ -91,7 +91,7 @@
                   <dd
                     id="ratingCount"
                     class="pe-2 pt-2 fs-6 text-muted"
-                    th:text="|(${#lists.size(reviewList)}명이 참여)|"
+                    th:text="|(${#lists.size(reviewList) + (myReview != null and #authentication.name == myReview.user.userId ? 1 : 0)}명이 참여)|"
                   ></dd>
                 </dl>
               </div>
@@ -267,7 +267,7 @@
           <div id="reviews-tab">
             <div class="d-flex justify-content-between pb-2 mb-3 border-bottom">
               <h2>
-                리뷰 <span th:text="|${#lists.size(reviewList)}개|">0개</span>
+                리뷰 <span th:text="|${#lists.size(reviewList) + (myReview != null and #authentication.name == myReview.user.userId ? 1 : 0)}개|">0개</span>
               </h2>
               <div class="fs-6 pt-2">
                 <b>최신순</b><label class="px-2">|</label
