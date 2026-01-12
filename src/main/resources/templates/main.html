@@ -65,7 +65,8 @@
               </thead>
 
               <tbody id="chartBody">
-                <tr th:each="music, stat : ${chart}"
+                <tr th:each="music, stat : ${chart}" th:data-comment="${music.commentCount}"
+                  th:data-like="${music.likeCount}" th:data-rating="${music.averageRating}" th:data-rank="${music.rank}"
                   th:onclick="|location.href='@{/doomchit/music/detail/{id}(id=${music.musicId})}'|"
                   style="cursor: pointer;">
                   <td class="col-rank" th:text="${music.rank}">1</td>

@@ -148,4 +148,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const regex = new RegExp(`(${keyword})`, 'gi');
         return text.replace(regex, '<span class="highlight">$1</span>');
     }
+    // Sort Logic
+    const sortBtn = document.querySelector('.sort-btn');
+    const sortMenu = document.querySelector('.sort-menu');
+    const sortItems = document.querySelectorAll('.sort-menu li');
+    const chartBody = document.getElementById('chartBody');
+
+    if (sortBtn && sortMenu && chartBody) {
+        // Toggle Menu
+        sortBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = sortMenu.style.display === 'block';
+            sortMenu.style.display = isVisible ? 'none' : 'block';
+        });
+
+        // Hide when clicking outside
+        document.addEventListener('click', () => {
+            sortMenu.style.display = 'none';
+        });
+
+        // Sort Action
+        sortItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const key = item.getAttribute('data-sort'); // comment, like, rating
+                const rows = Array.from(chartBody.querySelectorAll('tr'));
+
+                rows.sort((a, b) => {
+                    const valA = parseFloat(a.getAttribute(`data-${key}`)) || 0;
+                    const valB = parseFloat(b.getAttribute(`data-${key}`)) || 0;
+                    return valB - valA; // Descending
+                });
+
+                // Re-append ordered rows
+                rows.forEach(row => chartBody.appendChild(row));
+                
+                // Update Button Text
+                sortBtn.innerHTML = `${item.textContent} <i class="fa-solid fa-chevron-down"></i>`;
+            });
+        });
+    }
 });
