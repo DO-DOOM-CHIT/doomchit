@@ -421,7 +421,8 @@
           </div>
 
           <!-- 리뷰 없을 때 -->
-          <div th:if="${#lists.isEmpty(reviewList)}" class="text-muted p-3">
+          <div th:if="${#lists.size(reviewList) == 0 
+		      and (myReview == null or #authentication.name != myReview.user.userId)}" class="text-muted p-3">
             아직 리뷰가 없습니다.
           </div>
         </div>
