@@ -7,9 +7,9 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/fontawesome-all.min.js"></script>
 
-    <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/bootstrap.min.css" />
     <link rel="stylesheet" href="../css/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="../css/common.css" />
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,18 +56,6 @@
       p {
         margin-top: 3px;
         color: #5a5a5a;
-      }
-
-      /* 버튼 */
-      .btn-primary {
-        background-color: #a352d2;
-        border-color: #a352d2;
-        font-family: "Inter", sans-serif;
-      }
-
-      .btn-primary:hover {
-        background-color: darkred;
-        border-color: darkred;
       }
     </style>
   </head>
@@ -148,9 +136,10 @@
             <!-- 비밀번호 확인 -->
             <div class="row g-3 align-items-start mb-5">
               <div class="col-3">
-                <label for="userPwd2" class="col-form-label"
-                  >비밀번호 확인</label
-                >
+                <label for="userPwd2" class="col-form-label">
+                  <span class="d-block">비밀번호</span>
+                  <span class="d-block">확인</span>
+                </label>
               </div>
               <div class="col-9">
                 <input

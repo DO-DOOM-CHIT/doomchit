@@ -51,19 +51,3 @@ dt,
 .form-control {
   border: none;
 }
-
-/*광역*/
-a {
-  color: #a352d2;
-  text-decoration-line: none;
-}
-
-.btn-primary {
-  background-color: #a352d2;
-  border-color: #a352d2;
-}
-
-.btn-primary:hover {
-  background-color: #3c1255;
-  border-color: #3c1255;
-}

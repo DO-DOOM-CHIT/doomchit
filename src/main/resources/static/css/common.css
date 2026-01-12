@@ -1,3 +1,9 @@
+/* ===== Common ===== */
+a {
+  color: #a352d2;
+  text-decoration-line: none;
+}
+
 /* ===== Header ===== */
 .header {
   max-width: 1440px;
@@ -34,7 +40,6 @@
   .logout-link:hover {
     text-decoration: underline;
   }
-
 }
 
 /* Lyrics */
@@ -81,9 +86,9 @@
 }
 
 .logo a {
-  font-family: 'Gafata', sans-serif;
+  font-family: "Gafata", sans-serif;
   font-size: 50px;
-  color: #A352D2;
+  color: #a352d2;
   text-decoration: none;
 }
 
@@ -99,7 +104,7 @@
 
 .auth a {
   font-size: 18px;
-  color: #A352D2;
+  color: #a352d2;
   text-decoration: none;
 }
 
@@ -119,7 +124,7 @@
 }
 
 .header-nav a.active {
-  color: #A352D2;
+  color: #a352d2;
   font-weight: 700;
 }
 
@@ -151,7 +156,7 @@
   height: 40px;
   border: none;
   border-radius: 50%;
-  background: #A352D2;
+  background: #a352d2;
   color: #fff;
   cursor: pointer;
 }
@@ -169,7 +174,7 @@
 
 /* ===== Nav Active (페이지별) ===== */
 .header-nav a.active {
-  color: #A352D2;
+  color: #a352d2;
   font-weight: 700;
 }
 
@@ -251,11 +256,26 @@ body {
 }
 
 .search-item .name .highlight {
-  color: #A352D2;
+  color: #a352d2;
   font-weight: 700;
 }
 
 .search-item .desc {
   font-size: 0.8rem;
   color: #888;
+}
+
+.btn-primary {
+  background-color: #a352d2;
+  border-color: #a352d2;
+}
+
+.btn-primary:hover {
+  background-color: #da9aff;
+  border-color: #da9aff;
+}
+
+.btn-primary:active {
+  background-color: #3c1255;
+  border-color: #3c1255;
 }
