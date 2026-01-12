@@ -61,7 +61,7 @@ public class Music {
     private String lyrics; // 가사
 
     // 로직용 추가 필드 (ERD 이미지에는 없지만 크롤링에 필요)
-    @Column(nullable = false)
+    @Column(name = "album_id", nullable = false)
     private Long albumId;
 
     @Transient
