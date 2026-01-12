@@ -23,7 +23,9 @@
     <div class="auth">
       <a class="login-link" sec:authorize="isAnonymous()" th:href="@{/doomchit/login}">로그인</a>
 	  <div sec:authorize="isAuthenticated()" class="user-info">
-	    <p class="welcome-text">환영합니다!</p>
+	    <p class="welcome-text">
+    <span th:text="${#authentication.name}"></span>님, 환영합니다^0^
+  </p>
 	    <a class="logout-link" th:href="@{/doomchit/logout}">
 	      로그아웃
 	    </a>
