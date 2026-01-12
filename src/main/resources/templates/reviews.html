@@ -425,7 +425,7 @@
 								    <!-- 채워지는 별 -->
 								    <div
 								      class="stars-fill"
-								      style="width: calc(([[${review.rating}]]) / 5 * 100%)"
+								     th:style="'width:' + (${review.rating} / 5 * 100) + '%'"
 								    >
 								      <i class="fa-solid fa-star"></i>
 								      <i class="fa-solid fa-star"></i>

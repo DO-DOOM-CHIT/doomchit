@@ -78,7 +78,7 @@ public class UserController {
         	
             }
         
-        return "redirect:/";
+        return "login";
     }
     
     // 로그인 ===========================================
