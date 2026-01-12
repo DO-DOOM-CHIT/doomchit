@@ -1,0 +1,59 @@
+@media screen and (min-width: 640px) {
+  #album-main-img {
+    width: 295px;
+  }
+}
+
+#album-img {
+  width: 100%;
+}
+
+#music-sub-album-text > h4,
+#music-sub-album-text > h6 {
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+dd > #text {
+  text-overflow: auto;
+}
+
+dt,
+#stars {
+  float: left;
+}
+
+#music-sum-list > dt,
+#music-production > .list > dt {
+  width: 4rem;
+}
+
+#music-infos > .list > dt {
+  width: 7rem;
+}
+
+#stars,
+#likes-icon {
+  color: #a352d2;
+}
+
+.form-control {
+  border: none;
+}
+
+/*광역*/
+a {
+  color: #a352d2;
+  text-decoration-line: none;
+}
+
+.btn-primary {
+  background-color: #a352d2;
+  border-color: #a352d2;
+}
+
+.btn-primary:hover {
+  background-color: darkred;
+  border-color: darkred;
+}
