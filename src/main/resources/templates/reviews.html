@@ -91,7 +91,7 @@
                   <dd
                     id="ratingCount"
                     class="pe-2 pt-2 fs-6 text-muted"
-                    th:text="|(${#lists.size(reviewList) + (myReview != null and #authentication.name == myReview.user.userId ? 1 : 0)}명이 참여)|"
+                    th:text="|(${#lists.size(reviewList)}명이 참여)|"
                   ></dd>
                 </dl>
               </div>
@@ -269,7 +269,7 @@
               <h2>
                 리뷰
                 <span
-                  th:text="|${#lists.size(reviewList) + (myReview != null and #authentication.name == myReview.user.userId ? 1 : 0)}개|"
+                  th:text="|${#lists.size(reviewList)}개|"
                   >0개</span
                 >
               </h2>
