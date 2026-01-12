@@ -22,6 +22,9 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     // 특정 음악 리뷰 목록 (최신순)
     List<Review> findByMusicOrderByCreDateDesc(Music music);
 
+    // 특정 음악 리뷰 목록 (별점순)
+    List<Review> findByMusicOrderByRatingDesc(Music music);
+    
     // 리뷰 개수
     long countByMusic(Music music);
 

@@ -33,12 +33,15 @@ public class ReviewController {
 
 	// 리뷰 페이지 (음악 상세 + 리뷰 목록)
 	@GetMapping("/reviews/{mno}")
-	public String reviewDetail(@PathVariable("mno") Long mno, Model model) {
+	public String reviewDetail(@PathVariable("mno") Long mno, @RequestParam(value = "sort", required = false, defaultValue = "latest") String sort, Model model) {
 
 		Music music = musicService.getMusic(mno);
 
 		// 전체 리뷰 목록 (최신순)
 		List<Review> reviewList = reviewService.getReviewList(music);
+		
+		// 전체 리뷰 목록 (추천순)
+		List<Review> reviewListByRating = reviewService.getReviewListByRating(music);
 
 		// 평균 평점 / 리뷰 개수
 		model.addAttribute("avgRating", reviewService.getAverageRatingOrZero(music));
@@ -76,7 +79,13 @@ public class ReviewController {
 		}
 
 		model.addAttribute("music", music);
-		model.addAttribute("reviewList", reviewList);
+		
+		if("rating".equals(sort)) {
+			model.addAttribute("reviewList", reviewListByRating);
+		} else {
+			model.addAttribute("reviewList", reviewList);
+		}
+		
 		model.addAttribute("reviewForm", new ReviewForm());
 
 		return "reviews";

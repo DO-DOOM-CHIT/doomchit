@@ -42,6 +42,11 @@ public class ReviewService {
 	public List<Review> getReviewList(Music music) {
         return reviewRepository.findByMusicOrderByCreDateDesc(music);
     }
+	
+	// 리뷰 조회 (최신순) =============================================
+	public List<Review> getReviewListByRating(Music music) {
+		return reviewRepository.findByMusicOrderByRatingDesc(music);
+    }
 
 
 	// 리뷰 수정 =============================================
