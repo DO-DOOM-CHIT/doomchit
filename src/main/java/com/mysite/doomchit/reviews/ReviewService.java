@@ -22,10 +22,6 @@ public class ReviewService {
 
 	// 리뷰 생성 =============================================
 	public Review create(Music music, Users user, String content, BigDecimal rating) {
-		// 리뷰 중복 체크
-		if (reviewRepository.findByMusicAndUser(music, user).isPresent()) {
-            throw new IllegalStateException("이미 이 음악에 대한 리뷰를 작성했습니다.");
-        }
       
 		Review review = new Review();
 		review.setMusic(music);

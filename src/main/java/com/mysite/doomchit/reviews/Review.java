@@ -28,12 +28,7 @@ import lombok.Setter;
 @Setter
 @Entity
 // 한 유저가 하나의 음악에 여러 개의 리뷰를 달지 못하게 하는 제약
-@Table(name = "reviews", uniqueConstraints = {
-        @UniqueConstraint(
-                name = "uk_reviews_user_music",
-                columnNames = {"uno", "mno"}
-            )
-        })
+@Table(name = "reviews")
 public class Review {
 
   // 리뷰 고유 번호
