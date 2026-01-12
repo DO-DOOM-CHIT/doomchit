@@ -379,6 +379,8 @@
                           <h5 class="modal-title pb-3">리뷰 수정하기</h5>
                           <form
                             th:action="@{/doomchit/modify/{rno}(rno=${review.rno})}"
+							th:id="'modifyModal' + ${review.rno}"
+							th:object="${reviewForm}"
                             method="post"
                           >
                             <textarea
@@ -398,7 +400,8 @@
                                 <input
                                   type="range"
                                   id="rating_input2"
-                                  th:value="${review.rating}"
+								  th:field="*{rating}"
+								  th:value="${review.rating}"
                                   step="0.5"
                                   min="1"
                                   max="5"
@@ -420,6 +423,7 @@
                               </div>
                             </div>
                           </form>
+						  
                         </div>
                       </div>
                     </div>
