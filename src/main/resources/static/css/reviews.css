@@ -34,7 +34,9 @@ dt,
 }
 
 #stars,
-#likes-icon {
+#likes-icon,
+#rating_value1,
+#rating_value2 {
   color: #a352d2;
 }
 
