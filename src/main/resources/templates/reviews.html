@@ -205,6 +205,30 @@
             </div>
           </form>
         </div>
+<<<<<<< HEAD
+		
+		<div id="myReview" sec:authorize="isAuthenticated()" th:if="${myReview != null and #authentication.name == myReview.user.userId}" class="border rounded p-3 mb-4">
+		          <form id="reviews" th:action="@{/doomchit/modify/{rno}(rno=${myReview.rno})}" th:object="${myReview}" method="post">
+		            <textarea th:field="*{content}" class="form-control border mb-3" placeholder="리뷰를 등록하려면 평점 주기 및 댓글을 작성하세요."
+		              required></textarea>
+		            <div id="rating" class="d-flex justify-content-between">
+		              <div id="stars" class="me-2 pt-2 fs-3">
+		                <a href="#reviews"><i class="fa-solid fa-star"></i></a>
+		                <input id="rating_input" type="range" th:field="*{rating}" step="0.5" min="1" max="5" />
+		                <label id="rating_value"></label>
+		              </div>
+		              <button class="btn btn-primary btn-lg" type="submit">
+		                리뷰 수정하기
+		              </button>
+		            </div>
+		          </form>
+				  
+				  <form th:action="@{/doomchit/delete/{rno}(rno=${myReview.rno})}" method="post" style="display: inline"
+		              onsubmit="return confirm('작성한 리뷰를 삭제할까요?');">
+		              <button class="btn btn-sm btn-outline-danger">삭제</button>
+		            </form>
+		        </div>
+=======
 
         <div sec:authorize="isAuthenticated()"
           th:if="${myReview != null and #authentication.name == myReview.user.userId}" id="myReview"
@@ -238,6 +262,7 @@
             </form>
           </dl>
         </div>
+>>>>>>> 763ee6854634a0611402e9b4de2b709d34c40cb5
 
         <div th:each="review : ${reviewList}" id="reviewed" class="border-bottom p-3 mb-3">
           <div id="stars" class="me-2" th:with="rating=${review.rating}">
@@ -265,7 +290,11 @@
         <!-- 리뷰 없을 때 -->
         <div th:if="${#lists.size(reviewList) == 0 
 		      and (myReview == null or #authentication.name != myReview.user.userId)}" class="text-muted p-3">
+<<<<<<< HEAD
+          아직 등록된 리뷰가 없습니다.
+=======
           아직 리뷰가 없습니다.
+>>>>>>> 763ee6854634a0611402e9b4de2b709d34c40cb5
         </div>
       </div>
     </div>
