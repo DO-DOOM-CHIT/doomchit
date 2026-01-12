@@ -38,6 +38,16 @@ dt,
   color: #a352d2;
 }
 
+#reviews-tab {
+  a {
+    color: black;
+  }
+
+  b {
+    color: #a352d2;
+  }
+}
+
 .form-control {
   border: none;
 }

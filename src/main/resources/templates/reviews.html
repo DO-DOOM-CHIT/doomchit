@@ -156,24 +156,10 @@
               class="show-more-btn"
               onclick="toggleLyrics()"
             >
-              펼치기
+              펼치기<i class="fa-solid fa-angle-down ps-1"></i>
             </button>
           </div>
         </div>
-
-        <script>
-          function toggleLyrics() {
-            const content = document.getElementById("lyricsContent");
-            const btn = document.getElementById("lyricsBtn");
-            if (content.classList.contains("collapsed")) {
-              content.classList.remove("collapsed");
-              btn.innerText = "접기";
-            } else {
-              content.classList.add("collapsed");
-              btn.innerText = "펼치기";
-            }
-          }
-        </script>
 
         <div id="music-production" class="pb-4">
           <h2 class="pb-2 border-bottom">노래 / 작곡 / 작사</h2>
@@ -268,33 +254,36 @@
             <div class="d-flex justify-content-between pb-2 mb-3 border-bottom">
               <h2>
                 리뷰
-                <span
-                  th:text="|${#lists.size(reviewList)}개|"
-                  >0개</span
-                >
+                <span th:text="|${#lists.size(reviewList)}개|">0개</span>
               </h2>
-			  
-			  <div class="fs-6 pt-2">
-				<th:block th:with="isLatest=${param.sort == null or param.sort[0] == 'latest'}">
-				    <b th:if="${isLatest}" class="fw-bold">최신순</b>
-				    
-				    <a th:unless="${isLatest}" 
-				       th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='latest')}">
-				       최신순
-				    </a>
-				</th:block>
-				|
-				<th:block th:with="isRating=${param.sort != null and param.sort[0] == 'rating'}">
-				    <b th:if="${isRating}" class="fw-bold">추천순</b>
-				    
-				    <a th:unless="${isRating}" 
-				       th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='rating')}">
-				       추천순
-				    </a>
-				</th:block>
 
-			  </div>
+              <div class="fs-6 pt-2">
+                <th:block
+                  th:with="isLatest=${param.sort == null or param.sort[0] == 'latest'}"
+                >
+                  <b th:if="${isLatest}" class="fw-bold">최신순</b>
 
+                  <a
+                    th:unless="${isLatest}"
+                    th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='latest')}"
+                  >
+                    최신순
+                  </a>
+                </th:block>
+                |
+                <th:block
+                  th:with="isRating=${param.sort != null and param.sort[0] == 'rating'}"
+                >
+                  <b th:if="${isRating}" class="fw-bold">추천순</b>
+
+                  <a
+                    th:unless="${isRating}"
+                    th:href="@{/doomchit/reviews/{mno}(mno=${music.mno}, sort='rating')}"
+                  >
+                    추천순
+                  </a>
+                </th:block>
+              </div>
             </div>
           </div>
 
@@ -384,8 +373,8 @@
                   <button
                     class="btn btn-lg btn-outline-danger"
                     type="submit"
-					th:formaction="@{/doomchit/delete/{rno}(rno=${myReview.rno})}"
-			        formmethod="post"
+                    th:formaction="@{/doomchit/delete/{rno}(rno=${myReview.rno})}"
+                    formmethod="post"
                     onclick="return confirm('작성한 리뷰를 삭제할까요?');"
                   >
                     삭제
@@ -439,7 +428,7 @@
             </dl>
           </div>
 
-          <!-- 리뷰 없을 때 -->
+          <!-- 리뷰 없을 때-->
           <div
             th:if="${#lists.size(reviewList) == 0 
 		      and (myReview == null or #authentication.name != myReview.user.userId)}"
