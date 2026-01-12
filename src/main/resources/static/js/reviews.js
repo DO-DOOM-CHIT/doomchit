@@ -58,5 +58,20 @@ document.querySelectorAll(".stars").forEach((ratingStars) => {
       }
     });
   }
-
+  
 });
+
+function toggleLyrics() {
+  const content = document.getElementById("lyricsContent");
+  const btn = document.getElementById("lyricsBtn");
+
+  if (!content || !btn) return;
+
+  content.classList.toggle("collapsed");
+
+  btn.innerHTML = content.classList.contains("collapsed")
+    ? '펼치기 <i class="fa-solid fa-angle-down ps-1"></i>'
+    : '접기 <i class="fa-solid fa-angle-up ps-1"></i>';
+};
+
+
