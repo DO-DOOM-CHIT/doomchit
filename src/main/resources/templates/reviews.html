@@ -383,6 +383,63 @@
               </div>
             </form>
           </div>
+		  
+		  <div
+		              sec:authorize="isAuthenticated()"
+		              th:if="${myReview != null and #authentication.name == myReview.user.userId}"
+		              id="myReview"
+		              class="border-bottom border-primary p-3 mb-3"
+		            >
+		              <div id="stars" class="me-2" th:with="rating=${myReview.rating}">
+		                <th:block th:each="num : ${#numbers.sequence(1, 5)}"
+		                  ><i th:if="${num <= rating}" class="fa-solid fa-star"></i
+		                  ><i
+		                    th:if="${num > rating && (num - 0.5) <= rating}"
+		                    class="fa-solid fa-star-half-stroke"
+		                  ></i
+		                  ><i
+		                    th:if="${(num - 0.5) > rating}"
+		                    class="fa-regular fa-star"
+		                  ></i
+		                ></th:block>
+		              </div>
+
+		              <dl>
+		                <dd
+		                  id="rating"
+		                  th:text="${myReview.rating}"
+		                  class="fw-bold pe-2"
+		                ></dd>
+		              </dl>
+
+		              <p th:text="${myReview.content}" style="white-space: pre-wrap"></p>
+
+		              <dl class="d-flex justify-content-between">
+		                <div>
+		                  <dt
+		                    id="reviewsUser"
+		                    class="pe-2"
+		                    th:text="${myReview.user.username}"
+		                  ></dt>
+
+		                  <dd id="creDate" class="d-flex align-items-center">
+		                    <i class="fa-solid fa-ellipsis pe-2"></i>
+		                    <div
+		                      th:text="${#temporals.format(myReview.creDate, 'yyyy.MM.dd')}"
+		                    ></div>
+		                  </dd>
+		                </div>
+
+		                <form
+		                  th:action="@{/doomchit/delete/{rno}(rno=${myReview.rno})}"
+		                  method="post"
+		                  style="display: inline"
+		                  onsubmit="return confirm('작성한 리뷰를 삭제할까요?');"
+		                >
+		                  <button class="btn btn-sm btn-outline-danger">삭제</button>
+		                </form>
+		              </dl>
+		            </div>
 
           <div
             th:each="review : ${reviewList}"
