@@ -64,6 +64,6 @@ a {
 }
 
 .btn-primary:hover {
-  background-color: darkred;
-  border-color: darkred;
+  background-color: #3c1255;
+  border-color: #3c1255;
 }

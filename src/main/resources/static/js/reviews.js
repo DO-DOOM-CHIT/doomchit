@@ -10,11 +10,20 @@ function toggleLyrics() {
   }
 }
 
-const rating_value = document.querySelector("#rating_value");
-const rating_input = document.querySelector("#rating_input");
-if (rating_value && rating_input) {
-  rating_value.textContent = rating_input.value;
-  rating_input.addEventListener("input", (event) => {
-    rating_value.textContent = event.target.value;
+const rating_value1 = document.querySelector("#rating_value1");
+const rating_input1 = document.querySelector("#rating_input1");
+if (rating_value1 && rating_input1) {
+  rating_value1.textContent = rating_input1.value;
+  rating_input1.addEventListener("input", (event) => {
+    rating_value1.textContent = event.target.value;
+  });
+}
+
+const rating_value2 = document.querySelector("#rating_value2");
+const rating_input2 = document.querySelector("#rating_input2");
+if (rating_value2 && rating_input2) {
+  rating_value2.textContent = rating_input2.value;
+  rating_input2.addEventListener("input", (event) => {
+    rating_value2.textContent = event.target.value;
   });
 }
