@@ -33,13 +33,14 @@ public class ReviewController {
 
 	// 리뷰 페이지 (음악 상세 + 리뷰 목록)
 	@GetMapping("/reviews/{mno}")
-	public String reviewDetail(@PathVariable("mno") Long mno, @RequestParam(value = "sort", required = false, defaultValue = "latest") String sort, Model model) {
+	public String reviewDetail(@PathVariable("mno") Long mno,
+			@RequestParam(value = "sort", required = false, defaultValue = "latest") String sort, Model model) {
 
 		Music music = musicService.getMusic(mno);
 
 		// 전체 리뷰 목록 (최신순)
 		List<Review> reviewList = reviewService.getReviewList(music);
-		
+
 		// 전체 리뷰 목록 (추천순)
 		List<Review> reviewListByRating = reviewService.getReviewListByRating(music);
 
@@ -76,26 +77,16 @@ public class ReviewController {
 		}
 
 		model.addAttribute("music", music);
-		
-		if("rating".equals(sort)) {
+
+		if ("rating".equals(sort)) {
 			model.addAttribute("reviewList", reviewListByRating);
 		} else {
 			model.addAttribute("reviewList", reviewList);
 		}
-		
+
 		model.addAttribute("reviewForm", new ReviewForm());
 
 		return "reviews";
-	}
-
-	// 좋아요 토글
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/like/toggle/{mno}")
-	public String toggleLike(@PathVariable("mno") Long mno) {
-		Music music = musicService.getMusic(mno);
-		Users user = userService.getCurrentUser();
-		likesService.toggleLike(user, music);
-		return "redirect:/doomchit/reviews/" + mno;
 	}
 
 	// 외부 musicId → 내부 mno 브릿지
