@@ -1,3 +1,4 @@
+//⭐을 눌러서 평점 주기
 document.querySelectorAll(".stars").forEach((ratingStars) => {
   const starsFill = ratingStars.querySelector(".stars-fill");
   const ratingWrap = ratingStars.closest(".rating-wrap");
@@ -35,7 +36,6 @@ document.querySelectorAll(".stars").forEach((ratingStars) => {
     starsFill.style.width = (previewRating / 5) * 100 + "%";
   });
 
-
   // 🔵 hover 종료 → 확정값으로 복귀
   ratingStars.addEventListener("mouseleave", () => {
     renderUI(confirmedRating);
@@ -47,7 +47,7 @@ document.querySelectorAll(".stars").forEach((ratingStars) => {
     ratingInput.value = confirmedRating;
     renderUI(confirmedRating);
   });
-  
+
   const form = ratingStars.closest("form");
 
   if (form) {
@@ -58,9 +58,9 @@ document.querySelectorAll(".stars").forEach((ratingStars) => {
       }
     });
   }
-  
 });
 
+// 가사 펼치기 및 접기
 function toggleLyrics() {
   const content = document.getElementById("lyricsContent");
   const btn = document.getElementById("lyricsBtn");
@@ -72,6 +72,4 @@ function toggleLyrics() {
   btn.innerHTML = content.classList.contains("collapsed")
     ? '펼치기 <i class="fa-solid fa-angle-down ps-1"></i>'
     : '접기 <i class="fa-solid fa-angle-up ps-1"></i>';
-};
-
-
+}
