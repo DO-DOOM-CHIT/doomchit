@@ -102,12 +102,13 @@
                       ></i>
                     </a>
                     <!-- 비로그인 시 로그인 페이지로 안내 -->
-                    <a
-                      th:href="@{/doomchit/login}"
-                      class="text-decoration-none"
-                      sec:authorize="isAnonymous()"
-                      onclick="return confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?');"
-                    >
+					<a
+					  href="#"
+					  class="text-decoration-none"
+					  sec:authorize="isAnonymous()"
+					  data-bs-toggle="modal"
+					  data-bs-target="#loginRequiredModal"
+					>
                       <i
                         id="likes-icon"
                         type="button"
@@ -520,13 +521,36 @@
           >
             아직 등록된 리뷰가 없습니다.
           </div>
+      </div>
+    </div>
+	
+	<div class="modal fade" id="loginRequiredModal" tabindex="-1">
+		  <div class="modal-dialog modal-dialog-centered modal-md">
+		    <div class="modal-content modal-padding-lg">
+		      <div class="p-3">
+		        <h5 class="modal-title pb-3">로그인이 필요합니다</h5>
 
+		        <p class="mb-4">
+		          해당 기능은 로그인 후 이용하실 수 있습니다.<br />
+		          로그인 페이지로 이동하시겠습니까?
+		        </p>
+
+		        <div class="d-flex justify-content-end">
+		          <a th:href="@{/doomchit/login}" class="btn btn-primary me-2">
+		            로그인
+		          </a>
+		          <button class="btn btn-secondary" data-bs-dismiss="modal">
+		            취소
+		          </button>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
 		  <script th:src="@{/js/bootstrap.min.js}"></script>
 		  <script th:src="@{/js/fontawesome-all.min.js}"></script>
 		  <script th:src="@{/js/main.js}"></script>
 		  <script th:src="@{/js/reviews.js}"></script>
-        </div>
-      </div>
-    </div>
   </body>
 </html>
