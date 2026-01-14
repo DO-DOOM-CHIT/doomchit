@@ -1,6 +1,5 @@
 package com.mysite.doomchit.reviews;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
