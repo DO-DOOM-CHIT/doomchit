@@ -111,3 +111,37 @@
     *   💾 "회원 명부(DB)에 등록합니다." (`Repository.save`)
 3.  **📄 [UserController.java]**
     *   ↪️ "가입 축하합니다. 로그인 페이지로 이동하세요."
+
+---
+
+## 7️⃣ 로그인 / 로그아웃 로직 (Spring Security)
+**로그인은 컨트롤러가 아닌 스프링 시큐리티가 "가로채서" 처리합니다.**
+
+### 🔑 로그인 (Flow)
+**URL:** `/doomchit/login` (POST 요청)
+
+1.  **🛡️ [Spring Security]** `SecurityConfig (FilterChain)`
+    *   🛑 "잠깐! 로그인 요청이 들어왔네? 내가 처리할게." (컨트롤러로 안 보냄)
+    *   ⬇️ **(인증 시도)**
+2.  **📄 [UserSecurityService.java]** `loadUserByUsername(String userId)`
+    *   🕵️ "DB에 이 아이디(`userId`)를 가진 사람이 있나?" (`userRepository.findByUserId`)
+    *   **IF (없음):** ❌ "그런 사람 없는데요?" -> 로그인 실패 예외 발생
+    *   **IF (있음):** 
+        *   ✅ "찾았습니다! 비밀번호 맞는지 확인해볼게요."
+        *   🔐 암호화된 비밀번호 비교 (`BCryptPasswordEncoder`)
+    *   ⬇️ **(인증 성공)**
+3.  **🛡️ [Spring Security]**
+    *   🎫 "신분 확인 완료! **세션(Session)** 티켓 발급."
+    *   🏁 "원래 가려던 페이지나 메인 페이지로 보내주자." (`SuccessHandler`)
+
+---
+
+### 🚪 로그아웃 (Flow)
+**URL:** `/doomchit/user/logout`
+
+1.  **🛡️ [Spring Security]** `SecurityConfig`
+    *   👋 "로그아웃 요청이네? 세션 티켓 찢어버리자." (`invalidateHttpSession`)
+    *   🧹 "로그인 쿠키도 삭제!" (`deleteCookies`)
+    *   ⬇️ **(완료)**
+2.  **🔄 [Redirect]**
+    *   ↪️ "안녕히 가세요. 메인 페이지(`/`)로 이동합니다."
