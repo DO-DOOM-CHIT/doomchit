@@ -77,7 +77,7 @@ public class MainController {
         }
     }
 
-    // JSON 데이터 확인용 임시 페이지
+    // main 검색창(자동완성 기능) 페이지
     @org.springframework.web.bind.annotation.ResponseBody
     @GetMapping("/doomchit/search")
     public java.util.List<java.util.Map<String, Object>> search(
