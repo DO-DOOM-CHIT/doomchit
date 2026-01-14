@@ -17,12 +17,19 @@
     *   📝 "알겠어, 자바가 알아듣게 번역할게." (`parseMelonJson`)
     *   ⬇️ **(데이터 리턴)**
 3.  **📄 [MainController.java]** `populateMusicInfo(List<Music> chart)`
-    *   📊 "멜론 데이터는 받았는데, 좋아요/댓글 수는 우리 DB에서 찾아야 해."
-    *   (반복문 실행)
-        *   ⬇️ **📄 [MusicService.java]** `findMusicByMusicId` (DB 조회)
-        *   ⬇️ **📄 [Likes/ReviewRepository]** `countByMusic` (좋아요/리뷰 수 카운트)
-    *   ⬇️ **(모든 데이터 완성)**
-4.  **📄 [main.html]**
+    *   📊 "데이터 보강 작업을 시작합니다." (반복문)
+    *   ⬇️ **(호출)**
+4.  **📄 [MusicService.java]** `findMusicByMusicId(Long musicId)`
+    *   ⬇️ **(호출)**
+5.  **📄 [MusicRepository.java]** `findByMusicId(Long musicId)`
+    *   📦 "DB에 이 노래 저장된 거 있나요?" (SELECT)
+    *   ⬇️ **(Music 객체 리턴)**
+6.  **📄 [Likes/ReviewRepository.java]** `countByMusic` / `getAverageRating`
+    *   📦 "이 노래의 좋아요 개수, 리뷰 개수 내놔!" (COUNT, AVG)
+    *   ⬇️ **(통계값 리턴)**
+7.  **📄 [MainController.java]** (모든 데이터 완성)
+    *   ⬇️ **(전달)**
+8.  **📄 [main.html]**
     *   🖼️ "완성된 데이터를 화면에 그려줍니다."
 
 ---
@@ -51,12 +58,18 @@
     *   🌉 "외부 ID(멜론ID)네요? 우리 DB 번호로 바꿔드릴게요."
     *   ⬇️ **(호출)**
 2.  **📄 [MusicService.java]** `getOrCreateMusicByMusicId(...)`
-    *   🧐 "DB에 있나?" -> (없음) -> "그럼 멜론 상세페이지 털어오자!"
-    *   🕷️ **크롤링 실행 (`fillSongAndAlbumDetail`)**:
-        *   가사, 장르, 발매일 싹 긁어옴 (`Jsoup`)
-    *   💾 **DB 저장**: "이제 우리 DB에 영구 저장!" (`Repository.save`)
-    *   ⬇️ **(내부 mno 리턴)**
-3.  **📄 [ReviewController.java]**
+    *   🧐 "DB에 있나먼저 확인!"
+    *   ⬇️ **(호출)**
+3.  **📄 [MusicRepository.java]** `findByMusicId(...)`
+    *   📦 (SELECT) "없는데요?" OR "여기 있습니다!"
+    *   ⬇️ **(결과 리턴)**
+4.  **� [MusicService.java]**
+    *   (없으면) �🕷️ **크롤링 실행** (`fillSongAndAlbumDetail`)
+    *   ⬇️ **(호출)**
+5.  **📄 [MusicRepository.java]** `save(Music m)`
+    *   💾 "크롤링한 최신 정보, DB에 영구 저장!" (INSERT/UPDATE)
+    *   ⬇️ **(완료)**
+6.  **📄 [ReviewController.java]**
     *   ↪️ **(리다이렉트)**: "자, 이제 진짜 리뷰 페이지(`/doomchit/reviews/{mno}`)로 가세요."
 
 ---
@@ -74,9 +87,11 @@
     *   ⬇️ **(호출)**
 3.  **📄 [ReviewService.java]** `create(...)`
     *   🏭 "리뷰 객체 생성! 도장 쾅!" (`new Review`)
-    *   💾 "창고(DB)에 넣습니다." (`reviewRepository.save`)
+    *   ⬇️ **(호출)**
+4.  **📄 [ReviewRepository.java]** `save(Review review)`
+    *   💾 "리뷰 DB에 저장!" (INSERT)
     *   ⬇️ **(완료)**
-4.  **📄 [ReviewController.java]**
+5.  **📄 [ReviewController.java]**
     *   🔄 "등록됐습니다. 다시 목록 페이지를 보여줍니다 (새로고침)."
 
 ---
@@ -89,12 +104,18 @@
     *   💓 "좋아요 버튼 눌렀네요."
     *   ⬇️ **(호출)**
 2.  **📄 [LikesService.java]** `toggleLike(...)`
-    *   🔍 "이 사람, 이 노래에 이미 좋아요 눌렀었나?" (`Repository` 조회)
-    *   🔄 **(토글 로직)**
-        *   (있으면) 🗑️ **삭제** (좋아요 취소)
-        *   (없으면) 💾 **저장** (좋아요 등록)
+    *   ⬇️ **(호출)**
+3.  **📄 [LikesRepository.java]** `findByUserAndMusic(...)`
+    *   � "이 사람, 이 노래 좋아요 내역 찾아줘." (SELECT)
+    *   ⬇️ **(결과 리턴)**
+4.  **📄 [LikesService.java]**
+    *   🔄 **(토글 로직 판단)**
+    *   ⬇️ **(호출)**
+5.  **📄 [LikesRepository.java]**
+    *   (있으면) 🗑️ `delete()` (DELETE 쿼리)
+    *   (없으면) 💾 `save()` (INSERT 쿼리)
     *   ⬇️ **(완료)**
-3.  **📄 [ReviewController.java]**
+6.  **📄 [ReviewController.java]**
     *   🔄 "처리 끝. 원래 보던 페이지로 돌아갑니다."
 
 ---
@@ -108,7 +129,10 @@
     *   ⬇️ **(통과 시 호출)**
 2.  **📄 [UserService.java]** `create(...)`
     *   🔐 "비밀번호는 못 알아보게 암호화합니다." (`BCrypt`)
-    *   💾 "회원 명부(DB)에 등록합니다." (`Repository.save`)
+    *   ⬇️ **(호출)**
+3.  **📄 [UserRepository.java]** `save(SiteUser user)`
+    *   💾 "신규 회원 DB에 등록!" (INSERT)
+    *   ⬇️ **(완료)**
 3.  **📄 [UserController.java]**
     *   ↪️ "가입 축하합니다. 로그인 페이지로 이동하세요."
 
@@ -124,13 +148,18 @@
     *   🛑 "잠깐! 로그인 요청이 들어왔네? 내가 처리할게." (컨트롤러로 안 보냄)
     *   ⬇️ **(인증 시도)**
 2.  **📄 [UserSecurityService.java]** `loadUserByUsername(String userId)`
-    *   🕵️ "DB에 이 아이디(`userId`)를 가진 사람이 있나?" (`userRepository.findByUserId`)
+    *   🕵️ "이 아이디(`userId`)를 가진 회원 찾아줘!"
+    *   ⬇️ **(호출)**
+3.  **📄 [UserRepository.java]** `findByUserId(String userId)`
+    *   📦 "잠시만요... (DB 뒤적뒤적)... 여기 있습니다!" (SELECT 쿼리 실행)
+    *   ⬇️ **(User 객체 리턴)**
+4.  **📄 [UserSecurityService.java]** (다시 복귀)
     *   **IF (없음):** ❌ "그런 사람 없는데요?" -> 로그인 실패 예외 발생
     *   **IF (있음):** 
         *   ✅ "찾았습니다! 비밀번호 맞는지 확인해볼게요."
         *   🔐 암호화된 비밀번호 비교 (`BCryptPasswordEncoder`)
     *   ⬇️ **(인증 성공)**
-3.  **🛡️ [Spring Security]**
+5.  **🛡️ [Spring Security]**
     *   🎫 "신분 확인 완료! **세션(Session)** 티켓 발급."
     *   🏁 "원래 가려던 페이지나 메인 페이지로 보내주자." (`SuccessHandler`)
 
