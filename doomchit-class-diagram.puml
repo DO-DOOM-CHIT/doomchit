@@ -1,0 +1,126 @@
+@startuml
+left to right direction
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+' ======================
+' Controllers
+' ======================
+package "controllers" {
+
+  class MainController
+  class ReviewController
+  class UserController
+  class LikesController
+}
+
+' ======================
+' Services
+' ======================
+package "services" {
+
+  class MusicService
+  class ReviewService
+  class UserService
+  class LikesService
+}
+
+' ======================
+' Repositories
+' ======================
+package "repositories" {
+
+  interface MusicRepository
+  interface ReviewRepository
+  interface UserRepository
+  interface LikesRepository
+}
+
+' ======================
+' Entities
+' ======================
+package "entities" {
+
+  class Music {
+    - mno : Long
+    - musicId : Long
+    - artist : String
+    - title : String
+    - albumTitle : String
+    - image : String
+    - relDate : LocalDate
+  }
+
+  class Review {
+    - rno : Integer
+    - content : String
+    - rating : BigDecimal
+    - creDate : LocalDateTime
+    - modDate : LocalDateTime
+  }
+
+  class Users {
+    - uno : Integer
+    - userId : String
+    - userPwd : String
+    - username : String
+    - creDate : LocalDateTime
+  }
+
+  class Likes {
+    - lno : Long
+    - creDate : LocalDateTime
+  }
+}
+
+' ======================
+' Controller → Service
+' ======================
+MainController --> MusicService
+MainController --> LikesService
+MainController --> UserService
+
+ReviewController --> ReviewService
+ReviewController --> MusicService
+ReviewController --> LikesService
+ReviewController --> UserService
+
+UserController --> UserService
+
+LikesController --> LikesService
+LikesController --> MusicService
+LikesController --> UserService
+
+' ======================
+' Service → Repository
+' ======================
+MusicService --> MusicRepository
+ReviewService --> ReviewRepository
+UserService --> UserRepository
+LikesService --> LikesRepository
+
+' ======================
+' Repository → Entity
+' ======================
+MusicRepository --> Music
+ReviewRepository --> Review
+UserRepository --> Users
+LikesRepository --> Likes
+
+' ======================
+' Entity Relationships
+' ======================
+Review --> Users
+Review --> Music
+
+Likes --> Users
+Likes --> Music
+
+Users "1" <-- "*" Review
+Music "1" <-- "*" Review
+
+Users "1" <-- "*" Likes
+Music "1" <-- "*" Likes
+
+@enduml
